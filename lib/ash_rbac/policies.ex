@@ -10,6 +10,7 @@ defmodule AshRbac.Policies do
   alias Spark.Dsl.Transformer
 
   def transform(dsl_state) do
+    IO.inspect(dsl_state, label: "incoming dsl_state")
     {field_settings, action_settings} = transform_options(dsl_state)
     bypass = Info.bypass(dsl_state)
 
@@ -28,17 +29,7 @@ defmodule AshRbac.Policies do
          dsl_state
          |> add_allow_policy()
      end
-     |> then(fn dsl_state ->
-       if String.contains?(
-            Atom.to_string(get_in(dsl_state, [:persist, :module])),
-            "PolicyTestSupport"
-          ) do
-         dsl_state
-         |> IO.inspect(label: "DSL STATE")
-       else
-         dsl_state
-       end
-     end)}
+     |> IO.inspect(label: "resulting dsl_state ")}
   end
 
   defp transform_options(dsl_state) do

@@ -16,6 +16,7 @@ defmodule PolicyTestSupport do
     @moduledoc false
     use Ash.Resource,
       data_layer: Ash.DataLayer.Ets,
+      authorizers: [Ash.Policy.Authorizer],
       extensions: [AshRbac]
 
     ets do
@@ -35,8 +36,8 @@ defmodule PolicyTestSupport do
 
       attribute(:root_id, :uuid)
 
-      create_timestamp(:created_at)
-      update_timestamp(:updated_at)
+      create_timestamp(:created_at, private?: false)
+      update_timestamp(:updated_at, private?: false)
     end
   end
 
@@ -44,6 +45,7 @@ defmodule PolicyTestSupport do
     @moduledoc false
     use Ash.Resource,
       data_layer: Ash.DataLayer.Ets,
+      authorizers: [Ash.Policy.Authorizer],
       extensions: [AshRbac]
 
     ets do
@@ -67,8 +69,8 @@ defmodule PolicyTestSupport do
 
       attribute(:admin_only, :integer, default: 2)
 
-      create_timestamp(:created_at)
-      update_timestamp(:updated_at)
+      create_timestamp(:created_at, private?: false)
+      update_timestamp(:updated_at, private?: false)
     end
 
     relationships do

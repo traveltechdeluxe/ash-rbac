@@ -27,20 +27,19 @@ defmodule AshRbacTest do
              |> Api.read(actor: %{roles: [@user_role]})
   end
 
-  @tag :unit
+  @tag :wip
   test "cannot select a attribute/relationship/calculation/aggregate not allow list", _ do
     # not specifying select is the same as selecting everything
     assert {
              :ok,
              [
                %PolicyTestSupport.RootResource{
-                 admin_only_number: %Ash.NotLoaded{},
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
                  number: %Ash.NotLoaded{},
                  admin_only_children: %Ash.NotLoaded{},
                  children: %Ash.NotLoaded{},
                  admin_only_child: %Ash.NotLoaded{},
                  child: %Ash.NotLoaded{},
-                 __meta__: %Ecto.Schema.Metadata{},
                  updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute},
                  created_at: %Ash.ForbiddenField{field: :created_at, type: :attribute},
                  id: _,
@@ -49,11 +48,8 @@ defmodule AshRbacTest do
                  calculations: %{
                    {:__ash_fields_are_visible__, [:admin_only]} => false,
                    {:__ash_fields_are_visible__, [:created_at]} => false,
-                   {:__ash_fields_are_visible__, [:created_by]} => false,
-                   {:__ash_fields_are_visible__, [:updated_at]} => false,
-                   {:__ash_fields_are_visible__, [:updated_by]} => false
-                 },
-                 __order__: nil
+                   {:__ash_fields_are_visible__, [:updated_at]} => false
+                 }
                }
              ]
            } =
@@ -62,27 +58,54 @@ defmodule AshRbacTest do
 
     # selecting a forbidden field
     assert {
-             :error,
-             %Ash.Error.Forbidden{}
+             :ok,
+             [
+               %PolicyTestSupport.RootResource{
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
+                 number: %Ash.NotLoaded{},
+                 admin_only_children: %Ash.NotLoaded{},
+                 children: %Ash.NotLoaded{},
+                 admin_only_child: %Ash.NotLoaded{},
+                 child: %Ash.NotLoaded{},
+                 updated_at: nil,
+                 created_at: nil,
+                 id: _,
+                 admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
+                 aggregates: %{},
+                 calculations: %{
+                   {:__ash_fields_are_visible__, [:admin_only]} => false
+                 }
+               }
+             ]
            } =
              RootResource
              |> Ash.Query.select([:admin_only])
              |> Api.read(actor: %{roles: [@user_role]})
 
-    # selecting a forbidden relationship
-    assert {
-             :error,
-             %Ash.Error.Forbidden{}
-           } =
-             RootResource
-             |> Ash.Query.select([:id])
-             |> Ash.Query.load([:admin_only_child])
-             |> Api.read(actor: %{roles: [@user_role]})
-
     # selecting a forbidden calculation
     assert {
-             :error,
-             %Ash.Error.Forbidden{}
+             :ok,
+             [
+               %PolicyTestSupport.RootResource{
+                 admin_only_number: %Ash.ForbiddenField{
+                   field: :admin_only_number,
+                   type: :calculation
+                 },
+                 number: %Ash.NotLoaded{type: :calculation},
+                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
+                 children: %Ash.NotLoaded{type: :aggregate},
+                 admin_only_child: %Ash.NotLoaded{type: :relationship},
+                 child: %Ash.NotLoaded{type: :relationship},
+                 updated_at: nil,
+                 created_at: nil,
+                 id: _,
+                 admin_only: nil,
+                 aggregates: %{},
+                 calculations: %{
+                   {:__ash_fields_are_visible__, [:admin_only_number]} => false
+                 }
+               }
+             ]
            } =
              RootResource
              |> Ash.Query.select([:id])
@@ -91,12 +114,55 @@ defmodule AshRbacTest do
 
     # selecting a forbidden aggregate
     assert {
-             :error,
-             %Ash.Error.Forbidden{}
+             :ok,
+             [
+               %PolicyTestSupport.RootResource{
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
+                 number: %Ash.NotLoaded{type: :calculation},
+                 admin_only_children: %Ash.ForbiddenField{
+                   field: :admin_only_children,
+                   type: :aggregate
+                 },
+                 children: %Ash.NotLoaded{type: :aggregate},
+                 admin_only_child: %Ash.NotLoaded{type: :relationship},
+                 child: %Ash.NotLoaded{type: :relationship},
+                 updated_at: nil,
+                 created_at: nil,
+                 id: _,
+                 admin_only: nil,
+                 aggregates: %{},
+                 calculations: %{}
+               }
+             ]
            } =
              RootResource
              |> Ash.Query.select([:id])
              |> Ash.Query.load([:admin_only_children])
+             |> Api.read(actor: %{roles: [@user_role]})
+
+    # selecting a forbidden relationship
+    assert {
+             :ok,
+             [
+               %PolicyTestSupport.RootResource{
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
+                 number: %Ash.NotLoaded{type: :calculation},
+                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
+                 children: %Ash.NotLoaded{type: :aggregate},
+                 admin_only_child: nil,
+                 child: %Ash.NotLoaded{type: :relationship},
+                 updated_at: nil,
+                 created_at: nil,
+                 id: _,
+                 admin_only: nil,
+                 aggregates: %{},
+                 calculations: %{}
+               }
+             ]
+           } =
+             RootResource
+             |> Ash.Query.select([:id])
+             |> Ash.Query.load([:admin_only_child])
              |> Api.read(actor: %{roles: [@user_role]})
   end
 
