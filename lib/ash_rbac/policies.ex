@@ -62,7 +62,7 @@ defmodule AshRbac.Policies do
         Ash.Policy.Authorizer,
         [:field_policies, :field_policy_bypass],
         :authorize_if,
-        check: Builtins.always()
+        check: {AshRbac.HasRole, [role: role]}
       )
 
     {:ok, policy} =
