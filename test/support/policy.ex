@@ -26,9 +26,7 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      role :admin, [:root_id, :created_at, :updated_at] do
-        actions [:read]
-      end
+      bypass :admin
 
       role :user, [:root_id, :created_at, :updated_at] do
         actions [
@@ -63,7 +61,9 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      bypass :admin
+      role :admin, [:*] do
+        actions [:create, :read, :update, :destroy]
+      end
 
       role :user, [:id, :child, :children, :number] do
         actions [:create, :read, :update, :destroy]

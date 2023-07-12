@@ -17,9 +17,9 @@ defmodule AshRbac.Policies do
      case Info.public?(dsl_state) do
        false ->
          dsl_state
-         |> add_field_policies(field_settings, bypass)
-         |> add_bypass(bypass)
+         |> add_field_policies(field_settings)
          |> add_action_policies(action_settings)
+         |> add_bypass(bypass)
 
        true ->
          dsl_state
@@ -53,7 +53,30 @@ defmodule AshRbac.Policies do
 
   defp add_bypass(dsl_state, nil), do: dsl_state
 
-  defp add_bypass(dsl_state, role) do
+  defp add_bypass(dsl_state, role),
+    do: dsl_state |> add_field_bypass(role) |> add_action_bypass(role)
+
+  defp add_field_bypass(dsl_state, role) do
+    {:ok, check} =
+      Transformer.build_entity(
+        Ash.Policy.Authorizer,
+        [:field_policies, :field_policy_bypass],
+        :authorize_if,
+        check: Builtins.always()
+      )
+
+    {:ok, policy} =
+      Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy_bypass,
+        fields: :*,
+        condition: Builtins.always(),
+        policies: [check]
+      )
+
+    dsl_state
+    |> Transformer.add_entity([:field_policies], policy, type: :prepend)
+  end
+
+  defp add_action_bypass(dsl_state, role) do
     {:ok, check} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies, :bypass], :authorize_if,
         check: Builtins.always()
@@ -119,7 +142,7 @@ defmodule AshRbac.Policies do
     |> Transformer.add_entity([:policies], policy, type: :append)
   end
 
-  defp add_field_policies(dsl_state, field_settings, bypass) do
+  defp add_field_policies(dsl_state, field_settings) do
     all_fields =
       dsl_state
       |> Ash.Resource.Info.fields([:attributes, :calculations, :aggregates])
@@ -137,16 +160,11 @@ defmodule AshRbac.Policies do
 
     all_fields
     |> Enum.reduce(dsl_state, fn field, dsl_state ->
-      add_role_field_policies(
-        dsl_state,
-        field,
-        Map.get(field_settings, field, []),
-        bypass
-      )
+      add_role_field_policies(dsl_state, field, Map.get(field_settings, field, []))
     end)
   end
 
-  defp add_role_field_policies(dsl_state, field, roles, bypass) do
+  defp add_role_field_policies(dsl_state, field, roles) do
     role_checks =
       roles
       |> Enum.map(fn role ->
@@ -161,18 +179,6 @@ defmodule AshRbac.Policies do
         role_check
       end)
 
-    {:ok, bypass_check} =
-      if bypass do
-        Transformer.build_entity(
-          Ash.Policy.Authorizer,
-          [:field_policies, :field_policy],
-          :authorize_if,
-          check: {AshRbac.HasRole, [role: bypass]}
-        )
-      else
-        {:ok, nil}
-      end
-
     {:ok, default_check} =
       Transformer.build_entity(
         Ash.Policy.Authorizer,
@@ -185,8 +191,7 @@ defmodule AshRbac.Policies do
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy,
         fields: field,
         condition: Builtins.always(),
-        policies:
-          bypass_check |> List.wrap() |> Enum.concat(role_checks) |> Enum.concat([default_check])
+        policies: Enum.concat(role_checks, [default_check])
       )
 
     dsl_state
