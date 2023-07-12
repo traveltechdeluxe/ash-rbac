@@ -13,16 +13,13 @@ defmodule AshRbac.Policies do
     {field_settings, action_settings} = transform_options(dsl_state)
     bypass = Info.bypass(dsl_state)
 
-    dsl_state =
-      dsl_state
-      |> add_field_policies(field_settings, bypass)
-      |> add_bypass(bypass)
-
     {:ok,
      case Info.public?(dsl_state) do
        false ->
          dsl_state
-         |> add_action_policies(action_settings |> IO.inspect(label: :action_settings))
+         |> add_field_policies(field_settings, bypass)
+         |> add_bypass(bypass)
+         |> add_action_policies(action_settings)
 
        true ->
          dsl_state

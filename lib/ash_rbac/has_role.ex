@@ -1,4 +1,7 @@
 defmodule AshRbac.HasRole do
+  @moduledoc """
+  Check to determine if the actor has a specific role or if the actor has any of the roles in a list
+  """
   use Ash.Policy.SimpleCheck
 
   @impl true
