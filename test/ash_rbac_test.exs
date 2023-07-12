@@ -19,31 +19,51 @@ defmodule AshRbacTest do
   test "can select all attributes/relationships/calculations/aggregates in allow list", _ do
     assert {
              :ok,
-             [_]
+             [
+               %PolicyTestSupport.RootResource{
+                 admin_only: nil,
+                 admin_only_child: %Ash.NotLoaded{type: :relationship},
+                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
+                 child: child,
+                 children: 1,
+                 created_at: nil,
+                 id: _,
+                 number: 1,
+                 updated_at: nil,
+                 aggregates: %{},
+                 calculations: %{
+                   {:__ash_fields_are_visible__, [:children]} => true,
+                   {:__ash_fields_are_visible__, [:number]} => true
+                 }
+               }
+             ]
            } =
              RootResource
              |> Ash.Query.select([:id])
              |> Ash.Query.load([:child, :number, :children])
              |> Api.read(actor: %{roles: [@user_role]})
+
+    refute is_nil(child)
   end
 
-  @tag :wip
+  @tag :unit
   test "cannot select a attribute/relationship/calculation/aggregate not allow list", _ do
     # not specifying select is the same as selecting everything
     assert {
              :ok,
              [
                %PolicyTestSupport.RootResource{
-                 admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 number: %Ash.NotLoaded{},
-                 admin_only_children: %Ash.NotLoaded{},
-                 children: %Ash.NotLoaded{},
+                 admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
                  admin_only_child: %Ash.NotLoaded{},
+                 admin_only_children: %Ash.NotLoaded{},
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
                  child: %Ash.NotLoaded{},
-                 updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute},
+                 children: %Ash.NotLoaded{},
                  created_at: %Ash.ForbiddenField{field: :created_at, type: :attribute},
                  id: _,
-                 admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
+                 number: %Ash.NotLoaded{},
+                 updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute},
                  aggregates: %{},
                  calculations: %{
                    {:__ash_fields_are_visible__, [:admin_only]} => false,
@@ -61,16 +81,16 @@ defmodule AshRbacTest do
              :ok,
              [
                %PolicyTestSupport.RootResource{
-                 admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 number: %Ash.NotLoaded{},
-                 admin_only_children: %Ash.NotLoaded{},
-                 children: %Ash.NotLoaded{},
+                 admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
                  admin_only_child: %Ash.NotLoaded{},
+                 admin_only_children: %Ash.NotLoaded{},
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
                  child: %Ash.NotLoaded{},
-                 updated_at: nil,
+                 children: %Ash.NotLoaded{},
                  created_at: nil,
                  id: _,
-                 admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
+                 number: %Ash.NotLoaded{},
+                 updated_at: nil,
                  aggregates: %{},
                  calculations: %{
                    {:__ash_fields_are_visible__, [:admin_only]} => false
@@ -87,19 +107,19 @@ defmodule AshRbacTest do
              :ok,
              [
                %PolicyTestSupport.RootResource{
+                 admin_only: nil,
+                 admin_only_child: %Ash.NotLoaded{type: :relationship},
+                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
                  admin_only_number: %Ash.ForbiddenField{
                    field: :admin_only_number,
                    type: :calculation
                  },
-                 number: %Ash.NotLoaded{type: :calculation},
-                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
-                 children: %Ash.NotLoaded{type: :aggregate},
-                 admin_only_child: %Ash.NotLoaded{type: :relationship},
                  child: %Ash.NotLoaded{type: :relationship},
-                 updated_at: nil,
+                 children: %Ash.NotLoaded{type: :aggregate},
                  created_at: nil,
                  id: _,
-                 admin_only: nil,
+                 number: %Ash.NotLoaded{type: :calculation},
+                 updated_at: nil,
                  aggregates: %{},
                  calculations: %{
                    {:__ash_fields_are_visible__, [:admin_only_number]} => false
@@ -117,19 +137,19 @@ defmodule AshRbacTest do
              :ok,
              [
                %PolicyTestSupport.RootResource{
-                 admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 number: %Ash.NotLoaded{type: :calculation},
+                 admin_only: nil,
+                 admin_only_child: %Ash.NotLoaded{type: :relationship},
                  admin_only_children: %Ash.ForbiddenField{
                    field: :admin_only_children,
                    type: :aggregate
                  },
-                 children: %Ash.NotLoaded{type: :aggregate},
-                 admin_only_child: %Ash.NotLoaded{type: :relationship},
+                 admin_only_number: %Ash.NotLoaded{type: :calculation},
                  child: %Ash.NotLoaded{type: :relationship},
-                 updated_at: nil,
+                 children: %Ash.NotLoaded{type: :aggregate},
                  created_at: nil,
                  id: _,
-                 admin_only: nil,
+                 number: %Ash.NotLoaded{type: :calculation},
+                 updated_at: nil,
                  aggregates: %{},
                  calculations: %{}
                }

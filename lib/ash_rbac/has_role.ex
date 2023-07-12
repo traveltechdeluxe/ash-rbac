@@ -3,11 +3,24 @@ defmodule AshRbac.HasRole do
 
   @impl true
   def describe(options) do
-    "Checks if the actor has the role #{inspect(options[:role])}"
+    if is_list(options[:role]) do
+      "Checks if the actor has any of the roles #{inspect(options[:role])}"
+    else
+      "Checks if the actor has the role #{inspect(options[:role])}"
+    end
   end
 
   @impl true
-  def match?(actor, context, options) do
-    options[:role] in Map.get(actor || %{}, :roles, [])
+  def match?(actor, _, options) do
+    match(options[:role], actor)
   end
+
+  defp match(roles, actor) when is_list(roles) do
+    MapSet.size(MapSet.intersection(MapSet.new(roles), MapSet.new(roles(actor)))) > 0
+  end
+
+  defp match(roles, actor), do: match([roles], actor)
+
+  defp roles(%{roles: roles}) when is_list(roles), do: roles
+  defp roles(_), do: []
 end

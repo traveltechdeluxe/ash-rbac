@@ -1,6 +1,6 @@
 import Config
 
-config :logger, level: :debug
+config :logger, level: :error
 
 config :ash, disable_async?: true
 
