@@ -21,7 +21,12 @@ defmodule AshRbac do
         """
       ],
       actions: [
-        type: {:list, :atom},
+        type:
+          {:list,
+           {
+             :or,
+             [:atom, {:tuple, [:atom, {:custom, __MODULE__, :validate_check, []}]}]
+           }},
         required: false,
         doc: """
         The actions the role has access to
@@ -79,6 +84,33 @@ defmodule AshRbac do
     def roles(resource) do
       Extension.get_entities(resource, [:rbac])
     end
+  end
+
+  @doc false
+  # copied from Ash.Policy.Authorizer
+  def validate_check({module, opts}) when is_atom(module) and is_list(opts) do
+    {:ok, {module, opts}}
+  end
+
+  def validate_check(module) when is_atom(module) do
+    validate_check({module, []})
+  end
+
+  def validate_check(other) do
+    {:ok, {Ash.Policy.Check.Expression, expr: other}}
+  end
+
+  def validate_condition(conditions) when is_list(conditions) do
+    {:ok,
+     Enum.map(conditions, fn condition ->
+       {:ok, v} = condition |> validate_check()
+       v
+     end)}
+  end
+
+  @doc false
+  def validate_condition(condition) do
+    validate_condition([condition])
   end
 
   use Spark.Dsl.Extension,

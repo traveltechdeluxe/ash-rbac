@@ -24,7 +24,11 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      public?(true)
+      role(:admin, [:root_id, :created_at, :updated_at]) do
+        actions([
+          {:read, Ash.Policy.Check.Builtins.accessing_from(RootResource, :admin_only_child)}
+        ])
+      end
     end
 
     actions do
