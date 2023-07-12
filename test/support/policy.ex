@@ -26,14 +26,14 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      role(:admin, [:root_id, :created_at, :updated_at]) do
-        actions([:read])
+      role :admin, [:root_id, :created_at, :updated_at] do
+        actions [:read]
       end
 
-      role(:user, [:root_id, :created_at, :updated_at]) do
-        actions([
+      role :user, [:root_id, :created_at, :updated_at] do
+        actions [
           {:read, Builtins.accessing_from(PolicyTestSupport.RootResource, :child)}
-        ])
+        ]
       end
     end
 
@@ -63,10 +63,10 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      bypass(:admin)
+      bypass :admin
 
-      role(:user, [:id, :child, :children, :number]) do
-        actions([:create, :read, :update, :destroy])
+      role :user, [:id, :child, :children, :number] do
+        actions [:create, :read, :update, :destroy]
       end
     end
 
