@@ -142,23 +142,8 @@ defmodule AshRbacTest do
 
     # selecting a forbidden relationship
     assert {
-             :ok,
-             [
-               %PolicyTestSupport.RootResource{
-                 admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 number: %Ash.NotLoaded{type: :calculation},
-                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
-                 children: %Ash.NotLoaded{type: :aggregate},
-                 admin_only_child: nil,
-                 child: %Ash.NotLoaded{type: :relationship},
-                 updated_at: nil,
-                 created_at: nil,
-                 id: _,
-                 admin_only: nil,
-                 aggregates: %{},
-                 calculations: %{}
-               }
-             ]
+             :error,
+             %Ash.Error.Forbidden{}
            } =
              RootResource
              |> Ash.Query.select([:id])
