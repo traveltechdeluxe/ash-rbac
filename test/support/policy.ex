@@ -19,6 +19,8 @@ defmodule PolicyTestSupport do
       authorizers: [Ash.Policy.Authorizer],
       extensions: [AshRbac]
 
+    alias Ash.Policy.Check.Builtins
+
     ets do
       private?(true)
     end
@@ -30,8 +32,7 @@ defmodule PolicyTestSupport do
 
       role(:user, [:root_id, :created_at, :updated_at]) do
         actions([
-          {:read,
-           Ash.Policy.Check.Builtins.accessing_from(PolicyTestSupport.RootResource, :child)}
+          {:read, Builtins.accessing_from(PolicyTestSupport.RootResource, :child)}
         ])
       end
     end
