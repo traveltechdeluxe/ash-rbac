@@ -1,0 +1,113 @@
+name: Elixir CI
+
+on:
+  # Allow to trigger the workflow manually again via the GitHub UI
+  # @see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_call
+  workflow_call:
+  # Allow to trigger the workflow manually via the GitHub UI and also allow to
+  # select a custom branch
+  # @see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
+  workflow_dispatch:
+  # Trigger the workflow when a pull_request's activity type is opened,
+  # synchronize, or reopened.
+  # @see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request
+  pull_request:
+    types: [opened, reopened, review_requested]
+  # Trigger the workflow when a pull request review is submitted (approved and
+  # other states)
+  # @see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#pull_request_review
+  pull_request_review:
+    types: [submitted]
+  # Trigger the workflow on push
+  # @see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#push
+  push:
+  # Runs "At 00:00" (see https://crontab.guru/#0_0_*_*_*)
+  # @see https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  deps:
+    name: mix deps.get
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-deps-get@main
+
+  auditor:
+    name: mix hex.audit
+    runs-on: ubuntu-latest
+    needs: deps
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-hex-audit@main
+
+  build-test:
+    name: MIX_ENV=test mix.compile
+    runs-on: ubuntu-latest
+    needs: deps
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/install-elixir@main
+      - uses: team-alembic/staple-actions/actions/mix-compile@main
+        with:
+          mix-env: test
+  formatter:
+    name: mix format --check-formatted
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-format@main
+        with:
+          mix-env: test
+
+  spark-formatter:
+    name: mix spark.formatter --check
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-task@main
+        with:
+          mix-env: test
+          task: spark.formatter --check
+  credo:
+    name: mix credo --strict
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-credo@main
+        with:
+          mix-env: test
+  unused-deps:
+    name: mix deps.unlock --check-unused
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-task@main
+        with:
+          mix-env: test
+          task: deps.unlock --check-unused
+
+  test:
+    name: mix test
+    runs-on: ubuntu-latest
+    needs: build-test
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-test@main
+        with:
+          mix-env: test
+
+  build-dev:
+    name: MIX_ENV=dev mix.compile
+    runs-on: ubuntu-latest
+    needs: deps
+    steps:
+      - uses: actions/checkout@v3
+      - uses: team-alembic/staple-actions/actions/mix-compile@main
+        with:
+          mix-env: dev
