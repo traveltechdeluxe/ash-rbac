@@ -20,7 +20,7 @@ defmodule AshRbac.MixProject do
       deps: deps(),
       docs: [
         # The main page in the docs
-        main: "main",
+        main: "AshRbac",
         logo: "logo.png",
         extras: ["README.md"]
       ]
