@@ -71,7 +71,7 @@ defmodule AshRbac do
 
   defmodule Info do
     @moduledoc """
-    Introspection functions for the Audit Extension
+    Introspection functions for the Rbac Extension
     """
     alias Spark.Dsl.Extension
 
