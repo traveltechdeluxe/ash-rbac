@@ -45,7 +45,9 @@ defmodule AshRbac do
       """
       rbac do
         bypass :admin
-        role :user, [:id, :name] do
+
+        role :user do
+          fields [:id, :name]
           actions [:create, :read, :update, :destroy]
         end
       end
