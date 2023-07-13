@@ -28,7 +28,9 @@ defmodule PolicyTestSupport do
     rbac do
       bypass :admin
 
-      role :user, [:root_id, :created_at, :updated_at] do
+      role :user do
+        fields [:root_id, :created_at, :updated_at]
+
         actions [
           {:read, Builtins.accessing_from(PolicyTestSupport.RootResource, :child)}
         ]
@@ -61,11 +63,13 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      role :admin, [:*] do
+      role :admin do
+        fields [:*]
         actions [:create, :read, :update, :destroy]
       end
 
-      role :user, [:id, :child, :children, :number] do
+      role :user do
+        fields [:id, :child, :children, :number]
         actions [:create, :read, :update, :destroy]
       end
     end

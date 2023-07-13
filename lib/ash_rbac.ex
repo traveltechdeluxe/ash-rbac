@@ -3,7 +3,7 @@ defmodule AshRbac do
     name: :role,
     describe: "If the check is true, the request is forbidden, otherwise run remaining checks.",
     target: AshRbac.Role,
-    args: [:role, :fields],
+    args: [:role],
     links: [],
     schema: [
       role: [
@@ -15,7 +15,7 @@ defmodule AshRbac do
       ],
       fields: [
         type: {:list, :atom},
-        required: true,
+        required: false,
         doc: """
         The fields the role has access to
         """
