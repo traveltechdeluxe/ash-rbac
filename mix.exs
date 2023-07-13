@@ -28,6 +28,7 @@ defmodule AshRbac.MixProject do
       {:ash, branch: "main", github: "ash-project/ash", override: true},
       {:spark, branch: "main", github: "ash-project/spark", override: true},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:elixir_uuid, "~> 1.2", only: [:test], runtime: false},
       {:git_hooks, "~> 0.7.3", only: :dev},
       # test watcher
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}

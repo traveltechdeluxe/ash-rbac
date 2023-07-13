@@ -26,7 +26,7 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
-      bypass :admin
+      bypass :super_admin
 
       role :user do
         fields [:root_id, :created_at, :updated_at]
@@ -63,14 +63,16 @@ defmodule PolicyTestSupport do
     end
 
     rbac do
+      bypass :super_admin
+
       role :admin do
         fields [:*]
-        actions [:create, :read, :update, :destroy]
+        actions [:create, :read]
       end
 
       role :user do
         fields [:id, :child, :children, :number]
-        actions [:create, :read, :update, :destroy]
+        actions [:read]
       end
     end
 

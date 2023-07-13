@@ -3,7 +3,8 @@ defmodule AshRbacTest do
 
   alias PolicyTestSupport.{Api, ChildResource, RootResource}
 
-  @bypass_role :admin
+  @bypass_role :super_admin
+  @admin_role :admin
   @user_role :user
 
   setup do
@@ -25,7 +26,7 @@ defmodule AshRbacTest do
                  admin_only_child: %Ash.NotLoaded{type: :relationship},
                  admin_only_children: %Ash.NotLoaded{type: :aggregate},
                  admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 child: child,
+                 child: %child{},
                  children: 1,
                  created_at: nil,
                  id: _,
@@ -44,11 +45,11 @@ defmodule AshRbacTest do
              |> Ash.Query.load([:child, :number, :children])
              |> Api.read(actor: %{roles: [@user_role]})
 
-    refute is_nil(child)
+    assert child == PolicyTestSupport.ChildResource
   end
 
   @tag :unit
-  test "cannot select a attribute/relationship/calculation/aggregate not allow list", _ do
+  test "cannot select a attribute/relationship/calculation/aggregate not in allow list", _ do
     # not specifying select is the same as selecting everything
     assert {
              :ok,
@@ -175,9 +176,158 @@ defmodule AshRbacTest do
   test "bypass role can select everything", _ do
     assert {
              :ok,
-             [_]
+             [
+               %RootResource{
+                 admin_only_number: 1,
+                 number: 1,
+                 admin_only_children: 1,
+                 children: 1,
+                 admin_only_child: %PolicyTestSupport.ChildResource{
+                   __meta__: %Ecto.Schema.Metadata{state: :loaded},
+                   id: admin_only_child_id,
+                   root_id: root_id,
+                   created_at: admin_only_child_created_at,
+                   updated_at: admin_only_child_updated_at,
+                   aggregates: %{},
+                   calculations: %{
+                     {:__ash_fields_are_visible__, [:created_at]} => true,
+                     {:__ash_fields_are_visible__, [:root_id]} => true,
+                     {:__ash_fields_are_visible__, [:updated_at]} => true
+                   },
+                   __order__: nil
+                 },
+                 child: %PolicyTestSupport.ChildResource{
+                   __meta__: %Ecto.Schema.Metadata{state: :loaded},
+                   id: child_id,
+                   root_id: root_id,
+                   created_at: child_created_at,
+                   updated_at: child_updated_at,
+                   aggregates: %{},
+                   calculations: %{
+                     {:__ash_fields_are_visible__, [:created_at]} => true,
+                     {:__ash_fields_are_visible__, [:root_id]} => true,
+                     {:__ash_fields_are_visible__, [:updated_at]} => true
+                   },
+                   __order__: nil
+                 },
+                 __meta__: %Ecto.Schema.Metadata{state: :loaded},
+                 id: root_id,
+                 admin_only: 2,
+                 created_at: created_at,
+                 updated_at: updated_at,
+                 aggregates: %{},
+                 calculations: %{
+                   {:__ash_fields_are_visible__, [:admin_only]} => true,
+                   {:__ash_fields_are_visible__, [:admin_only_children]} => true,
+                   {:__ash_fields_are_visible__, [:admin_only_number]} => true,
+                   {:__ash_fields_are_visible__, [:children]} => true,
+                   {:__ash_fields_are_visible__, [:created_at]} => true,
+                   {:__ash_fields_are_visible__, [:number]} => true,
+                   {:__ash_fields_are_visible__, [:updated_at]} => true
+                 },
+                 __order__: nil
+               }
+             ]
            } =
              RootResource
+             |> Ash.Query.for_read(:read)
+             |> Ash.Query.load([
+               :child,
+               :admin_only_child,
+               :children,
+               :admin_only_children,
+               :number,
+               :admin_only_number
+             ])
              |> Api.read(actor: %{roles: [@bypass_role]})
+
+    assert {:ok, _} = UUID.info(root_id)
+    assert {:ok, _} = UUID.info(admin_only_child_id)
+    assert {:ok, _} = UUID.info(child_id)
+
+    assert DateTime.to_string(created_at)
+    assert DateTime.to_string(updated_at)
+    assert DateTime.to_string(admin_only_child_created_at)
+    assert DateTime.to_string(admin_only_child_updated_at)
+    assert DateTime.to_string(child_created_at)
+    assert DateTime.to_string(child_updated_at)
+  end
+
+  @tag :unit
+  test "bypass role can use all actions", _ do
+    assert {:ok, resource} =
+             RootResource
+             |> Ash.Changeset.for_create(:create, %{}, actor: %{roles: [@bypass_role]})
+             |> Api.create(actor: %{roles: [@bypass_role]})
+
+    assert {:ok, [_, _]} =
+             RootResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@bypass_role]})
+             |> Ash.Query.sort([:created_at])
+             |> Api.read(actor: %{roles: [@bypass_role]})
+
+    assert {:ok, resource} =
+             resource
+             |> Ash.Changeset.for_update(:update, %{}, actor: %{roles: [@bypass_role]})
+             |> Api.update(actor: %{roles: [@bypass_role]})
+
+    assert :ok ==
+             resource
+             |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@bypass_role]})
+             |> Api.destroy(actor: %{roles: [@bypass_role]})
+
+    assert {:ok, [_]} =
+             RootResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@bypass_role]})
+             |> Ash.Query.sort([:created_at])
+             |> Api.read(actor: %{roles: [@bypass_role]})
+  end
+
+  @tag :unit
+  test "admin role can only create and read", _ do
+    assert {:ok, resource} =
+             RootResource
+             |> Ash.Changeset.for_create(:create, %{}, actor: %{roles: [@admin_role]})
+             |> Api.create(actor: %{roles: [@admin_role]})
+
+    assert {:ok, [_, _]} =
+             RootResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@admin_role]})
+             |> Ash.Query.sort([:created_at])
+             |> Api.read(actor: %{roles: [@admin_role]})
+
+    assert {:error, %Ash.Error.Forbidden{}} =
+             resource
+             |> Ash.Changeset.for_update(:update, %{}, actor: %{roles: [@admin_role]})
+             |> Api.update(actor: %{roles: [@admin_role]})
+
+    assert {:error, %Ash.Error.Forbidden{}} =
+             resource
+             |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@admin_role]})
+             |> Api.destroy(actor: %{roles: [@admin_role]})
+  end
+
+  @tag :unit
+  test "user role can only read", %{root_resource: resource} do
+    assert {:ok, [_]} =
+             RootResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@user_role]})
+             |> Ash.Query.sort([:created_at])
+             |> Api.read(actor: %{roles: [@user_role]})
+
+    assert {:error, %Ash.Error.Forbidden{}} =
+             RootResource
+             |> Ash.Changeset.for_create(:create, %{}, actor: %{roles: [@user_role]})
+             |> Api.create(actor: %{roles: [@user_role]})
+
+    assert {:error, %Ash.Error.Forbidden{}} =
+             resource
+             |> Ash.Changeset.for_update(:update, %{}, actor: %{roles: [@user_role]})
+             |> Api.update(actor: %{roles: [@user_role]})
+
+    assert {:error, %Ash.Error.Forbidden{}} =
+             resource
+             |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@user_role]})
+             |> Api.destroy(actor: %{roles: [@user_role]})
   end
 end
