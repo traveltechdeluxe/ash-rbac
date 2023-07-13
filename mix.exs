@@ -14,7 +14,13 @@ defmodule AshRbac.MixProject do
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      docs: [
+        # The main page in the docs
+        main: "Traveltech D.Luxe AshRbac",
+        logo: "logo.png",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -34,6 +40,7 @@ defmodule AshRbac.MixProject do
       {:ash, "~> 2.11.8"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:elixir_uuid, "~> 1.2", only: [:test], runtime: false},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
       {:git_hooks, "~> 0.7.3", only: :dev},
       # test watcher
       {:mix_test_watch, "~> 1.0", only: :dev, runtime: false}
