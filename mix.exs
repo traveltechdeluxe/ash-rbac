@@ -9,7 +9,10 @@ defmodule AshRbac.MixProject do
       package: [
         maintainers: ["travel tech d.luxe GmbH"],
         licenses: ["MIT"],
-        links: %{"GitHub" => "https://github.com/traveltechdeluxe/ash-rbac"}
+        links: %{
+          "GitHub" => "https://github.com/traveltechdeluxe/ash-rbac",
+          "Travel Tech D.Luxe" => "https://www.traveltechdeluxe.com/"
+        }
       ],
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -17,7 +20,7 @@ defmodule AshRbac.MixProject do
       deps: deps(),
       docs: [
         # The main page in the docs
-        main: "Traveltech D.Luxe AshRbac",
+        main: "main",
         logo: "logo.png",
         extras: ["README.md"]
       ]
