@@ -1,6 +1,15 @@
 # AshRbac
 
-**TODO: Add description**
+A small extension that allows for easier application of policies
+
+```elixir
+rbac do
+  role :user do
+    fields [:fields, :user, :can, :see]
+    actions [:actions, :the, :user, :can :use]
+  end
+end
+```
 
 ## Installation
 
