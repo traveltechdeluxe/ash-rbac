@@ -4,7 +4,13 @@ defmodule AshRbac.MixProject do
   def project do
     [
       app: :ash_rbac,
-      version: "0.1.0",
+      version: "0.0.1",
+      description: "A small extension for easier application of policies",
+      package: [
+        maintainers: ["travel tech d.luxe GmbH"],
+        licenses: ["MIT"],
+        links: %{"GitHub" => "https://github.com/traveltechdeluxe/ash-rbac"}
+      ],
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
