@@ -25,8 +25,7 @@ defmodule AshRbac.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, branch: "main", github: "ash-project/ash", override: true},
-      {:spark, branch: "main", github: "ash-project/spark", override: true},
+      {:ash, "~> 2.11.8"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:elixir_uuid, "~> 1.2", only: [:test], runtime: false},
       {:git_hooks, "~> 0.7.3", only: :dev},
