@@ -6,7 +6,7 @@ A small extension that allows for easier application of policies
 rbac do
   role :user do
     fields [:fields, :user, :can, :see]
-    actions [:actions, :the, :user, :can :use]
+    actions [:actions, :user, :can :use]
   end
 end
 ```
@@ -19,7 +19,7 @@ by adding `ash_rbac` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ash_rbac, branch: "main", github: "traveltechdeluxe/ash-rbac"},
+    {:ash_rbac, "~> 0.0.1"},
   ]
 end
 ```
