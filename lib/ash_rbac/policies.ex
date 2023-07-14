@@ -122,7 +122,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :policy,
-        condition: [Builtins.action(action), {AshRbac.HasRole, [role: roles]}, custom_check],
+        condition: [{AshRbac.HasRole, [role: roles]}, Builtins.action(action), custom_check],
         policies: [authorize_check]
       )
 
@@ -141,7 +141,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :policy,
-        condition: [Builtins.action(action), {AshRbac.HasRole, [role: roles]}],
+        condition: [{AshRbac.HasRole, [role: roles]}, Builtins.action(action)],
         policies: [authorize_check]
       )
 
