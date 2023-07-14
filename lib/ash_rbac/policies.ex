@@ -30,6 +30,13 @@ defmodule AshRbac.Policies do
   defp transform_options(dsl_state) do
     Info.roles(dsl_state)
     |> List.wrap()
+    |> Enum.flat_map(fn %AshRbac.Role{role: role} = entity ->
+      role
+      |> List.wrap()
+      |> Enum.map(fn role ->
+        %{entity | role: role}
+      end)
+    end)
     |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, actions: actions},
                                   {field_settings, action_settings} ->
       {
@@ -143,6 +150,8 @@ defmodule AshRbac.Policies do
   end
 
   defp add_field_policies(dsl_state, field_settings) do
+    all_fields_roles = Map.get(field_settings, :*, [])
+
     all_fields =
       dsl_state
       |> Ash.Resource.Info.fields([:attributes, :calculations, :aggregates])
@@ -160,7 +169,16 @@ defmodule AshRbac.Policies do
 
     all_fields
     |> Enum.reduce(dsl_state, fn field, dsl_state ->
-      add_role_field_policies(dsl_state, field, Map.get(field_settings, field, []))
+      roles =
+        field_settings
+        |> Map.get(field, [])
+        |> Enum.concat(all_fields_roles)
+
+      add_role_field_policies(
+        dsl_state,
+        field,
+        roles
+      )
     end)
   end
 

@@ -1,19 +1,25 @@
 defmodule AshRbacTest do
   use ExUnit.Case, async: true
 
-  alias PolicyTestSupport.{Api, ChildResource, RootResource}
+  alias PolicyTestSupport.{Api, ChildResource, RootResource, SharedResource}
 
   @bypass_role :super_admin
   @admin_role :admin
+  @admin_string_role "admin"
   @user_role :user
 
   setup do
     root_resource = Api.create!(Ash.Changeset.for_create(RootResource, :create))
+    shared_resource = Api.create!(Ash.Changeset.for_create(SharedResource, :create))
 
     child_resource =
       Api.create!(Ash.Changeset.for_create(ChildResource, :create, %{root_id: root_resource.id}))
 
-    [root_resource: root_resource, child_resource: child_resource]
+    [
+      root_resource: root_resource,
+      child_resource: child_resource,
+      shared_resource: shared_resource
+    ]
   end
 
   @tag :unit
@@ -285,12 +291,12 @@ defmodule AshRbacTest do
 
   @tag :unit
   test "admin role can only create and read", _ do
-    assert {:ok, resource} =
+    assert {:ok, %{admin_only: 5} = resource} =
              RootResource
-             |> Ash.Changeset.for_create(:create, %{}, actor: %{roles: [@admin_role]})
+             |> Ash.Changeset.for_create(:create, %{admin_only: 5}, actor: %{roles: [@admin_role]})
              |> Api.create(actor: %{roles: [@admin_role]})
 
-    assert {:ok, [_, _]} =
+    assert {:ok, [%{admin_only: 2}, %{admin_only: 5}]} =
              RootResource
              |> Ash.Query.for_read(:read, actor: %{roles: [@admin_role]})
              |> Ash.Query.sort([:created_at])
@@ -329,5 +335,18 @@ defmodule AshRbacTest do
              resource
              |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@user_role]})
              |> Api.destroy(actor: %{roles: [@user_role]})
+  end
+
+  @tag :unit
+  test "`:admin` and \"admin\" have read access", _ do
+    assert {:ok, [%{basic_field: 2}]} =
+             SharedResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@admin_role]})
+             |> Api.read(actor: %{roles: [@admin_role]})
+
+    assert {:ok, [%{basic_field: 2}]} =
+             SharedResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@admin_string_role]})
+             |> Api.read(actor: %{roles: [@admin_string_role]})
   end
 end
