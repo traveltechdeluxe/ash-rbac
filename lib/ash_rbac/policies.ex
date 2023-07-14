@@ -112,18 +112,18 @@ defmodule AshRbac.Policies do
   end
 
   defp add_role_action_policies(dsl_state, {action, custom_check}, roles) do
-    {:ok, custom_check} =
+    {:ok, authorize_check} =
       Transformer.build_entity(
         Ash.Policy.Authorizer,
         [:policies, :policy],
         :authorize_if,
-        check: custom_check
+        check: Builtins.always()
       )
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :policy,
-        condition: [Builtins.action(action), {AshRbac.HasRole, [role: roles]}],
-        policies: [custom_check]
+        condition: [Builtins.action(action), {AshRbac.HasRole, [role: roles]}, custom_check],
+        policies: [authorize_check]
       )
 
     dsl_state
