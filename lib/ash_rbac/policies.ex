@@ -183,33 +183,19 @@ defmodule AshRbac.Policies do
   end
 
   defp add_role_field_policies(dsl_state, field, roles) do
-    role_checks =
-      roles
-      |> Enum.map(fn role ->
-        {:ok, role_check} =
-          Transformer.build_entity(
-            Ash.Policy.Authorizer,
-            [:field_policies, :field_policy],
-            :authorize_if,
-            check: {AshRbac.HasRole, [role: role]}
-          )
-
-        role_check
-      end)
-
-    {:ok, default_check} =
+    {:ok, authorize_check} =
       Transformer.build_entity(
         Ash.Policy.Authorizer,
         [:field_policies, :field_policy],
-        :forbid_if,
+        :authorize_if,
         check: Builtins.always()
       )
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy,
         fields: field,
-        condition: Builtins.always(),
-        policies: Enum.concat(role_checks, [default_check])
+        condition: [{AshRbac.HasRole, [role: roles]}, Builtins.always()],
+        policies: [authorize_check]
       )
 
     dsl_state
