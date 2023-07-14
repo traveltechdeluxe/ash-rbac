@@ -1,4 +1,6 @@
 defmodule AshRbac do
+  @role_type {:or, [:atom, :string, {:list, {:or, [:atom, :string]}}]}
+
   @role %Spark.Dsl.Entity{
     name: :role,
     describe: "If the check is true, the request is forbidden, otherwise run remaining checks.",
@@ -7,7 +9,7 @@ defmodule AshRbac do
     links: [],
     schema: [
       role: [
-        type: :atom,
+        type: @role_type,
         required: true,
         doc: """
         The role this config is for
@@ -55,7 +57,7 @@ defmodule AshRbac do
     ],
     schema: [
       bypass: [
-        type: :atom,
+        type: @role_type,
         doc: "Role that is allowed to bypass authorization"
       ],
       public?: [
