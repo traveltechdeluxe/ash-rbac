@@ -7,7 +7,7 @@ Add the ash_rbac dependency to your mix.exs
 ```elixir
 defp deps do
   [
-    {:ash_rbac, "~> 0.0.1"}
+    {:ash_rbac, "~> 0.1.0"}
   ]
 end
 ```
