@@ -18,7 +18,7 @@ The package can be installed by adding `ash_rbac` to your list of dependencies i
 ```elixir
 def deps do
   [
-    {:ash_rbac, "~> 0.0.1"},
+    {:ash_rbac, "~> 0.1.0"},
   ]
 end
 ```
