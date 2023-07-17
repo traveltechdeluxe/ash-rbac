@@ -99,6 +99,8 @@ defmodule AshRbac.Policies do
     |> Transformer.add_entity([:policies], policy, type: :prepend)
   end
 
+  defp add_action_policies(dsl_state, action_settings) when action_settings == %{}, do: dsl_state
+
   defp add_action_policies(dsl_state, action_settings) do
     action_settings
     |> Enum.reduce(dsl_state, fn
@@ -148,6 +150,8 @@ defmodule AshRbac.Policies do
     dsl_state
     |> Transformer.add_entity([:policies], policy, type: :append)
   end
+
+  defp add_field_policies(dsl_state, field_settings) when field_settings == %{}, do: dsl_state
 
   defp add_field_policies(dsl_state, field_settings) do
     all_fields_roles = Map.get(field_settings, :*, [])
