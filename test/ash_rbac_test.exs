@@ -1,7 +1,7 @@
 defmodule AshRbacTest do
   use ExUnit.Case, async: true
 
-  alias PolicyTestSupport.{Api, ChildResource, RootResource, SharedResource}
+  alias AshRbacTest.{Api, ChildResource, RootResource, SharedResource}
 
   @bypass_role :super_admin
   @admin_role :admin
@@ -27,7 +27,7 @@ defmodule AshRbacTest do
     assert {
              :ok,
              [
-               %PolicyTestSupport.RootResource{
+               %RootResource{
                  admin_only: nil,
                  admin_only_child: %Ash.NotLoaded{type: :relationship},
                  admin_only_children: %Ash.NotLoaded{type: :aggregate},
@@ -51,7 +51,7 @@ defmodule AshRbacTest do
              |> Ash.Query.load([:child, :number, :children])
              |> Api.read(actor: %{roles: [@user_role]})
 
-    assert child == PolicyTestSupport.ChildResource
+    assert child == ChildResource
   end
 
   @tag :unit
@@ -60,7 +60,7 @@ defmodule AshRbacTest do
     assert {
              :ok,
              [
-               %PolicyTestSupport.RootResource{
+               %RootResource{
                  admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
                  admin_only_child: %Ash.NotLoaded{},
                  admin_only_children: %Ash.NotLoaded{},
@@ -87,7 +87,7 @@ defmodule AshRbacTest do
     assert {
              :ok,
              [
-               %PolicyTestSupport.RootResource{
+               %RootResource{
                  admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
                  admin_only_child: %Ash.NotLoaded{},
                  admin_only_children: %Ash.NotLoaded{},
@@ -113,7 +113,7 @@ defmodule AshRbacTest do
     assert {
              :ok,
              [
-               %PolicyTestSupport.RootResource{
+               %RootResource{
                  admin_only: nil,
                  admin_only_child: %Ash.NotLoaded{type: :relationship},
                  admin_only_children: %Ash.NotLoaded{type: :aggregate},
@@ -143,7 +143,7 @@ defmodule AshRbacTest do
     assert {
              :ok,
              [
-               %PolicyTestSupport.RootResource{
+               %RootResource{
                  admin_only: nil,
                  admin_only_child: %Ash.NotLoaded{type: :relationship},
                  admin_only_children: %Ash.ForbiddenField{
@@ -188,7 +188,7 @@ defmodule AshRbacTest do
                  number: 1,
                  admin_only_children: 1,
                  children: 1,
-                 admin_only_child: %PolicyTestSupport.ChildResource{
+                 admin_only_child: %ChildResource{
                    __meta__: %Ecto.Schema.Metadata{state: :loaded},
                    id: admin_only_child_id,
                    root_id: root_id,
@@ -202,7 +202,7 @@ defmodule AshRbacTest do
                    },
                    __order__: nil
                  },
-                 child: %PolicyTestSupport.ChildResource{
+                 child: %ChildResource{
                    __meta__: %Ecto.Schema.Metadata{state: :loaded},
                    id: child_id,
                    root_id: root_id,
