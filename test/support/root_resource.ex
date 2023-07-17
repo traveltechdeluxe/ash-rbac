@@ -5,8 +5,8 @@ defmodule AshRbacTest.RootResource do
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshRbac]
 
-  alias AshRbacTest.ChildResource
   alias AshRbacTest.Calculation
+  alias AshRbacTest.ChildResource
 
   ets do
     private?(true)
@@ -22,6 +22,11 @@ defmodule AshRbacTest.RootResource do
 
     role :user do
       fields [:id, :child, :children, :number]
+      actions [:read]
+    end
+
+    role :guest do
+      fields [:child]
       actions [:read]
     end
   end
