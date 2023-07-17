@@ -12,4 +12,4 @@ Benchee.run(%{
              |> Ash.Query.load([:child, :number, :children])
              |> Api.read(actor: %{roles: [:user]})
   end
-})
+}, profile_after: true)

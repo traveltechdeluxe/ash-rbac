@@ -1,0 +1,965 @@
+Operating System: Linux
+CPU Information: AMD Ryzen 9 5950X 16-Core Processor
+Number of Available Cores: 32
+Available memory: 62.70 GB
+Elixir 1.14.3
+Erlang 25.2.1
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+memory time: 0 ns
+reduction time: 0 ns
+parallel: 1
+inputs: none specified
+Estimated total run time: 7 s
+
+Benchmarking read ...
+
+Name           ips        average  deviation         median         99th %
+read        212.63        4.70 ms     ±4.81%        4.61 ms        5.53 ms
+
+Profiling read with eprof...
+
+Profile results of #PID<0.288.0>
+#                                                                             CALLS    % TIME µS/CALL
+Total                                                                         42899 100. 6921    0.16
+Ash.Query.BooleanExpression.optimized_new/3                                       8 0.00    0    0.00
+Ash.DataLayer.Ets.sort/3                                                          2 0.00    0    0.00
+Ash.DataLayer.Ets.resource_to_query/2                                             1 0.00    0    0.00
+Ash.DataLayer.Ets.offset/3                                                        2 0.00    0    0.00
+Ash.DataLayer.Ets.get_records/2                                                   1 0.00    0    0.00
+Ash.DataLayer.Ets.filter_matches/3                                                1 0.00    0    0.00
+Ash.DataLayer.Ets.do_add_calculations/4                                           1 0.00    0    0.00
+Ash.DataLayer.Ets.do_add_aggregates/4                                             1 0.00    0    0.00
+Ash.DataLayer.Ets.cast_records/2                                                  1 0.00    0    0.00
+Ash.DataLayer.Ets.add_aggregate/3                                                 1 0.00    0    0.00
+ETS.Set.type/1                                                                    1 0.00    0    0.00
+ETS.Set.to_list/1                                                                 1 0.00    0    0.00
+anonymous fn/3 in Enumerable.Stream.do_reduce/3                                   6 0.00    0    0.00
+Enumerable.Stream.do_done/2                                                       6 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.add_aggregate_values/5                         2 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.add_aggregate_values/5                         2 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.add_aggregates/4                               1 0.00    0    0.00
+anonymous fn/3 in Ash.Actions.Read.add_aggregates/4                               1 0.00    0    0.00
+anonymous fn/5 in Ash.Actions.Read.add_calculation_context/5                      1 0.00    0    0.00
+anonymous fn/14 in Ash.Actions.Read.add_calculation_values/14                     3 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.add_page/7                                     4 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.as_requests/5                                  1 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Read.as_requests/5                                  1 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Read.as_requests/5                                  1 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.as_requests/5                                  3 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.as_requests/5                                  1 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.as_requests/5                                  1 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Read.data_field/3                                   2 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.data_field/3                                   2 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.data_field/3                                   1 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Read.data_field/3                                   3 0.00    0    0.00
+anonymous fn/3 in Ash.Actions.Read.do_add_calculation_values/3                    3 0.00    0    0.00
+anonymous fn/4 in Ash.Actions.Read.filter_with_related/4                          2 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Read.run_before_action/1                            1 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Read.source_fields/1                                2 0.00    0    0.00
+Ash.Actions.Read.validate_multitenancy/1                                          1 0.00    0    0.00
+Ash.Actions.Read.validate_get/3                                                   1 0.00    0    0.00
+Ash.Actions.Read.update_aggregate_filters/4                                       1 0.00    0    0.00
+Ash.Actions.Read.unwrap_for_get/4                                                 1 0.00    0    0.00
+Ash.Actions.Read.unload_forbidden_fields/2                                        2 0.00    0    0.00
+Ash.Actions.Read.source_fields/1                                                  2 0.00    0    0.00
+Ash.Actions.Read.set_tenant_opt/2                                                 1 0.00    0    0.00
+Ash.Actions.Read.set_tenant/2                                                     1 0.00    0    0.00
+Ash.Actions.Read.set_phase/1                                                      1 0.00    0    0.00
+Ash.Actions.Read.sanitize_opts/2                                                  1 0.00    0    0.00
+Ash.Actions.Read.run_before_action/1                                              1 0.00    0    0.00
+Ash.Actions.Read.run_after_action/2                                               1 0.00    0    0.00
+Ash.Actions.Read.paginate/3                                                       1 0.00    0    0.00
+Ash.Actions.Read.page_opts/2                                                      2 0.00    0    0.00
+Ash.Actions.Read.maybe_await/1                                                    1 0.00    0    0.00
+Ash.Actions.Read.loaded_query/2                                                   2 0.00    0    0.00
+Ash.Actions.Read.load_through_attributes/6                                        2 0.00    0    0.00
+Ash.Actions.Read.load_calc_requirements/2                                         2 0.00    0    0.00
+Ash.Actions.Read.handle_attribute_multitenancy/1                                  1 0.00    0    0.00
+Ash.Actions.Read.get_action/2                                                     1 0.00    0    0.00
+Ash.Actions.Read.for_read/3                                                       2 0.00    0    0.00
+Ash.Actions.Read.filter_with_related/4                                            1 0.00    0    0.00
+Ash.Actions.Read.filter_with_related/3                                            1 0.00    0    0.00
+Ash.Actions.Read.fetch_count/7                                                    1 0.00    0    0.00
+Ash.Actions.Read.do_add_calculation_values/3                                      1 0.00    0    0.00
+Ash.Actions.Read.data_field/3                                                     1 0.00    0    0.00
+Ash.Actions.Read.calculation_dependency_requests/9                                2 0.00    0    0.00
+Ash.Actions.Read.calc_dependencies/7                                              6 0.00    0    0.00
+Ash.Actions.Read.apply_keyset_filter/2                                            1 0.00    0    0.00
+Ash.Actions.Read.add_tenant/2                                                     1 0.00    0    0.00
+Ash.Actions.Read.add_query/3                                                      1 0.00    0    0.00
+Ash.Actions.Read.add_page/7                                                       1 0.00    0    0.00
+Ash.Actions.Read.add_calculations/3                                               1 0.00    0    0.00
+Ash.Actions.Read.add_calculation_values/14                                        2 0.00    0    0.00
+Ash.Actions.Read.add_calculation_context/5                                        1 0.00    0    0.00
+Ash.Actions.Read.add_calc_to_results/4                                            3 0.00    0    0.00
+Ash.Actions.Read.add_aggregates_and_attributes_to_loaded_relationships/2          2 0.00    0    0.00
+Ash.Actions.Read.add_aggregates/4                                                 1 0.00    0    0.00
+Ash.Type.Boolean.cast_input/2                                                     4 0.00    0    0.00
+:erlang.max/2                                                                     2 0.00    0    0.00
+:erlang.tuple_to_list/1                                                           2 0.00    0    0.00
+:erlang.unique_integer/1                                                          1 0.00    0    0.00
+:erlang.make_ref/0                                                                1 0.00    0    0.00
+Ash.Policy.Check.AccessingFrom.strict_check/3                                     2 0.00    0    0.00
+List.ascii_printable_guarded?/2                                                   2 0.00    0    0.00
+List.ascii_printable?/2                                                           2 0.00    0    0.00
+Ash.Policy.Checker.strict_check_all_policies/3                                    7 0.00    0    0.00
+Ash.Policy.Checker.strict_check_all_facts/1                                       3 0.00    0    0.00
+:maps.get/3                                                                       5 0.00    0    0.00
+anonymous fn/4 in Map.merge/3                                                     3 0.00    0    0.00
+anonymous fn/4 in Map.merge/3                                                     7 0.00    0    0.00
+Map.new/2                                                                         5 0.00    0    0.00
+Ash.Query.Function.Type.args/0                                                    4 0.00    0    0.00
+anonymous fn/4 in Ash.DataLayer.add_aggregates/3                                  1 0.00    0    0.00
+Ash.DataLayer.sort/3                                                              2 0.00    0    0.00
+Ash.DataLayer.set_context/3                                                       1 0.00    0    0.00
+Ash.DataLayer.select/3                                                            2 0.00    0    0.00
+Ash.DataLayer.run_query/2                                                         1 0.00    0    0.00
+Ash.DataLayer.resource_to_query/2                                                 1 0.00    0    0.00
+Ash.DataLayer.lock/3                                                              2 0.00    0    0.00
+Ash.DataLayer.limit/3                                                             2 0.00    0    0.00
+Ash.DataLayer.filter/3                                                            1 0.00    0    0.00
+Ash.DataLayer.distinct/3                                                          2 0.00    0    0.00
+Ash.DataLayer.add_calculations/3                                                  1 0.00    0    0.00
+Ash.DataLayer.add_aggregates/3                                                    2 0.00    0    0.00
+anonymous fn/2 in Kernel.struct/2                                                 7 0.00    0    0.00
+:ets.tab2list/1                                                                   1 0.00    0    0.00
+Ecto.Type.cast_fun/1                                                              4 0.00    0    0.00
+Ecto.Type.cast_boolean/1                                                          4 0.00    0    0.00
+AshRbacTest.Calculation.select/3                                                  1 0.00    0    0.00
+AshRbacTest.Calculation.load/3                                                    1 0.00    0    0.00
+AshRbacTest.Calculation.init/1                                                    1 0.00    0    0.00
+AshRbacTest.Calculation.calculate/3                                               1 0.00    0    0.00
+:logger_config.less_or_equal_level/2                                              3 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Helpers.attributes_to_select/1                      4 0.00    0    0.00
+anonymous fn/2 in Ash.Actions.Helpers.runtime_attributes/2                        1 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Helpers.runtime_attributes/2                        1 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Helpers.runtime_calculations/1                      3 0.00    0    0.00
+Ash.Actions.Helpers.set_context/2                                                 5 0.00    0    0.00
+Ash.Actions.Helpers.select/2                                                      2 0.00    0    0.00
+Ash.Actions.Helpers.runtime_calculations/1                                        1 0.00    0    0.00
+Ash.Actions.Helpers.runtime_attributes/2                                          1 0.00    0    0.00
+Ash.Actions.Helpers.restrict_field_access/2                                       1 0.00    0    0.00
+Ash.Actions.Helpers.internal?/1                                                   2 0.00    0    0.00
+Ash.Actions.Helpers.attributes_to_select/1                                        1 0.00    0    0.00
+anonymous fn/1 in Ash.Policy.Authorizer.add_calculations/3                        3 0.00    0    0.00
+Ash.Policy.Authorizer.strict_check_result/1                                       3 0.00    0    0.00
+Ash.Policy.Authorizer.log_successful_policy_breakdown/1                           3 0.00    0    0.00
+Ash.Policy.Authorizer.get_policies/1                                              3 0.00    0    0.00
+Ash.Policy.Authorizer.alter_filter/3                                              3 0.00    0    0.00
+anonymous fn/2 in Ash.Query.build/3                                               2 0.00    0    0.00
+anonymous fn/3 in Ash.Query.cast_params/3                                         2 0.00    0    0.00
+anonymous fn/3 in Ash.Query.do_validate_load/3                                    1 0.00    0    0.00
+anonymous fn/3 in Ash.Query.load_resource_calculation/4                           1 0.00    0    0.00
+anonymous fn/2 in Ash.Query.loading?/2                                            8 0.00    0    0.00
+anonymous fn/1 in Ash.Query.sanitize_loads/1                                      1 0.00    0    0.00
+anonymous fn/2 in Ash.Query.set_load_api/2                                        1 0.00    0    0.00
+anonymous fn/3 in Ash.Query.unset/2                                               7 0.00    0    0.00
+Ash.Query.validate_matching_query_and_continue/5                                  1 0.00    0    0.00
+Ash.Query.validate_load/3                                                         1 0.00    0    0.00
+Ash.Query.validate_load/2                                                         1 0.00    0    0.00
+Ash.Query.validate_calculation_arguments/2                                        1 0.00    0    0.00
+Ash.Query.unset/2                                                                 1 0.00    0    0.00
+Ash.Query.sort/3                                                                  1 0.00    0    0.00
+Ash.Query.sort/2                                                                  1 0.00    0    0.00
+Ash.Query.set_tracer/2                                                            4 0.00    0    0.00
+Ash.Query.set_tenant/2                                                            4 0.00    0    0.00
+Ash.Query.set_load_api/2                                                          4 0.00    0    0.00
+Ash.Query.set_authorize?/2                                                        4 0.00    0    0.00
+Ash.Query.set_argument_defaults/2                                                 4 0.00    0    0.00
+Ash.Query.sanitize_loads/1                                                        3 0.00    0    0.00
+Ash.Query.reset_arguments/1                                                       4 0.00    0    0.00
+Ash.Query.put_context/3                                                           3 0.00    0    0.00
+Ash.Query.new/2                                                                   3 0.00    0    0.00
+Ash.Query.merge_load/2                                                            1 0.00    0    0.00
+Ash.Query.maybe_filter/3                                                          1 0.00    0    0.00
+Ash.Query.load_resource_calculation/3                                             1 0.00    0    0.00
+Ash.Query.has_argument?/2                                                         2 0.00    0    0.00
+Ash.Query.for_read/3                                                              2 0.00    0    0.00
+Ash.Query.for_read/2                                                              1 0.00    0    0.00
+Ash.Query.do_validate_load/3                                                      2 0.00    0    0.00
+Ash.Query.do_filter/2                                                             1 0.00    0    0.00
+Ash.Query.cast_params/3                                                           4 0.00    0    0.00
+Ash.Query.build/3                                                                 1 0.00    0    0.00
+Ash.Query.build/2                                                                 1 0.00    0    0.00
+Ash.Query.add_tenant/2                                                            1 0.00    0    0.00
+Ash.Query.add_aggregates/3                                                        1 0.00    0    0.00
+Ash.Query.add_action_filters/3                                                    4 0.00    0    0.00
+Ash.Policy.Check.Action.strict_check/3                                            4 0.00    0    0.00
+anonymous fn/2 in Spark.OptionsHelpers.sanitize_type/2                            3 0.00    0    0.00
+anonymous fn/5 in NimbleOptions.validate_type/3                                   1 0.00    0    0.00
+NimbleOptions.options_schema/0                                                    6 0.00    0    0.00
+anonymous fn/1 in Ash.Engine.add_requests/2                                       7 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.build_dependencies/2                                 9 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.do_run/2                                             7 0.00    0    0.00
+anonymous fn/3 in Ash.Engine.notify/2                                             8 0.00    0    0.00
+anonymous fn/1 in Ash.Engine.run/2                                                2 0.00    0    0.00
+anonymous fn/1 in Ash.Engine.run/2                                                2 0.00    0    0.00
+anonymous fn/1 in Ash.Engine.run/2                                                3 0.00    0    0.00
+anonymous fn/1 in Ash.Engine.run/2                                                3 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.run/2                                                1 0.00    0    0.00
+anonymous fn/0 in Ash.Engine.store_dependencies/2                                 3 0.00    0    0.00
+anonymous fn/3 in Ash.Engine.store_dependencies/2                                 8 0.00    0    0.00
+anonymous fn/0 in Ash.Engine.store_dependencies/2                                 6 0.00    0    0.00
+anonymous fn/3 in Ash.Engine.store_dependencies/2                                 8 0.00    0    0.00
+Ash.Engine.task_with_timeout/5                                                    1 0.00    0    0.00
+Ash.Engine.log/3                                                                  2 0.00    0    0.00
+Ash.Engine.log/2                                                                  2 0.00    0    0.00
+Ash.Engine.add_dependencies_waiting_on_request/2                                  4 0.00    0    0.00
+anonymous fn/1 in Ash.Policy.Policy.compile_policy_expression/2                   8 0.00    0    0.00
+anonymous fn/4 in Enum.map/2                                                      4 0.00    0    0.00
+anonymous fn/2 in Enum.map_join/3                                                 2 0.00    0    0.00
+anonymous fn/3 in Enum.reduce/3                                                   1 0.00    0    0.00
+anonymous fn/3 in Enum.reject/2                                                   3 0.00    0    0.00
+anonymous fn/4 in Enum.reject/2                                                   3 0.00    0    0.00
+Enum.zip/2                                                                        7 0.00    0    0.00
+Enum.take_while/2                                                                 8 0.00    0    0.00
+Enum.map_join/3                                                                   2 0.00    0    0.00
+Enum.map_intersperse_list/3                                                       2 0.00    0    0.00
+Enum.map_intersperse/3                                                            2 0.00    0    0.00
+Enum.join_non_empty_list/3                                                        2 0.00    0    0.00
+Enum.join_list/2                                                                  2 0.00    0    0.00
+Enum.join/2                                                                       2 0.00    0    0.00
+Enum.into/3                                                                       1 0.00    0    0.00
+Enum.flat_reverse/2                                                               8 0.00    0    0.00
+Enum.find_value_list/3                                                            4 0.00    0    0.00
+Enum.drop_list/2                                                                  1 0.00    0    0.00
+Enum.drop/2                                                                       1 0.00    0    0.00
+Ash.DataLayer.Ets.Info.table/1                                                    1 0.00    0    0.00
+Ash.DataLayer.Ets.Info.private?/1                                                 1 0.00    0    0.00
+Process.put/2                                                                     1 0.00    0    0.00
+Code.ensure_compiled/1                                                            8 0.00    0    0.00
+AshRbacTest.Api.default_short_name/0                                              2 0.00    0    0.00
+anonymous fn/2 in Stream.reject/2                                                 5 0.00    0    0.00
+anonymous fn/3 in Stream.with_index/2                                             1 0.00    0    0.00
+anonymous fn/1 in Stream.with_index/2                                             1 0.00    0    0.00
+Stream.with_index/1                                                               1 0.00    0    0.00
+anonymous fn/3 in Keyword.new/2                                                   2 0.00    0    0.00
+Keyword."-new/2-lists^foldl/2-0-"/3                                               6 0.00    0    0.00
+Keyword.new/2                                                                     4 0.00    0    0.00
+Keyword.merge/2                                                                   2 0.00    0    0.00
+Ash.Api.pagination_check/3                                                        1 0.00    0    0.00
+Ash.Api.get_action/4                                                              1 0.00    0    0.00
+Ash.Filter.used_calculations/4                                                    8 0.00    0    0.00
+Ash.Filter.used_calculations/2                                                    3 0.00    0    0.00
+Ash.Filter.used_aggregates/1                                                      8 0.00    0    0.00
+Ash.Filter.update_aggregates/2                                                    1 0.00    0    0.00
+Ash.Filter.run_other_data_layer_filters/4                                         1 0.00    0    0.00
+Ash.Filter.relationship_paths/3                                                   1 0.00    0    0.00
+Ash.Filter.relationship_paths/2                                                   1 0.00    0    0.00
+Ash.Filter.read_requests/5                                                        1 0.00    0    0.00
+Ash.Filter.map/2                                                                  1 0.00    0    0.00
+Ash.Filter.do_map/2                                                               1 0.00    0    0.00
+ETS.Utils.take_opt/3                                                              2 0.00    0    0.00
+Ash.Policy.Check.Static.strict_check/3                                            3 0.00    0    0.00
+Ash.Policy.Check.Static.match?/3                                                  3 0.00    0    0.00
+Ash.Resource.Calculation.Expression.init/1                                        8 0.00    0    0.00
+Ash.Resource.Calculation.Expression.calculate/3                                   2 0.00    0    0.00
+Ash.Policy.Info.log_successful_policy_breakdowns/0                                3 0.00    0    0.00
+Ash.Policy.Info.default_access_type/1                                             3 0.00    0    0.00
+:logger.allow/2                                                                   3 0.00    0    0.00
+Ash.Actions.Sort.runtime_sort/3                                                   1 0.00    0    0.00
+Ash.Actions.Sort.process/4                                                        1 0.00    0    0.00
+anonymous fn/2 in Ash.Filter.Runtime.try_cast_arguments/2                         4 0.00    0    0.00
+Ash.Filter.Runtime.load_and_eval/5                                                4 0.00    0    0.00
+Ash.Api.Interface.do_enforce_query_or_resource!/1                                 1 0.00    0    0.00
+anonymous fn/4 in Inspect.Algebra.container_doc/6                                 2 0.00    0    0.00
+Inspect.Algebra.simple?/1                                                         2 0.00    0    0.00
+Inspect.Algebra.nest/3                                                            4 0.00    0    0.00
+Inspect.Algebra.nest/2                                                            4 0.00    0    0.00
+Inspect.Algebra.join/4                                                            2 0.00    0    0.00
+Inspect.Algebra.fold_doc/2                                                        6 0.00    0    0.00
+Inspect.Algebra.flex_glue/3                                                       2 0.00    0    0.00
+Inspect.Algebra.flex_glue/2                                                       2 0.00    0    0.00
+Inspect.Algebra.flex_break/1                                                      2 0.00    0    0.00
+Inspect.Algebra.decrement/1                                                       6 0.00    0    0.00
+Inspect.Algebra.apply_nesting/3                                                   4 0.00    0    0.00
+Ash.Query.Calculation.new/4                                                       8 0.00    0    0.00
+Inspect.List.keyword?/1                                                           2 0.00    0    0.00
+ETS.Base.to_list/1                                                                1 0.00    0    0.00
+ETS.Base.parse_opts/2                                                             3 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.check/2                                      3 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.do_next/1                                    1 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.do_strict_check/3                            1 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.do_try_resolve_local/4                       1 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.do_try_resolve_local/4                       2 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.do_try_resolve_local/4                       4 0.00    0    0.00
+anonymous fn/4 in Ash.Engine.Request.notifications/3                              8 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.set_authorized/1                             3 0.00    0    0.00
+anonymous fn/2 in Ash.Engine.Request.strict_check/2                               3 0.00    0    0.00
+Ash.Engine.Request.try_resolve_dependencies_of/3                                  1 0.00    0    0.00
+Ash.Engine.Request.strict_check/2                                                 3 0.00    0    0.00
+Ash.Engine.Request.store_dependency/3                                             8 0.00    0    0.00
+Ash.Engine.Request.do_strict_check/2                                              3 0.00    0    0.00
+Ash.Engine.Request.check/2                                                        3 0.00    0    0.00
+anonymous fn/2 in Ash.Query.Aggregate.auth_request/7                              1 0.00    0    0.00
+anonymous fn/1 in Ash.Query.Aggregate.requests/5                                  2 0.00    0    0.00
+anonymous fn/2 in Ash.Query.Aggregate.requests/5                                  2 0.00    0    0.00
+anonymous fn/1 in Ash.Query.Aggregate.requests/5                                  2 0.00    0    0.00
+anonymous fn/1 in Ash.Query.Aggregate.requests/5                                  2 0.00    0    0.00
+anonymous fn/1 in Ash.Query.Aggregate.requests/5                                  2 0.00    0    0.00
+anonymous fn/3 in Ash.Query.Aggregate.requests/5                                  2 0.00    0    0.00
+Ash.Query.Aggregate.validate_uniq/2                                               1 0.00    0    0.00
+Ash.Query.Aggregate.validate_query/2                                              1 0.00    0    0.00
+Ash.Query.Aggregate.kind_to_type/2                                                1 0.00    0    0.00
+Ash.Query.Aggregate.get_type/3                                                    1 0.00    0    0.00
+Ash.Query.Aggregate.default_value/1                                               1 0.00    0    0.00
+Ash.Type.UUID.module_info/1                                                       1 0.00    0    0.00
+Ash.Type.UUID.cast_in_query?/1                                                    1 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Load.load_request/8                                 2 0.00    0    0.00
+anonymous fn/1 in Ash.Actions.Load.load_request/8                                 2 0.00    0    0.00
+Ash.Actions.Load.true_load_query/5                                                1 0.00    0    0.00
+Ash.Actions.Load.requests/7                                                       4 0.00    0    0.00
+Ash.Actions.Load.requests/4                                                       2 0.00    0    0.00
+Ash.Actions.Load.do_requests/7                                                    2 0.00    0    0.00
+Ash.Actions.Load.data/10                                                          2 0.00    0    0.00
+Ash.Actions.Load.attach_loads/2                                                   2 0.00    0    0.00
+Ash.Api.Info.trace_name/1                                                         1 0.00    0    0.00
+Ash.Api.Info.timeout/1                                                            2 0.00    0    0.00
+Ash.Api.Info.short_name/1                                                         2 0.00    0    0.00
+Ash.Api.Info.authorize/1                                                          2 0.00    0    0.00
+anonymous fn/2 in Ash.Resource.Info.calculation/2                                 1 0.00    0    0.00
+Ash.Resource.Info.primary_action!/2                                               1 0.00    0    0.00
+Ash.Resource.Info.preparations/1                                                  4 0.00    0    0.00
+Ash.Resource.Info.multitenancy_strategy/1                                         5 0.00    0    0.00
+Ash.Resource.Info.multitenancy_attribute/1                                        1 0.00    0    0.00
+Ash.Resource.Info.fields/2                                                        5 0.00    0    0.00
+Ash.Resource.Info.default_context/1                                               8 0.00    0    0.00
+Ash.Resource.Info.calculations/1                                                  1 0.00    0    0.00
+Ash.Resource.Info.calculation/2                                                   1 0.00    0    0.00
+Ash.Resource.Info.aggregates/1                                                    2 0.00    0    0.00
+Ash.Resource.Info.aggregate/2                                                     2 0.00    0    0.00
+Ash.Type.Integer.module_info/1                                                    1 0.00    0    0.00
+Ash.Type.Integer.cast_in_query?/1                                                 1 0.00    0    0.00
+Enumerable.MapSet.member?/2                                                       4 0.00    0    0.00
+System.schedulers_online/0                                                        1 0.00    0    0.00
+anonymous fn/1 in Ash.Helpers.implements_behaviour?/2                             4 0.00    0    0.00
+anonymous fn/2 in Ash.Helpers.implements_behaviour?/2                             2 0.00    0    0.00
+Logger.Handler.elixir_level_to_erlang_level/1                                     3 0.00    0    0.00
+Ash.Authorizer.strict_check/3                                                     3 0.00    0    0.00
+Ash.Authorizer.add_calculations/4                                                 3 0.00    0    0.00
+Ash.Type.get_type/1                                                               4 0.00    0    0.00
+Ash.Type.constraints/1                                                            4 0.00    0    0.00
+Ash.Type.ash_type_module?/1                                                       2 0.00    0    0.00
+:error_handler.call_undefined_function_handler/3                                  2 0.00    0    0.00
+Ash.DataLayer.Ets.wrap_or_create_table/2                                          1 0.01    1    1.00
+Ash.DataLayer.Ets.run_query/2                                                     1 0.01    1    1.00
+Ash.DataLayer.Ets.can?/2                                                         19 0.01    1    0.05
+ETS.Set.new/1                                                                     1 0.01    1    1.00
+Enumerable.Stream.reduce/3                                                        6 0.01    1    0.17
+anonymous fn/6 in Ash.Actions.Read.add_calc_context_to_query/5                    2 0.01    1    0.50
+anonymous fn/5 in Ash.Actions.Read.add_calc_context_to_query/5                    6 0.01    1    0.17
+anonymous fn/2 in Ash.Actions.Read.data_field/3                                   6 0.01    1    0.17
+anonymous fn/6 in Ash.Actions.Read.data_field/3                                   6 0.01    1    0.17
+Ash.Actions.Read.set_phase/2                                                      4 0.01    1    0.25
+Ash.Actions.Read.run_query/6                                                      1 0.01    1    1.00
+Ash.Actions.Read.load_calc_requirements/3                                         4 0.01    1    0.25
+Ash.Actions.Read.filter_requests/5                                                1 0.01    1    1.00
+Ash.Actions.Read.expand_load_paths/9                                              9 0.01    1    0.11
+Ash.Actions.Read.expand_load_paths/8                                              9 0.01    1    0.11
+Ash.Actions.Read.add_calc_context/5                                               6 0.01    1    0.17
+Ash.Actions.Read.add_aggregate_values/5                                           2 0.01    1    0.50
+:erlang.system_info/1                                                             1 0.01    1    1.00
+:erlang.whereis/1                                                                 8 0.01    1    0.13
+:erlang.put/2                                                                     1 0.01    1    1.00
+Ash.Policy.Check.AccessingFrom.match?/3                                           2 0.01    1    0.50
+anonymous fn/2 in Ash.Policy.Checker.remove_scenarios_with_impossible_facts/2    11 0.01    1    0.09
+anonymous fn/2 in Ash.Policy.Checker.strict_check_all_facts/1                     7 0.01    1    0.14
+anonymous fn/2 in Ash.Policy.Checker.strict_check_all_policies/3                  7 0.01    1    0.14
+Ash.Policy.Checker.remove_scenarios_with_impossible_facts/2                      11 0.01    1    0.09
+Ash.Policy.Checker.find_real_scenarios/2                                         11 0.01    1    0.09
+:maps.keys/1                                                                      6 0.01    1    0.17
+anonymous fn/4 in Map.merge/3                                                     7 0.01    1    0.14
+anonymous fn/4 in Map.merge/3                                                    10 0.01    1    0.10
+Map.take/2                                                                       14 0.01    1    0.07
+Map.new/1                                                                         9 0.01    1    0.11
+Ash.Query.Function.Type.evaluate/1                                                4 0.01    1    0.25
+Ash.Tracer.set_metadata/3                                                        15 0.01    1    0.07
+Ash.DataLayer.offset/3                                                            2 0.01    1    0.50
+Ash.SatSolver.solutions_to_predicate_values/2                                    11 0.01    1    0.09
+Ash.SatSolver.negations_to_negative_numbers/1                                    11 0.01    1    0.09
+Ash.SatSolver.group_predicates/2                                                 11 0.01    1    0.09
+Ash.SatSolver.extract_bindings/1                                                 11 0.01    1    0.09
+Ash.SatSolver.expand_groups/1                                                    11 0.01    1    0.09
+Kernel.struct/3                                                                  16 0.01    1    0.06
+Kernel.inspect/1                                                                  9 0.01    1    0.11
+:ets.info/1                                                                       1 0.01    1    1.00
+Ecto.Type.cast/2                                                                  4 0.01    1    0.25
+:elixir_config.identifier_tokenizer/0                                             5 0.01    1    0.20
+:logger_config.allow/2                                                            3 0.01    1    0.33
+Ash.Actions.Helpers.validate_calculation_load!/2                                  9 0.01    1    0.11
+Ash.Actions.Helpers.load_runtime_types/3                                          2 0.01    1    0.50
+Ash.Actions.Helpers.add_tenant/1                                                  5 0.01    1    0.20
+anonymous fn/2 in Ash.Policy.Authorizer.add_calculations/3                       11 0.01    1    0.09
+Ash.Policy.Authorizer.strict_check_context/1                                     13 0.01    1    0.08
+Ash.Policy.Authorizer.strict_check_all_facts/1                                    3 0.01    1    0.33
+Ash.Policy.Authorizer.log_successful_policy_breakdown/2                           3 0.01    1    0.33
+Ash.Policy.Authorizer.initial_state/4                                             3 0.01    1    0.33
+anonymous fn/2 in Ash.Query.accessing/2                                          20 0.01    1    0.05
+anonymous fn/1 in Ash.Query.ensure_selected/2                                     8 0.01    1    0.13
+anonymous fn/2 in Ash.Query.load/2                                               11 0.01    1    0.09
+anonymous fn/2 in Ash.Query.loading?/2                                           13 0.01    1    0.08
+anonymous fn/2 in Ash.Query.select/3                                             11 0.01    1    0.09
+Ash.Query.timeout/2                                                               4 0.01    1    0.25
+Ash.Query.set_api/2                                                               3 0.01    1    0.33
+Ash.Query.set_actor/2                                                             4 0.01    1    0.25
+Ash.Query.select/2                                                               14 0.01    1    0.07
+Ash.Query.require_arguments/2                                                     4 0.01    1    0.25
+Ash.Query.new/1                                                                   6 0.01    1    0.17
+Ash.Query.load_relationship/2                                                     1 0.01    1    1.00
+Ash.Query.limit/2                                                                 2 0.01    1    0.50
+Ash.Query.do_unset/3                                                              7 0.01    1    0.14
+Ash.Policy.Check.Action.match?/3                                                  4 0.01    1    0.25
+Spark.OptionsHelpers.sanitize_schema/1                                            6 0.01    1    0.17
+anonymous fn/2 in Ash.Query.Function.try_cast_arguments/2                        12 0.01    1    0.08
+Ash.Query.Function.try_cast_arguments/2                                           4 0.01    1    0.25
+NimbleOptions.validate_options_with_schema/2                                     12 0.01    1    0.08
+anonymous fn/2 in Ash.Engine.add_requests/2                                       7 0.01    1    0.14
+anonymous fn/2 in Ash.Engine.add_requests/2                                      17 0.01    1    0.06
+anonymous fn/2 in Ash.Engine.notify/2                                            11 0.01    1    0.09
+anonymous fn/2 in Ash.Engine.notify/2                                            11 0.01    1    0.09
+anonymous fn/2 in Ash.Engine.notify/2                                            17 0.01    1    0.06
+anonymous fn/3 in Ash.Engine.notify/2                                             8 0.01    1    0.13
+anonymous fn/4 in Ash.Engine.notify/2                                             8 0.01    1    0.13
+anonymous fn/4 in Ash.Engine.notify/2                                             8 0.01    1    0.13
+anonymous fn/1 in Ash.Engine.set_async/1                                          7 0.01    1    0.14
+Ash.Engine.set_async/1                                                            4 0.01    1    0.25
+Ash.Engine.add_data/3                                                             7 0.01    1    0.14
+anonymous fn/1 in Ash.Policy.Policy.at_least_one_policy_expression/2             19 0.01    1    0.05
+anonymous fn/1 in Enum.group_by/2                                                13 0.01    1    0.08
+anonymous fn/3 in Enum.map/2                                                      4 0.01    1    0.25
+Enum.count/1                                                                     12 0.01    1    0.08
+Enum.concat/1                                                                     9 0.01    1    0.11
+Process.get/1                                                                    18 0.01    1    0.06
+Code.can_await_module_compilation?/0                                              6 0.01    1    0.17
+AshRbacTest.Api.spark_dsl_config/0                                               11 0.01    1    0.09
+AshRbacTest.Api.read/2                                                            1 0.01    1    1.00
+Inspect.Tuple.inspect/2                                                           2 0.01    1    0.50
+anonymous fn/2 in Stream.map/2                                                    5 0.01    1    0.20
+Stream.with_index/2                                                               1 0.01    1    1.00
+Stream.reject/2                                                                   5 0.01    1    0.20
+Stream.map/2                                                                      5 0.01    1    0.20
+anonymous fn/3 in Keyword.merge/2                                                 9 0.01    1    0.11
+Keyword.take/2                                                                   10 0.01    1    0.10
+Keyword.put_new/3                                                                 6 0.01    1    0.17
+Keyword.keyword?/1                                                               10 0.01    1    0.10
+Spark.Dsl.Extension.get_opt_config/3                                              6 0.01    1    0.17
+Ash.Api.read/3                                                                    1 0.01    1    1.00
+Macro.valid_alias?/1                                                             11 0.01    1    0.09
+AshRbac.HasRole.roles/1                                                          12 0.01    1    0.08
+anonymous fn/4 in Ash.Filter.build_filter_from_template/4                        20 0.01    1    0.05
+anonymous fn/3 in Ash.Filter.parse_expression/2                                   8 0.01    1    0.13
+Ash.Filter.parse_expression/2                                                    16 0.01    1    0.06
+Ash.Filter.parse!/5                                                               8 0.01    1    0.13
+Ash.Filter.parse!/2                                                               8 0.01    1    0.13
+Ash.Filter.calculations_used_by_calculations/5                                   11 0.01    1    0.09
+Ash.Filter.add_expression_part/3                                                  8 0.01    1    0.13
+:code.call/1                                                                     12 0.01    1    0.08
+AshRbacTest.ChildResource.default_short_name/0                                   11 0.01    1    0.09
+anonymous fn/2 in Ash.Policy.Info.set_access_type/2                              23 0.01    1    0.04
+Ash.Policy.Info.policies/1                                                        3 0.01    1    0.33
+Ash.Policy.Info.field_policies_for_field/2                                       11 0.01    1    0.09
+Logger.__should_log__/2                                                           3 0.01    1    0.33
+anonymous fn/3 in Ash.Policy.SatSolver.solve/2                                   11 0.01    1    0.09
+Ash.Policy.SatSolver.simplify_clauses/1                                          11 0.01    1    0.09
+Ash.Policy.SatSolver.get_all_scenarios/2                                         11 0.01    1    0.09
+Ash.Policy.SatSolver.facts_to_statement/1                                        11 0.01    1    0.09
+MapSet.to_list/1                                                                  4 0.01    1    0.25
+anonymous fn/2 in Ash.Filter.Runtime.try_cast_arguments/2                         8 0.01    1    0.13
+Ash.Filter.Runtime.try_cast_arguments/2                                           4 0.01    1    0.25
+Ash.Filter.Runtime.resolve_exprs/4                                                4 0.01    1    0.25
+Inspect.Algebra.group/2                                                          13 0.01    1    0.08
+Inspect.Algebra.group/1                                                          13 0.01    1    0.08
+Inspect.Algebra.format/2                                                          9 0.01    1    0.11
+Inspect.Algebra.concat/2                                                         14 0.01    1    0.07
+Inspect.Atom.color_key/1                                                         11 0.01    1    0.09
+Inspect.List.inspect/2                                                            2 0.01    1    0.50
+ETS.Base.new_table/2                                                              1 0.01    1    1.00
+AshRbacTest.RootResource.default_short_name/0                                    13 0.01    1    0.08
+String.Tokenizer.validate/2                                                       5 0.01    1    0.20
+String.Tokenizer.tokenize/1                                                       5 0.01    1    0.20
+anonymous fn/1 in Ash.Engine.Request.do_try_resolve_local/4                       4 0.01    1    0.25
+anonymous fn/1 in Ash.Engine.Request.sort_and_clean_notifications/1              11 0.01    1    0.09
+anonymous fn/1 in Ash.Engine.Request.try_resolve_local/3                         22 0.01    1    0.05
+Ash.Engine.Request.try_resolve/3                                                 16 0.01    1    0.06
+Ash.Engine.Request.strict_check_authorizer/2                                      3 0.01    1    0.33
+Ash.Engine.Request.process_resolved_field/3                                       9 0.01    1    0.11
+Ash.Engine.Request.notify_existing_value/3                                        6 0.01    1    0.17
+Ash.Engine.Request.missing_strict_check_dependencies/2                            4 0.01    1    0.25
+anonymous fn/1 in Ash.Engine.Request.UnresolvedField.deps/1                      20 0.01    1    0.05
+anonymous fn/1 in Ash.Query.Aggregate.new/4                                      11 0.01    1    0.09
+Ash.Query.Aggregate.validate_path/2                                               2 0.01    1    0.50
+Ash.Query.Aggregate.requests/5                                                    2 0.01    1    0.50
+Code.Identifier.unary_op/1                                                       11 0.01    1    0.09
+Code.Identifier.binary_op/1                                                      11 0.01    1    0.09
+anonymous fn/10 in Ash.Actions.Load.data/10                                       1 0.01    1    1.00
+Inspect.impl_for!/1                                                              15 0.01    1    0.07
+Enumerable.member?/2                                                              4 0.01    1    0.25
+anonymous fn/2 in Ash.Resource.Info.aggregate/2                                   3 0.01    1    0.33
+anonymous fn/2 in Ash.Resource.Info.fields/2                                     11 0.01    1    0.09
+Ash.Resource.Info.resource?/1                                                     8 0.01    1    0.13
+Ash.Resource.Info.primary_key/1                                                  20 0.01    1    0.05
+Ash.Resource.Info.authorizers/1                                                  16 0.01    1    0.06
+Ash.Resource.Info.action/3                                                        4 0.01    1    0.25
+anonymous fn/0 in :elixir_compiler_1.__FILE__/1                                   1 0.01    1    1.00
+Enumerable.MapSet.reduce/3                                                        4 0.01    1    0.25
+anonymous fn/3 in Ash.Helpers.deep_merge_maps/2                                  10 0.01    1    0.10
+Ash.Helpers.implements_behaviour?/2                                               2 0.01    1    0.50
+Ash.Authorizer.initial_state/5                                                    3 0.01    1    0.33
+Ash.Authorizer.alter_filter/4                                                     3 0.01    1    0.33
+Ash.Type.cast_in_query?/2                                                         4 0.01    1    0.25
+:error_handler.ensure_loaded/1                                                    8 0.01    1    0.13
+:error_handler.crash/1                                                            8 0.01    1    0.13
+:error_handler.crash/3                                                            8 0.01    1    0.13
+anonymous fn/2 in Enumerable.Stream.do_reduce/3                                  11 0.03    2    0.18
+Enumerable.Stream."-do_reduce/3-lists^foldl/2-0-"/3                              17 0.03    2    0.12
+Enumerable.Stream.do_reduce/3                                                     6 0.03    2    0.33
+Enumerable.Stream.do_each/4                                                       6 0.03    2    0.33
+anonymous fn/11 in Ash.Actions.Read.calculation_request/14                        3 0.03    2    0.67
+Ash.Actions.Read.query_opts/2                                                     4 0.03    2    0.50
+Ash.Actions.Read.calc_temp_results/5                                              3 0.03    2    0.67
+Ash.Actions.Read.calc_dependencies/8                                              9 0.03    2    0.22
+Ash.Actions.Read.add_calc_context_to_query/5                                      4 0.03    2    0.50
+:erlang.apply/2                                                                   1 0.03    2    2.00
+:erlang.process_info/2                                                            6 0.03    2    0.33
+:erlang.raise/3                                                                   8 0.03    2    0.25
+:erlang.iolist_to_binary/1                                                       13 0.03    2    0.15
+:erlang.atom_to_list/1                                                           11 0.03    2    0.18
+anonymous fn/2 in Ash.Policy.Checker.do_strict_check_all_facts/3                  9 0.03    2    0.22
+anonymous fn/2 in Ash.Policy.Checker.find_real_scenarios/2                       11 0.03    2    0.18
+Ash.Policy.Checker.scenario_is_reality/2                                         11 0.03    2    0.18
+Picosat.solve/1                                                                  22 0.03    2    0.09
+Ash.DataLayer.transform_query/1                                                   5 0.03    2    0.40
+Ash.DataLayer.data_layer_can?/2                                                  12 0.03    2    0.17
+anonymous fn/3 in Ash.SatSolver.unbind/2                                         11 0.03    2    0.18
+Ash.SatSolver.unique_clauses/1                                                   11 0.03    2    0.18
+Ash.SatSolver.unbind/2                                                           11 0.03    2    0.18
+Ash.SatSolver.to_conjunctive_normal_form/1                                       11 0.03    2    0.18
+Ash.SatSolver.solve_expression/1                                                 22 0.03    2    0.09
+Ash.SatSolver.rebind/1                                                           11 0.03    2    0.18
+Ash.SatSolver.negate_var/2                                                       26 0.03    2    0.08
+Ash.SatSolver.negate_var/1                                                       26 0.03    2    0.08
+Ash.SatSolver.distributive_law/1                                                 11 0.03    2    0.18
+Kernel.struct/2                                                                  16 0.03    2    0.13
+String.Chars.impl_for/1                                                          21 0.03    2    0.10
+Ash.Actions.Helpers.set_opts/3                                                    5 0.03    2    0.40
+Ash.Actions.Helpers.add_tracer/1                                                  5 0.03    2    0.40
+Ash.Actions.Helpers.add_authorize?/2                                              5 0.03    2    0.40
+Ash.Actions.Helpers.add_actor/3                                                   5 0.03    2    0.40
+Spark.Dsl.is?/2                                                                   8 0.03    2    0.25
+Ash.Policy.Authorizer.strict_check/2                                              3 0.03    2    0.67
+Ash.Policy.Authorizer.report_scenarios/3                                         22 0.03    2    0.09
+Ash.Policy.Authorizer.add_calculations/3                                          3 0.03    2    0.67
+anonymous fn/1 in Ash.Query.accessing/2                                          20 0.03    2    0.10
+anonymous fn/1 in Ash.Query.accessing/2                                          20 0.03    2    0.10
+anonymous fn/3 in Ash.Query.do_load/2                                             8 0.03    2    0.25
+Ash.Query.reify_calculations/2                                                    9 0.03    2    0.22
+Ash.Query.load_resource_calculation/4                                             1 0.03    2    2.00
+anonymous fn/2 in Spark.OptionsHelpers.sanitize_schema/1                         25 0.03    2    0.08
+Spark.OptionsHelpers.validate/2                                                   6 0.03    2    0.33
+Inspect.Opts.default_inspect_fun/0                                                9 0.03    2    0.22
+anonymous fn/2 in NimbleOptions.expand_star_to_option_keys/2                     25 0.03    2    0.08
+NimbleOptions.validate/2                                                         12 0.03    2    0.17
+NimbleOptions.new!/1                                                              6 0.03    2    0.33
+anonymous fn/2 in Ash.Engine.add_requests/2                                      17 0.03    2    0.12
+anonymous fn/2 in Ash.Engine.run_iteration/1                                     17 0.03    2    0.12
+Ash.Engine.run/2                                                                  1 0.03    2    2.00
+Ash.Engine.notify_local_request/4                                                 8 0.03    2    0.25
+anonymous fn/2 in Ash.Policy.Policy.solve/1                                      11 0.03    2    0.18
+Ash.Policy.Policy.fetch_fact/2                                                   12 0.03    2    0.17
+Enum.zip_list/3                                                                  19 0.03    2    0.11
+Enum.take_while_list/2                                                           16 0.03    2    0.13
+Enum.group_by/2                                                                  18 0.03    2    0.11
+Keyword."-merge/2-lists^filter/1-0-"/2                                           10 0.03    2    0.20
+Keyword.update!/3                                                                25 0.03    2    0.08
+Macro.classify_atom/1                                                            11 0.03    2    0.18
+AshRbac.HasRole.strict_check/3                                                   12 0.03    2    0.17
+AshRbac.HasRole.match?/3                                                         12 0.03    2    0.17
+AshRbac.HasRole.match/2                                                          18 0.03    2    0.11
+Ash.Filter.walk_filter_template/2                                                20 0.03    2    0.10
+Ash.Filter.build_filter_from_template/4                                          20 0.03    2    0.10
+Ash.Expr.eval_hydrated/2                                                          4 0.03    2    0.50
+Ash.Expr.eval/2                                                                   4 0.03    2    0.50
+Ash.Policy.SatSolver.solve_expression/1                                          22 0.03    2    0.09
+MapSet.size/1                                                                    27 0.03    2    0.07
+MapSet.new/0                                                                     25 0.03    2    0.08
+anonymous fn/5 in Ash.Filter.Runtime.resolve_exprs/4                             12 0.03    2    0.17
+Ash.Filter.Runtime.resolve_expr/4                                                12 0.03    2    0.17
+String.Chars.Atom.to_string/1                                                    21 0.03    2    0.10
+Inspect.Algebra.to_doc/2                                                         15 0.03    2    0.13
+Inspect.Algebra.container_each/6                                                 10 0.03    2    0.20
+anonymous fn/2 in Ash.Engine.Request.add_initial_authorizer_state/1               7 0.03    2    0.29
+anonymous fn/2 in Ash.Engine.Request.strict_check/2                               3 0.03    2    0.67
+Ash.Engine.Request.set_authorized/1                                               6 0.03    2    0.33
+Ash.Engine.Request.receive_field/4                                                8 0.03    2    0.25
+Ash.Engine.Request.put_dependency_data/3                                          8 0.03    2    0.25
+Ash.Engine.Request.do_try_resolve/5                                               6 0.03    2    0.33
+Ash.Engine.Request.do_store_dependency/3                                          8 0.03    2    0.25
+Ash.Engine.Request.add_initial_authorizer_state/1                                 7 0.03    2    0.29
+anonymous fn/5 in Ash.Query.Aggregate.requests/5                                  2 0.03    2    1.00
+Ash.Query.Aggregate.new/14                                                        1 0.03    2    2.00
+Ash.Query.Aggregate.new/4                                                         1 0.03    2    2.00
+Ash.Query.Aggregate.auth_request/7                                                2 0.03    2    1.00
+Inspect.impl_for/1                                                               15 0.03    2    0.13
+Application.maybe_warn_on_app_env_key/2                                          21 0.03    2    0.10
+Application.get_env/2                                                            21 0.03    2    0.10
+anonymous fn/2 in Ash.Resource.Info.action/3                                     12 0.03    2    0.17
+anonymous fn/2 in Ash.Resource.Info.relationship/2                               20 0.03    2    0.10
+Ash.Resource.Info.trace_name/1                                                    5 0.03    2    0.40
+Ash.Resource.Info.relationships/1                                                18 0.03    2    0.11
+Ash.Resource.Info.related/2                                                      16 0.03    2    0.13
+Ash.Resource.Info.primary_action/2                                               10 0.03    2    0.20
+Ash.Resource.Info.actions/1                                                      15 0.03    2    0.13
+:lists.foreach_1/2                                                               30 0.03    2    0.07
+:lists.foreach/2                                                                 30 0.03    2    0.07
+Ash.Type.cast_input/3                                                             4 0.03    2    0.50
+Ash.Type.ash_type?/1                                                              8 0.03    2    0.25
+:error_handler.undefined_function/3                                               8 0.03    2    0.25
+:persistent_term.get/2                                                           17 0.04    3    0.18
+Ash.Actions.Read.run/3                                                            1 0.04    3    3.00
+Ash.Actions.Read.engine_opts/6                                                    1 0.04    3    3.00
+Ash.Actions.Read.calculation_request/14                                           3 0.04    3    1.00
+List.last/1                                                                      36 0.04    3    0.08
+Map.put_new_lazy/3                                                               16 0.04    3    0.19
+Map.new_from_map/2                                                                5 0.04    3    0.60
+Map.drop/2                                                                       38 0.04    3    0.08
+Map.do_map/2                                                                     12 0.04    3    0.25
+Ash.Query.Function.Type.new/1                                                     4 0.04    3    0.75
+Ash.SatSolver.demorgans_law/1                                                    11 0.04    3    0.27
+:ets.new/2                                                                        1 0.04    3    3.00
+:ets.match_object/2                                                               1 0.04    3    3.00
+String.Chars.impl_for!/1                                                         21 0.04    3    0.14
+Ash.Actions.Helpers.add_process_context/3                                         5 0.04    3    0.60
+Ash.Actions.Helpers.add_context/2                                                 5 0.04    3    0.60
+Ash.Policy.Authorizer.do_log_successful_policy_breakdown/3                        3 0.04    3    1.00
+Ash.Query.run_preparations/6                                                      4 0.04    3    0.75
+Ash.Query.ensure_selected/2                                                      10 0.04    3    0.30
+Ash.Query.data_layer_query/2                                                      1 0.04    3    3.00
+Ash.Query.accessing/2                                                             5 0.04    3    0.60
+Spark.OptionsHelpers.sanitize_type/2                                             30 0.04    3    0.10
+NimbleOptions.keyword_list?/1                                                    25 0.04    3    0.12
+anonymous fn/2 in Ash.Engine.run_iteration/1                                     28 0.04    3    0.11
+anonymous fn/1 in Ash.Engine.run_iteration/1                                     42 0.04    3    0.07
+anonymous fn/2 in Ash.Engine.store_dependencies/2                                 9 0.04    3    0.33
+anonymous fn/2 in Ash.Engine.store_dependencies/2                                28 0.04    3    0.11
+Ash.Policy.Policy.solve/1                                                        11 0.04    3    0.27
+Ash.Policy.Policy.at_least_one_policy_expression/2                               19 0.04    3    0.16
+anonymous fn/3 in Enum.filter/2                                                  20 0.04    3    0.15
+anonymous fn/3 in Enum.filter/2                                                  20 0.04    3    0.15
+Enum.group_by/3                                                                  18 0.04    3    0.17
+Process.get/2                                                                    31 0.04    3    0.10
+Code.ensure_compiled/2                                                            8 0.04    3    0.38
+:application.get_env/2                                                           21 0.04    3    0.14
+Macro.valid_alias_piece?/1                                                       18 0.04    3    0.17
+AshRbac.HasRole.check?/2                                                         12 0.04    3    0.25
+Ash.Filter.used_aggregates/3                                                     11 0.04    3    0.27
+Ash.Filter.list_refs/1                                                           38 0.04    3    0.08
+MapSet.delete/2                                                                  16 0.04    3    0.19
+Inspect.Algebra.container_doc/6                                                   4 0.04    3    0.75
+anonymous fn/2 in Ash.Engine.Request.missing_strict_check_dependencies/2         20 0.04    3    0.15
+anonymous fn/3 in Ash.Engine.Request.resolver_context/2                          20 0.04    3    0.15
+Ash.Engine.Request.send_field/3                                                   8 0.04    3    0.38
+Ash.Engine.Request.alter_filter/2                                                 3 0.04    3    1.00
+Ash.Engine.Request.add_calculations/2                                             3 0.04    3    1.00
+Ash.Query.Aggregate.aggregates_from_filter/1                                      3 0.04    3    1.00
+anonymous fn/8 in Ash.Actions.Load.requests/7                                     2 0.04    3    1.50
+Ash.Actions.Load.load_request/8                                                   2 0.04    3    1.50
+Ash.Api.Info.span_name/3                                                          1 0.04    3    3.00
+anonymous fn/2 in Ash.Resource.Info.primary_action/2                             30 0.04    3    0.10
+Ash.Resource.Info.relationship/2                                                 18 0.04    3    0.17
+Ash.Resource.Info.base_filter/1                                                   8 0.04    3    0.38
+anonymous fn/3 in Enumerable.Stream.reduce/3                                     21 0.06    4    0.19
+anonymous fn/4 in Ash.Actions.Read.data_field/3                                   6 0.06    4    0.67
+Ash.Actions.Read.do_run/3                                                         1 0.06    4    4.00
+:erlang.get_module_info/2                                                         2 0.06    4    2.00
+:erlang.module_loaded/1                                                          16 0.06    4    0.25
+List.last/2                                                                      51 0.06    4    0.08
+:maps.values/1                                                                   29 0.06    4    0.14
+:maps.merge/2                                                                    22 0.06    4    0.18
+:application_controller.get_env/2                                                21 0.06    4    0.19
+Ash.Query.load/2                                                                 19 0.06    4    0.21
+Inspect.Opts.new/1                                                                9 0.06    4    0.44
+anonymous fn/4 in NimbleOptions.validate_type/3                                  24 0.06    4    0.17
+anonymous fn/1 in Ash.Engine.complete?/1                                         41 0.06    4    0.10
+anonymous fn/2 in Ash.Engine.notify/2                                            11 0.06    4    0.36
+anonymous fn/2 in Ash.Engine.run_iteration/1                                     42 0.06    4    0.10
+Ash.Engine.do_run/2                                                               1 0.06    4    4.00
+Ash.Engine.build_dependencies/2                                                  44 0.06    4    0.09
+Ash.Engine.add_requests/2                                                         4 0.06    4    1.00
+Enum."-group_by/3-lists^foldl/2-0-"/3                                            31 0.06    4    0.13
+anonymous fn/4 in Stream.map/2                                                   20 0.06    4    0.20
+anonymous fn/4 in Stream.reject/2                                                20 0.06    4    0.20
+Keyword.drop/2                                                                   27 0.06    4    0.15
+:application.get_env/3                                                           21 0.06    4    0.19
+Picosat.Solver.solve/1                                                           22 0.06    4    0.18
+anonymous fn/2 in AshRbac.HasRole.check?/2                                       27 0.06    4    0.15
+anonymous fn/3 in Ash.Filter.do_hydrate_refs/2                                   24 0.06    4    0.17
+Ash.Filter.used_calculations/5                                                   11 0.06    4    0.36
+:code.ensure_loaded/1                                                            16 0.06    4    0.25
+Ash.Resource.Calculation.Expression.expression/2                                  4 0.06    4    1.00
+anonymous fn/2 in Ash.Policy.SatSolver.facts_to_statement/1                      45 0.06    4    0.09
+Ash.Policy.SatSolver.get_all_scenarios/4                                         22 0.06    4    0.18
+Ash.Policy.SatSolver.add_negations_and_solve/2                                   22 0.06    4    0.18
+MapSet.member?/2                                                                 24 0.06    4    0.17
+Ash.Filter.Runtime.do_match/4                                                     4 0.06    4    1.00
+Inspect.Algebra.color/3                                                          23 0.06    4    0.17
+Inspect.Atom.inspect/2                                                           11 0.06    4    0.36
+Ash.Engine.Request.store_dependency/4                                             8 0.06    4    0.50
+Ash.Engine.Request.set_authorizer_state/3                                        13 0.06    4    0.31
+Ash.Engine.Request.resolver_context/2                                            12 0.06    4    0.33
+Ash.Engine.Request.handle_successful_resolve/4                                    9 0.06    4    0.44
+Ash.Engine.Request.do_strict_check/3                                              4 0.06    4    1.00
+Ash.Engine.Request.authorizer_state/2                                            22 0.06    4    0.18
+Inspect.inspect/2                                                                15 0.06    4    0.27
+Ash.Resource.Info.attributes/1                                                   52 0.06    4    0.08
+Enumerable.MapSet.slice/1                                                        27 0.06    4    0.15
+:lists.reverse/2                                                                 40 0.06    4    0.10
+Ash.Authorizer.strict_check_context/2                                            13 0.06    4    0.31
+anonymous fn/12 in Ash.Actions.Read.as_requests/5                                 1 0.07    5    5.00
+Ash.Actions.Read.as_requests/5                                                    1 0.07    5    5.00
+:erlang.system_time/0                                                            30 0.07    5    0.17
+:erlang.monotonic_time/0                                                         30 0.07    5    0.17
+:erlang.demonitor/2                                                              12 0.07    5    0.42
+anonymous fn/3 in Ash.Policy.Checker.scenario_is_reality/2                       34 0.07    5    0.15
+Ash.Policy.Checker.strict_check_scenarios/1                                      11 0.07    5    0.45
+Ash.Policy.Checker.do_strict_check_all_facts/3                                   23 0.07    5    0.22
+:telemetry_handler_table.list_for_event/1                                        30 0.07    5    0.17
+Ash.DataLayer.data_layer/1                                                       54 0.07    5    0.09
+Ash.DataLayer.can?/2                                                             19 0.07    5    0.26
+anonymous fn/2 in Ash.SatSolver.do_expand_groups/1                               67 0.07    5    0.07
+anonymous fn/3 in Ash.SatSolver.rebind/1                                         56 0.07    5    0.09
+anonymous fn/2 in Ash.Policy.Authorizer.add_calculations/3                        8 0.07    5    0.63
+anonymous fn/1 in Ash.Query.select/3                                             56 0.07    5    0.09
+NimbleOptions.validate_type/1                                                    26 0.07    5    0.19
+anonymous fn/1 in Ash.Engine.run_iteration/1                                     52 0.07    5    0.10
+Ash.Engine.complete?/1                                                           22 0.07    5    0.23
+anonymous fn/2 in Ash.Policy.Policy.at_least_one_policy_expression/2             31 0.07    5    0.16
+Ash.Policy.Policy.build_requirements_expression/2                                11 0.07    5    0.45
+Enum.concat_list/1                                                               27 0.07    5    0.19
+Spark.Dsl.Extension.get_persisted/2                                              60 0.07    5    0.08
+Spark.Dsl.Extension.get_opt/4                                                    54 0.07    5    0.09
+Macro.operator?/2                                                                22 0.07    5    0.23
+Macro.inspect_atom/2                                                             11 0.07    5    0.45
+anonymous fn/3 in Ash.Engine.Request.try_resolve/3                               28 0.07    5    0.18
+Ash.Engine.Request.UnresolvedField.deps/1                                        29 0.07    5    0.17
+Enumerable.slice/1                                                               27 0.07    5    0.19
+Application.get_env/3                                                            21 0.07    5    0.24
+:erlang.-/1                                                                      67 0.09    6    0.09
+:erlang.atom_to_binary/1                                                         32 0.09    6    0.19
+anonymous fn/2 in Ash.Policy.Checker.remove_scenarios_with_impossible_facts/2    34 0.09    6    0.18
+String.Chars.to_string/1                                                         21 0.09    6    0.29
+Ash.Policy.Authorizer.strict_check_result/2                                      11 0.09    6    0.55
+anonymous fn/1 in NimbleOptions.keyword_list?/1                                  64 0.09    6    0.09
+NimbleOptions.expand_star_to_option_keys/2                                       37 0.09    6    0.16
+anonymous fn/4 in Enum.reduce/3                                                  57 0.09    6    0.11
+anonymous fn/1 in Enum.sort_by/3                                                 86 0.09    6    0.07
+Enum.sort/1                                                                      75 0.09    6    0.08
+Enum.all?/2                                                                      72 0.09    6    0.08
+Ash.Filter.validate_references/2                                                  8 0.09    6    0.75
+Ash.Filter.parse/5                                                                8 0.09    6    0.75
+Ash.Filter.list_refs/3                                                           38 0.09    6    0.16
+Ash.Resource.Calculation.Expression.select/3                                      8 0.09    6    0.75
+String.Tokenizer.continue/6                                                      72 0.09    6    0.08
+Ash.Engine.Request.notifications/3                                               20 0.09    6    0.30
+Ash.Resource.Info.short_name/1                                                   24 0.09    6    0.25
+Ash.Resource.Info.attribute/2                                                    35 0.09    6    0.17
+:erlang.--/2                                                                     37 0.10    7    0.19
+:erlang.atom_to_binary/2                                                         32 0.10    7    0.22
+:maps.from_list/1                                                                27 0.10    7    0.26
+Map.merge/3                                                                      55 0.10    7    0.13
+anonymous fn/1 in Ash.SatSolver.Utils.sublists_front/1                           86 0.10    7    0.08
+Ash.SatSolver.Utils.sublists_back/1                                              86 0.10    7    0.08
+anonymous fn/1 in Ash.SatSolver.negations_to_negative_numbers/1                  86 0.10    7    0.08
+anonymous fn/1 in Ash.SatSolver.negations_to_negative_numbers/1                  86 0.10    7    0.08
+anonymous fn/1 in Ash.SatSolver.to_cnf/1                                         86 0.10    7    0.08
+anonymous fn/1 in Ash.SatSolver.to_cnf/1                                         86 0.10    7    0.08
+Ash.SatSolver.remove_overlapping/1                                               86 0.10    7    0.08
+Ash.Query.loading?/2                                                             20 0.10    7    0.35
+anonymous fn/1 in Ash.Engine.complete?/1                                         90 0.10    7    0.08
+Enum.find_value/2                                                                85 0.10    7    0.08
+:telemetry.execute/3                                                             30 0.10    7    0.23
+Ash.Policy.SatSolver.solve/2                                                     11 0.10    7    0.64
+Ash.Query.Calculation.new/7                                                       9 0.10    7    0.78
+Ash.Engine.Request.next/1                                                        42 0.10    7    0.17
+Ash.Engine.Request.UnresolvedField.new/2                                         29 0.10    7    0.24
+:erlang.function_exported/3                                                      31 0.12    8    0.26
+Map.take/3                                                                       65 0.12    8    0.12
+Kernel.inspect/2                                                                  9 0.12    8    0.89
+NimbleOptions.validate_options/2                                                 37 0.12    8    0.22
+anonymous fn/2 in Ash.Engine.add_requests/2                                       7 0.12    8    1.14
+anonymous fn/2 in Ash.Engine.store_dependencies/2                                 8 0.12    8    1.00
+Ash.Engine.run_to_completion/1                                                   22 0.12    8    0.36
+Ash.Engine.advance_request/2                                                     42 0.12    8    0.19
+anonymous fn/2 in Ash.Policy.Policy.condition_expression/2                       50 0.12    8    0.16
+Ash.Policy.Policy.condition_expression/2                                         46 0.12    8    0.17
+Enum.empty?/1                                                                    64 0.12    8    0.13
+Enum.concat/2                                                                    46 0.12    8    0.17
+Enum.any?/2                                                                      55 0.12    8    0.15
+Macro.inner_classify/1                                                           11 0.12    8    0.73
+Ash.Policy.Info.set_access_type/2                                                47 0.12    8    0.17
+Ash.Engine.Request.resolve/2                                                     29 0.12    8    0.28
+anonymous fn/8 in Ash.Actions.Read.as_requests/5                                  3 0.13    9    3.00
+:maps.iterator/1                                                                108 0.13    9    0.08
+anonymous fn/2 in Ash.Engine.run_iteration/1                                     52 0.13    9    0.17
+anonymous fn/3 in Ash.Policy.Policy.fetch_fact/2                                 63 0.13    9    0.14
+anonymous fn/4 in Enum.group_by/3                                                13 0.13    9    0.69
+Enum.flat_map/2                                                                  90 0.13    9    0.10
+Keyword.put/3                                                                    50 0.13    9    0.18
+AshRbacTest.ChildResource.spark_dsl_config/0                                    110 0.13    9    0.08
+Ash.Resource.Calculation.Expression.load/3                                        8 0.13    9    1.13
+Ash.Engine.Request.log/2                                                         94 0.13    9    0.10
+Ash.SatSolver.to_cnf/1                                                           11 0.14   10    0.91
+Ash.Query.new/3                                                                   9 0.14   10    1.11
+anonymous fn/3 in Enum.any?/2                                                    55 0.14   10    0.18
+Keyword.update!/4                                                                35 0.14   10    0.29
+Inspect.Algebra.format/3                                                         63 0.14   10    0.16
+Ash.Engine.Request.try_resolve_local/3                                           22 0.14   10    0.45
+:lists.sort/1                                                                    75 0.14   10    0.13
+Ash.Helpers.deep_merge_maps/2                                                    59 0.14   10    0.17
+anonymous fn/2 in Ash.Actions.Read.load_calc_requirements/3                       6 0.16   11    1.83
+:erlang.monitor/2                                                                12 0.16   11    0.92
+Ash.SatSolver.do_expand_groups/1                                                 78 0.16   11    0.14
+Kernel.get_in/2                                                                  74 0.16   11    0.15
+anonymous fn/2 in NimbleOptions.reduce_options/2                                124 0.16   11    0.09
+Ash.Engine.do_run_iteration/2                                                    42 0.16   11    0.26
+Spark.Dsl.Extension.get_opt/5                                                    63 0.16   11    0.17
+Ash.Filter.do_hydrate_refs/2                                                     67 0.16   11    0.16
+MapSet.put/2                                                                     35 0.16   11    0.31
+Ash.Engine.Request.log/3                                                         94 0.16   11    0.12
+Ash.Engine.Request.local_dep?/2                                                  54 0.16   11    0.20
+Ash.Query.to_query/1                                                             98 0.17   12    0.12
+Ash.Query.select_and_load_calc/3                                                  9 0.17   12    1.33
+Ash.Query.do_load/2                                                              11 0.17   12    1.09
+Ash.Policy.Policy.compile_policy_expression/2                                    42 0.17   12    0.29
+anonymous fn/2 in Keyword.take/2                                                 72 0.17   12    0.17
+Keyword.fetch/2                                                                  68 0.17   12    0.18
+anonymous fn/2 in Ash.Resource.Info.attribute/2                                  98 0.17   12    0.12
+anonymous fn/3 in Ash.SatSolver.group_predicates/2                               86 0.19   13    0.15
+anonymous fn/1 in Spark.OptionsHelpers.sanitize_schema/1                         25 0.19   13    0.52
+NimbleOptions.validate_unknown_options/2                                         37 0.19   13    0.35
+Ash.Engine.store_dependencies/2                                                  50 0.19   13    0.26
+Ash.Engine.replace_request/2                                                     58 0.19   13    0.22
+anonymous fn/2 in Enum.sort_by/3                                                 86 0.19   13    0.15
+anonymous fn/3 in Enum.split_with/2                                              71 0.19   13    0.18
+Enum.sort_by/2                                                                  172 0.19   13    0.08
+anonymous fn/2 in Keyword.drop/2                                                 70 0.19   13    0.19
+Keyword.update/4                                                                140 0.19   13    0.09
+Keyword.get/2                                                                   148 0.19   13    0.09
+Macro.trim_leading_while_valid_identifier/1                                     140 0.19   13    0.09
+AshRbacTest.RootResource.spark_dsl_config/0                                     155 0.19   13    0.08
+Map.update!/3                                                                    43 0.20   14    0.33
+Ash.SatSolver.Utils.sublists_front/1                                             86 0.20   14    0.16
+NimbleOptions.validate_options_with_schema_and_path/3                            37 0.20   14    0.38
+Ash.Engine.fully_advance_request/2                                               42 0.20   14    0.33
+Enum.reverse/1                                                                  144 0.20   14    0.10
+Enum.find_value/3                                                                85 0.20   14    0.16
+Keyword.keys/1                                                                   74 0.20   14    0.19
+Ash.Filter.hydrate_refs/2                                                        35 0.20   14    0.40
+Ash.Engine.Request.get_dependency_data/2                                         48 0.20   14    0.29
+:code_server.call/1                                                              12 0.20   14    1.17
+:lists.keysort/2                                                                172 0.20   14    0.08
+:erlang.error/1                                                                   8 0.22   15    1.88
+List.keysort/3                                                                  172 0.22   15    0.09
+Map.put_new/3                                                                   125 0.22   15    0.12
+Map.get/2                                                                       161 0.22   15    0.09
+Ash.Engine.run_iteration/1                                                       21 0.22   15    0.71
+Ash.Engine.Request.do_next/1                                                     42 0.22   15    0.36
+:maps.remove/2                                                                  124 0.23   16    0.13
+Ash.Filter.do_list_refs/3                                                        38 0.23   16    0.42
+anonymous fn/4 in Ash.Actions.Read.data_field/3                                   2 0.25   17    8.50
+anonymous fn/3 in Ash.SatSolver.solutions_to_predicate_values/2                  67 0.25   17    0.25
+:maps.to_list_internal/1                                                        211 0.26   18    0.09
+Ash.Query.set_context/2                                                          37 0.26   18    0.49
+Enum."-split_with/2-lists^foldl/2-0-"/3                                         152 0.26   18    0.12
+Enum.member?/2                                                                   93 0.26   18    0.19
+Enum.filter/2                                                                   207 0.26   18    0.09
+Enum.any_list/2                                                                 120 0.26   18    0.15
+Map.drop_keys/2                                                                 138 0.27   19    0.14
+Ash.Query.select/3                                                               14 0.27   19    1.36
+Keyword."-take/2-lists^filter/1-0-"/2                                            82 0.27   19    0.23
+:lists.reverse/1                                                                200 0.27   19    0.10
+:maps.find/2                                                                    171 0.29   20    0.12
+Ash.SatSolver.Utils.do_sublists_front/1                                         172 0.29   20    0.12
+anonymous fn/2 in Ash.SatSolver.rebind/1                                         86 0.29   20    0.23
+Ash.Engine.Request.sort_and_clean_notifications/1                                50 0.29   20    0.40
+anonymous fn/3 in Ash.SatSolver.unbind/2                                         67 0.32   22    0.33
+Ash.Engine.put_nested_key/3                                                      94 0.32   22    0.23
+anonymous fn/1 in Enum.uniq/1                                                   278 0.32   22    0.08
+Keyword."-drop/2-lists^filter/1-0-"/2                                            97 0.32   22    0.23
+:lists.member/2                                                                 171 0.32   22    0.13
+Map.update/4                                                                    108 0.33   23    0.21
+:ets.lookup/2                                                                    51 0.33   23    0.45
+Ash.Policy.Policy.fetch_or_strict_check_fact/2                                   88 0.36   25    0.28
+Enum.uniq_by/2                                                                  309 0.36   25    0.08
+Enum.reject/2                                                                   309 0.36   25    0.08
+Enum.find/3                                                                     215 0.36   25    0.12
+Enum.uniq/1                                                                     303 0.38   26    0.09
+:maps.next/1                                                                    196 0.39   27    0.14
+:maps.fold/3                                                                    103 0.39   27    0.26
+anonymous fn/2 in Ash.SatSolver.extract_bindings/2                              274 0.39   27    0.10
+Ash.Query.for_read/4                                                              4 0.39   27    6.75
+NimbleOptions.validate_type/3                                                   149 0.39   27    0.18
+Enum.split_with/2                                                                81 0.39   27    0.33
+Map.get/3                                                                       283 0.40   28    0.10
+Ash.SatSolver.apply_distributive_law/1                                          187 0.40   28    0.15
+Ash.SatSolver.apply_demorgans_law/1                                             187 0.40   28    0.15
+Enum.find/2                                                                     215 0.40   28    0.13
+Enum.all_list/2                                                                 179 0.40   28    0.16
+Spark.Dsl.Extension.get_persisted/3                                             107 0.40   28    0.26
+Ash.Engine.notify/2                                                              50 0.42   29    0.58
+Ash.Engine.Request.do_try_resolve_local/4                                        15 0.42   29    1.93
+List.wrap/1                                                                     337 0.43   30    0.09
+:maps.fold_1/3                                                                  184 0.43   30    0.16
+Ash.SatSolver.lift_clauses/1                                                    161 0.43   30    0.19
+Spark.Dsl.Extension.fetch_opt/4                                                  63 0.43   30    0.48
+Keyword.delete/2                                                                184 0.46   32    0.17
+:erts_internal.map_next/3                                                       319 0.46   32    0.10
+:maps.to_list/1                                                                 211 0.49   34    0.16
+anonymous fn/2 in Ash.Engine.replace_request/2                                  302 0.49   34    0.11
+Enumerable.Map.reduce/3                                                         209 0.49   34    0.16
+Ash.SatSolver.group_scenario_predicates/3                                        86 0.51   35    0.41
+anonymous fn/1 in Keyword.keys/1                                                345 0.51   35    0.10
+Spark.Dsl.Extension.get_entities/2                                              106 0.51   35    0.33
+:lists.droplast/1                                                               256 0.51   35    0.14
+Enum.reduce_while/3                                                             174 0.53   37    0.21
+anonymous fn/3 in Ash.Policy.Policy.fetch_or_strict_check_fact/2                276 0.55   38    0.14
+Enumerable.impl_for/1                                                           417 0.58   40    0.10
+Ash.SatSolver.Utils.ordered_sublists/1                                           86 0.59   41    0.48
+Ash.SatSolver.balance/1                                                         239 0.61   42    0.18
+Enum.sort_by/3                                                                  172 0.61   42    0.24
+Enum.flat_map_list/2                                                            196 0.66   46    0.23
+anonymous fn/3 in Enum.find/3                                                   274 0.69   48    0.18
+Enum.filter_list/2                                                              352 0.69   48    0.14
+anonymous fn/2 in Ash.SatSolver.rebind/1                                         86 0.71   49    0.57
+Ash.SatSolver.extract_bindings/2                                                187 0.74   51    0.27
+Ash.Engine.Request.new/1                                                          9 0.74   51    5.67
+anonymous fn/3 in Enum.find_value/3                                             339 0.77   53    0.16
+Spark.Dsl.Extension.dsl!/1                                                      276 0.78   54    0.20
+Enum.reject_list/2                                                              455 0.82   57    0.13
+Keyword.delete_key/2                                                            458 0.84   58    0.13
+Enum.reduce/3                                                                   582 0.87   60    0.10
+Keyword.get/3                                                                   347 0.88   61    0.18
+Enum.find_list/3                                                                381 0.95   66    0.17
+Enumerable.impl_for!/1                                                          417 1.00   69    0.17
+Enum.map/2                                                                      866 1.03   71    0.08
+:erlang.++/2                                                                    618 1.07   74    0.12
+Enumerable.reduce/3                                                             386 1.07   74    0.19
+NimbleOptions.reduce_options/2                                                  279 1.20   83    0.30
+NimbleOptions.validate_option/3                                                 279 1.24   86    0.31
+Keyword.update_guarded/4                                                        412 1.26   87    0.21
+NimbleOptions.validate_value/3                                                  279 1.29   89    0.32
+Keyword.has_key?/2                                                              500 1.29   89    0.18
+:lists.keymember/3                                                              883 1.40   97    0.11
+Keyword."-keys/1-lists^map/1-0-"/2                                              419 1.44  100    0.24
+Enum.uniq_list/3                                                                589 1.79  124    0.21
+Enum."-reduce/3-lists^foldl/2-0-"/3                                            1114 2.08  144    0.13
+:lists.keyfind/3                                                               1359 2.11  146    0.11
+:picosat_nif.solve/1                                                             22 2.46  170    7.73
+Access.get/2                                                                   2040 2.51  174    0.09
+Enumerable.List.reduce/3                                                       1516 3.35  232    0.15
+Access.get/3                                                                   2040 4.10  284    0.14
+Enum."-map/2-lists^map/1-0-"/2                                                 1906 4.74  328    0.17
+
+Profile done over 937 matching functions
