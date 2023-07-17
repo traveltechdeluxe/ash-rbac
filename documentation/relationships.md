@@ -16,7 +16,7 @@ end
 # result
 policies do
   policy [action(:read), accessing_from(Parent, :child)] do
-    authrize_if {AshRbac.HasRole, [role: :user]}
+    authorize_if {AshRbac.HasRole, [role: :user]}
   end
 end
 ```
