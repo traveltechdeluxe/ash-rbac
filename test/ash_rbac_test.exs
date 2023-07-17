@@ -314,7 +314,7 @@ defmodule AshRbacTest do
              |> Api.destroy(actor: %{roles: [@user_role]})
   end
 
-  @tag :wip
+  @tag :unit
   test "`:admin` and \"admin\" have read access", _ do
     assert {:ok, [%{basic_field: 2}]} =
              SharedResource
