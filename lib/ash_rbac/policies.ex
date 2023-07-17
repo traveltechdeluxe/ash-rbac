@@ -13,23 +13,18 @@ defmodule AshRbac.Policies do
     {field_settings, action_settings} = transform_options(dsl_state)
     bypass = Info.bypass(dsl_state)
 
-    dsl_state =
-      cond do
-        {field_settings, action_settings} == {%{}, %{}} ->
-          dsl_state
+    {:ok,
+     case Info.public?(dsl_state) do
+       false ->
+         dsl_state
+         |> add_field_policies(field_settings)
+         |> add_action_policies(action_settings)
+         |> add_bypass(bypass)
 
-        Info.public?(dsl_state) ->
-          dsl_state
-          |> add_allow_policy()
-
-        true ->
-          dsl_state
-          |> add_field_policies(field_settings)
-          |> add_action_policies(action_settings)
-          |> add_bypass(bypass)
-      end
-
-    {:ok, dsl_state}
+       true ->
+         dsl_state
+         |> add_allow_policy()
+     end}
   end
 
   defp transform_options(dsl_state) do
@@ -104,6 +99,8 @@ defmodule AshRbac.Policies do
     |> Transformer.add_entity([:policies], policy, type: :prepend)
   end
 
+  defp add_action_policies(dsl_state, action_settings) when action_settings == %{}, do: dsl_state
+
   defp add_action_policies(dsl_state, action_settings) do
     action_settings
     |> Enum.reduce(dsl_state, fn
@@ -153,6 +150,8 @@ defmodule AshRbac.Policies do
     dsl_state
     |> Transformer.add_entity([:policies], policy, type: :append)
   end
+
+  defp add_field_policies(dsl_state, field_settings) when field_settings == %{}, do: dsl_state
 
   defp add_field_policies(dsl_state, field_settings) do
     all_fields_roles = Map.get(field_settings, :*, [])
