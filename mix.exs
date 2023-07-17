@@ -22,9 +22,28 @@ defmodule AshRbac.MixProject do
         # The main page in the docs
         main: "AshRbac",
         logo: "logo.png",
-        extras: ["README.md"]
+        extras: extras()
       ]
     ]
+  end
+
+  defp extras do
+    "documentation/**/*.md"
+    |> Path.wildcard()
+    |> Enum.concat(["README.md"])
+    |> Enum.map(fn path ->
+      title =
+        path
+        |> Path.basename(".md")
+        |> String.split(~r/[-_]/)
+        |> Enum.map_join(" ", &String.capitalize/1)
+
+      {String.to_atom(path),
+       [
+         title: title,
+         default: title == "Get Started"
+       ]}
+    end)
   end
 
   # Run "mix help compile.app" to learn about applications.
