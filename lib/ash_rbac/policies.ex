@@ -75,7 +75,7 @@ defmodule AshRbac.Policies do
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy_bypass,
         fields: :*,
-        condition: Builtins.always(),
+        condition: [Builtins.always()],
         policies: [check]
       )
 
@@ -91,7 +91,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :bypass,
-        condition: {AshRbac.HasRole, [role: role]},
+        condition: [{AshRbac.HasRole, [role: role]}],
         policies: [check]
       )
 
@@ -198,8 +198,8 @@ defmodule AshRbac.Policies do
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy,
         fields: field,
-        condition: Builtins.always(),
-        policies: forbid_check
+        condition: [Builtins.always()],
+        policies: [forbid_check]
       )
 
     dsl_state
