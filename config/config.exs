@@ -30,3 +30,7 @@ if Mix.env() == :dev do
       ]
     ]
 end
+
+if Mix.env() == :test do
+  config :ash_rbac, ash_apis: [AshRbacTest.Api]
+end
