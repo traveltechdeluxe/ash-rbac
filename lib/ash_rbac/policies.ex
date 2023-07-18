@@ -11,6 +11,7 @@ defmodule AshRbac.Policies do
 
   def transform(dsl_state) do
     {field_settings, action_settings} = transform_options(dsl_state)
+
     bypass = Info.bypass(dsl_state)
 
     {:ok,
@@ -28,6 +29,8 @@ defmodule AshRbac.Policies do
   end
 
   defp transform_options(dsl_state) do
+    all_fields = all_fields(dsl_state)
+
     Info.roles(dsl_state)
     |> List.wrap()
     |> Enum.flat_map(fn %AshRbac.Role{role: role} = entity ->
@@ -39,14 +42,27 @@ defmodule AshRbac.Policies do
     end)
     |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, actions: actions},
                                   {field_settings, action_settings} ->
-      {
+      field_settings =
         fields
         |> List.wrap()
-        |> Enum.reduce(field_settings, fn field, acc ->
-          Map.update(acc, field, [role], fn roles ->
-            [role | roles]
-          end)
-        end),
+        |> Enum.reject(&(&1 not in [:* | all_fields]))
+        |> Enum.reduce(field_settings, fn
+          :*, acc ->
+            all_fields
+            |> Enum.reduce(acc, fn field, acc ->
+              Map.update(acc, field, [role], fn roles ->
+                [role | roles]
+              end)
+            end)
+
+          field, acc ->
+            Map.update(acc, field, [role], fn roles ->
+              [role | roles]
+            end)
+        end)
+
+      {
+        field_settings,
         actions
         |> List.wrap()
         |> Enum.reduce(action_settings, fn action, acc ->
@@ -56,6 +72,32 @@ defmodule AshRbac.Policies do
         end)
       }
     end)
+    |> then(fn {field_settings, action_settings} ->
+      {group_field_settings(field_settings, all_fields), action_settings}
+    end)
+  end
+
+  defp group_field_settings(field_settings, all_fields) do
+    policy_fields = Map.keys(field_settings)
+
+    grouped_field_settings = group_field_settings(field_settings)
+
+    missing_fields = all_fields -- policy_fields
+
+    grouped_field_settings
+    |> then(fn grouped_field_settings ->
+      if Enum.count(missing_fields) > 0 do
+        grouped_field_settings |> Map.put(missing_fields, [])
+      else
+        grouped_field_settings
+      end
+    end)
+  end
+
+  defp group_field_settings(field_settings) do
+    field_settings
+    |> Enum.group_by(fn {_, value} -> value end, fn {key, _} -> key end)
+    |> Enum.into(%{}, fn {roles, fields} -> {List.flatten(fields), List.flatten(roles)} end)
   end
 
   defp add_bypass(dsl_state, nil), do: dsl_state
@@ -154,39 +196,17 @@ defmodule AshRbac.Policies do
   defp add_field_policies(dsl_state, field_settings) when field_settings == %{}, do: dsl_state
 
   defp add_field_policies(dsl_state, field_settings) do
-    all_fields_roles = Map.get(field_settings, :*, [])
-
-    all_fields =
-      dsl_state
-      |> Ash.Resource.Info.fields([:attributes, :calculations, :aggregates])
-      |> Enum.reject(fn
-        %{primary_key?: true} ->
-          true
-
-        %{private?: true} ->
-          true
-
-        _ ->
-          false
-      end)
-      |> Enum.map(& &1.name)
-
-    all_fields
-    |> Enum.reduce(dsl_state, fn field, dsl_state ->
-      roles =
-        field_settings
-        |> Map.get(field, [])
-        |> Enum.concat(all_fields_roles)
-
+    field_settings
+    |> Enum.reduce(dsl_state, fn {fields, roles}, dsl_state ->
       add_role_field_policies(
         dsl_state,
-        field,
+        fields,
         roles
       )
     end)
   end
 
-  defp add_role_field_policies(dsl_state, field, []) do
+  defp add_role_field_policies(dsl_state, fields, []) do
     {:ok, forbid_check} =
       Transformer.build_entity(
         Ash.Policy.Authorizer,
@@ -197,7 +217,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy,
-        fields: field,
+        fields: fields,
         condition: [Builtins.always()],
         policies: [forbid_check]
       )
@@ -206,7 +226,7 @@ defmodule AshRbac.Policies do
     |> Transformer.add_entity([:field_policies], policy, type: :append)
   end
 
-  defp add_role_field_policies(dsl_state, field, roles) do
+  defp add_role_field_policies(dsl_state, fields, roles) do
     {:ok, role_check} =
       Transformer.build_entity(
         Ash.Policy.Authorizer,
@@ -217,7 +237,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy,
-        fields: field,
+        fields: fields,
         condition: [Builtins.always()],
         policies: [role_check]
       )
@@ -240,6 +260,22 @@ defmodule AshRbac.Policies do
 
     dsl_state
     |> Transformer.add_entity([:policies], policy, type: :append)
+  end
+
+  defp all_fields(dsl_state) do
+    dsl_state
+    |> Ash.Resource.Info.fields([:attributes, :calculations, :aggregates])
+    |> Enum.reject(fn
+      %{primary_key?: true} ->
+        true
+
+      %{private?: true} ->
+        true
+
+      _ ->
+        false
+    end)
+    |> Enum.map(& &1.name)
   end
 
   def after?(Ash.Policy.Authorizer), do: true

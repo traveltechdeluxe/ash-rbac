@@ -19,7 +19,7 @@ defmodule AshRbac.HasRole do
   end
 
   defp match(roles, actor) when is_list(roles) do
-    MapSet.size(MapSet.intersection(MapSet.new(roles), MapSet.new(roles(actor)))) > 0
+    roles -- roles(actor) != roles
   end
 
   defp match(roles, actor), do: match([roles], actor)

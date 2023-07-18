@@ -39,10 +39,7 @@ defmodule AshRbacTest do
                  number: 1,
                  updated_at: nil,
                  aggregates: %{},
-                 calculations: %{
-                   {:__ash_fields_are_visible__, [:children]} => true,
-                   {:__ash_fields_are_visible__, [:number]} => true
-                 }
+                 calculations: %{}
                }
              ]
            } =
@@ -62,21 +59,17 @@ defmodule AshRbacTest do
              [
                %RootResource{
                  admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
-                 admin_only_child: %Ash.NotLoaded{},
-                 admin_only_children: %Ash.NotLoaded{},
+                 admin_only_child: %Ash.NotLoaded{type: :relationship},
+                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
                  admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 child: %Ash.NotLoaded{},
-                 children: %Ash.NotLoaded{},
+                 child: %Ash.NotLoaded{type: :relationship},
+                 children: %Ash.NotLoaded{type: :aggregate},
                  created_at: %Ash.ForbiddenField{field: :created_at, type: :attribute},
                  id: _,
-                 number: %Ash.NotLoaded{},
+                 number: %Ash.NotLoaded{type: :calculation},
                  updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute},
                  aggregates: %{},
-                 calculations: %{
-                   {:__ash_fields_are_visible__, [:admin_only]} => false,
-                   {:__ash_fields_are_visible__, [:created_at]} => false,
-                   {:__ash_fields_are_visible__, [:updated_at]} => false
-                 }
+                 calculations: %{}
                }
              ]
            } =
@@ -195,11 +188,7 @@ defmodule AshRbacTest do
                    created_at: admin_only_child_created_at,
                    updated_at: admin_only_child_updated_at,
                    aggregates: %{},
-                   calculations: %{
-                     {:__ash_fields_are_visible__, [:created_at]} => true,
-                     {:__ash_fields_are_visible__, [:root_id]} => true,
-                     {:__ash_fields_are_visible__, [:updated_at]} => true
-                   },
+                   calculations: %{},
                    __order__: nil
                  },
                  child: %ChildResource{
@@ -209,11 +198,7 @@ defmodule AshRbacTest do
                    created_at: child_created_at,
                    updated_at: child_updated_at,
                    aggregates: %{},
-                   calculations: %{
-                     {:__ash_fields_are_visible__, [:created_at]} => true,
-                     {:__ash_fields_are_visible__, [:root_id]} => true,
-                     {:__ash_fields_are_visible__, [:updated_at]} => true
-                   },
+                   calculations: %{},
                    __order__: nil
                  },
                  __meta__: %Ecto.Schema.Metadata{state: :loaded},
@@ -222,15 +207,7 @@ defmodule AshRbacTest do
                  created_at: created_at,
                  updated_at: updated_at,
                  aggregates: %{},
-                 calculations: %{
-                   {:__ash_fields_are_visible__, [:admin_only]} => true,
-                   {:__ash_fields_are_visible__, [:admin_only_children]} => true,
-                   {:__ash_fields_are_visible__, [:admin_only_number]} => true,
-                   {:__ash_fields_are_visible__, [:children]} => true,
-                   {:__ash_fields_are_visible__, [:created_at]} => true,
-                   {:__ash_fields_are_visible__, [:number]} => true,
-                   {:__ash_fields_are_visible__, [:updated_at]} => true
-                 },
+                 calculations: %{},
                  __order__: nil
                }
              ]

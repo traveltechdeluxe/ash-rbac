@@ -1,0 +1,32 @@
+Operating System: Linux
+CPU Information: AMD Ryzen 9 5950X 16-Core Processor
+Number of Available Cores: 32
+Available memory: 62.70 GB
+Elixir 1.14.3
+Erlang 25.2.1
+
+Benchmark suite executing with the following configuration:
+warmup: 2 s
+time: 5 s
+memory time: 0 ns
+reduction time: 0 ns
+parallel: 1
+inputs: none specified
+Estimated total run time: 28 s
+
+Benchmarking role_check_atom ...
+Benchmarking role_check_string ...
+Benchmarking roles_check_atom ...
+Benchmarking roles_check_string ...
+
+Name                         ips        average  deviation         median         99th %
+roles_check_atom          2.86 M      350.09 ns  ±3917.91%         300 ns         620 ns
+roles_check_string        2.70 M      370.87 ns  ±3366.01%         330 ns         640 ns
+role_check_atom           2.65 M      378.06 ns  ±7101.50%         300 ns         650 ns
+role_check_string         2.63 M      380.86 ns  ±6903.13%         310 ns         640 ns
+
+Comparison: 
+roles_check_atom          2.86 M
+roles_check_string        2.70 M - 1.06x slower +20.78 ns
+role_check_atom           2.65 M - 1.08x slower +27.97 ns
+role_check_string         2.63 M - 1.09x slower +30.76 ns
