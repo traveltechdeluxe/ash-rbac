@@ -6,7 +6,7 @@ adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
 
-### Features
+### Fixes
 
 - refactor code to create a lot less policies in order to improve performance
 
