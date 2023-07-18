@@ -19,27 +19,10 @@ defmodule AshRbac.HasRole do
   end
 
   defp match(roles, actor) when is_list(roles) do
-    # MapSet.size(MapSet.intersection(MapSet.new(roles), MapSet.new(roles(actor)))) > 0
-    # roles -- roles(actor) != roles
-    check?(roles, roles(actor))
+    roles -- roles(actor) != roles
   end
 
   defp match(roles, actor), do: match([roles], actor)
-
-  defp check?(roles, actor_roles) do
-    (roles ++ actor_roles)
-    |> Enum.reduce_while(%{}, fn role, acc ->
-      if Map.has_key?(acc, role) do
-        {:halt, true}
-      else
-        {:cont, Map.put(acc, role, false)}
-      end
-    end)
-    |> case do
-      true -> true
-      _ -> false
-    end
-  end
 
   defp roles(%{roles: roles}) when is_list(roles), do: roles
   defp roles(_), do: []

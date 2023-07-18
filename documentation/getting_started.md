@@ -44,16 +44,12 @@ The previous example will generate the following policies:
 
 ```elixir
 field_policies do
-  field_policy :name do
-    authorize_if {AshRbac.HasRole, [role: [:user]]}
-  end
-
-  field_policy :email do
+  field_policy [:name, :email]do
     authorize_if {AshRbac.HasRole, [role: [:user]]}
   end
 
   # it also adds a policy for all other fields like this
-  field_policy :other_fields do
+  field_policy [:other_fields, ...] do
     forbid_if always()
   end
 end
