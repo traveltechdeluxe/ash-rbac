@@ -26,7 +26,6 @@ defmodule AshRbac.MixProject do
       ],
       source_url: "https://github.com/traveltechdeluxe/ash-rbac",
       homepage_url: "https://github.com/traveltechdeluxe/ash-rbac"
-
     ]
   end
 
