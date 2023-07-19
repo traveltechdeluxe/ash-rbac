@@ -4,11 +4,12 @@ All notable changes to this project will be documented here. The format is based
 on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project
 adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 2023-07-19 0.1.1
 
 ### Fixes
 
-- refactor code to create a lot less policies in order to improve performance
+- refactor code to create a lot fewer policies in order to improve performance
+- add source links to package info
 
 ## 2023-07-17 0.1.0
 
