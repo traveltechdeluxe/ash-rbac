@@ -9,6 +9,7 @@ adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 ### Fixes
 
 - refactor code to create a lot fewer policies in order to improve performance
+- add source links to package info
 
 ## 2023-07-17 0.1.0
 
