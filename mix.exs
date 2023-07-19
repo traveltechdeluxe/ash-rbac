@@ -10,8 +10,8 @@ defmodule AshRbac.MixProject do
         maintainers: ["travel tech d.luxe GmbH"],
         licenses: ["MIT"],
         links: %{
-          "GitHub" => "https://github.com/traveltechdeluxe/ash-rbac",
-          "Travel Tech D.Luxe" => "https://www.traveltechdeluxe.com/"
+          GitHub: "https://github.com/traveltechdeluxe/ash-rbac",
+          "Travel Tech D.Luxe": "https://www.traveltechdeluxe.com/"
         }
       ],
       elixir: "~> 1.14",
@@ -23,7 +23,10 @@ defmodule AshRbac.MixProject do
         main: "AshRbac",
         logo: "logo.png",
         extras: extras()
-      ]
+      ],
+      source_url: "https://github.com/traveltechdeluxe/ash-rbac",
+      homepage_url: "https://github.com/traveltechdeluxe/ash-rbac"
+
     ]
   end
 
