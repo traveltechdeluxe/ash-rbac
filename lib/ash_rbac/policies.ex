@@ -40,9 +40,9 @@ defmodule AshRbac.Policies do
         %{entity | role: role}
       end)
     end)
-    |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, options: options, actions: actions},
+    |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, roles_field: roles_field, actions: actions},
                                   {field_settings, action_settings} ->
-      roles_field = get_option(options, :roles_field, :roles)
+      roles_field = roles_field || :roles
 
       field_settings =
         fields
@@ -77,9 +77,6 @@ defmodule AshRbac.Policies do
       {group_field_settings(field_settings, all_fields), action_settings}
     end)
   end
-
-  defp get_option(nil, _, default), do: default
-  defp get_option(options, key, default), do: Keyword.get(options, key, default)
 
   defp group_field_settings(field_settings, all_fields) do
     policy_fields = Map.keys(field_settings)

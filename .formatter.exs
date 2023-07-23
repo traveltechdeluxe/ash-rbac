@@ -5,6 +5,7 @@ spark_locals_without_parens = [
   rbac: 1,
   public?: 1,
   bypass: 1,
+  roles_field: 1,
   role: 2
 ]
 
