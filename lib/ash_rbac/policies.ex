@@ -40,7 +40,12 @@ defmodule AshRbac.Policies do
         %{entity | role: role}
       end)
     end)
-    |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, roles_field: roles_field, actions: actions},
+    |> Enum.reduce({%{}, %{}}, fn %{
+                                    role: role,
+                                    fields: fields,
+                                    roles_field: roles_field,
+                                    actions: actions
+                                  },
                                   {field_settings, action_settings} ->
       roles_field = roles_field || :roles
 
@@ -62,6 +67,7 @@ defmodule AshRbac.Policies do
               [{role, roles_field} | roles]
             end)
         end)
+
       {
         field_settings,
         actions

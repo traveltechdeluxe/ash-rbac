@@ -15,7 +15,7 @@ defmodule AshRbac.HasRole do
       end
     end)
     |> Enum.join(" or ")
-    |> then(& "Checks if the actor has #{&1}")
+    |> then(&"Checks if the actor has #{&1}")
   end
 
   @impl true
