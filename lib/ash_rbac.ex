@@ -5,7 +5,7 @@ defmodule AshRbac do
     name: :role,
     describe: "If the check is true, the request is forbidden, otherwise run remaining checks.",
     target: AshRbac.Role,
-    args: [:role],
+    args: [:role, {:optional, :options}],
     links: [],
     schema: [
       role: [
@@ -13,6 +13,13 @@ defmodule AshRbac do
         required: true,
         doc: """
         The role this config is for
+        """
+      ],
+      options: [
+        type: :keyword_list,
+        required: false,
+        doc: """
+        The options this config is for
         """
       ],
       fields: [

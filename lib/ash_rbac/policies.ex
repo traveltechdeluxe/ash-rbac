@@ -40,8 +40,10 @@ defmodule AshRbac.Policies do
         %{entity | role: role}
       end)
     end)
-    |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, actions: actions},
+    |> Enum.reduce({%{}, %{}}, fn %{role: role, fields: fields, options: options, actions: actions},
                                   {field_settings, action_settings} ->
+      roles_field = get_option(options, :roles_field, :roles)
+
       field_settings =
         fields
         |> List.wrap()
@@ -50,24 +52,23 @@ defmodule AshRbac.Policies do
           :*, acc ->
             all_fields
             |> Enum.reduce(acc, fn field, acc ->
-              Map.update(acc, field, [role], fn roles ->
-                [role | roles]
+              Map.update(acc, field, [{role, roles_field}], fn roles ->
+                [{role, roles_field} | roles]
               end)
             end)
 
           field, acc ->
-            Map.update(acc, field, [role], fn roles ->
-              [role | roles]
+            Map.update(acc, field, [{role, roles_field}], fn roles ->
+              [{role, roles_field} | roles]
             end)
         end)
-
       {
         field_settings,
         actions
         |> List.wrap()
         |> Enum.reduce(action_settings, fn action, acc ->
-          Map.update(acc, action, [role], fn roles ->
-            [role | roles]
+          Map.update(acc, action, [{role, roles_field}], fn roles ->
+            [{role, roles_field} | roles]
           end)
         end)
       }
@@ -76,6 +77,9 @@ defmodule AshRbac.Policies do
       {group_field_settings(field_settings, all_fields), action_settings}
     end)
   end
+
+  defp get_option(nil, _, default), do: default
+  defp get_option(options, key, default), do: Keyword.get(options, key, default)
 
   defp group_field_settings(field_settings, all_fields) do
     policy_fields = Map.keys(field_settings)
@@ -111,7 +115,7 @@ defmodule AshRbac.Policies do
         Ash.Policy.Authorizer,
         [:field_policies, :field_policy_bypass],
         :authorize_if,
-        check: {AshRbac.HasRole, [role: role]}
+        check: {AshRbac.HasRole, [role: [roles: role]]}
       )
 
     {:ok, policy} =
@@ -133,7 +137,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :bypass,
-        condition: [{AshRbac.HasRole, [role: role]}],
+        condition: [{AshRbac.HasRole, [role: [roles: role]]}],
         policies: [check]
       )
 
@@ -161,7 +165,7 @@ defmodule AshRbac.Policies do
         Ash.Policy.Authorizer,
         [:policies, :policy],
         :authorize_if,
-        check: {AshRbac.HasRole, [role: roles]}
+        check: {AshRbac.HasRole, [role: group_roles(roles)]}
       )
 
     {:ok, policy} =
@@ -180,7 +184,7 @@ defmodule AshRbac.Policies do
         Ash.Policy.Authorizer,
         [:policies, :policy],
         :authorize_if,
-        check: {AshRbac.HasRole, [role: roles]}
+        check: {AshRbac.HasRole, [role: group_roles(roles)]}
       )
 
     {:ok, policy} =
@@ -232,7 +236,7 @@ defmodule AshRbac.Policies do
         Ash.Policy.Authorizer,
         [:field_policies, :field_policy],
         :authorize_if,
-        check: {AshRbac.HasRole, [role: roles]}
+        check: {AshRbac.HasRole, [role: group_roles(roles)]}
       )
 
     {:ok, policy} =
@@ -280,4 +284,8 @@ defmodule AshRbac.Policies do
 
   def after?(Ash.Policy.Authorizer), do: true
   def after?(_), do: false
+
+  defp group_roles(roles) do
+    roles |> Enum.group_by(fn {_, field} -> field end, fn {role, _} -> role end) |> Enum.to_list()
+  end
 end
