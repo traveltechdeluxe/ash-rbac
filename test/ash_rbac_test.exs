@@ -7,6 +7,7 @@ defmodule AshRbacTest do
   @admin_role :admin
   @admin_string_role "admin"
   @user_role :user
+  @guest_role :guest
 
   setup do
     root_resource = Api.create!(Ash.Changeset.for_create(RootResource, :create))
@@ -325,5 +326,20 @@ defmodule AshRbacTest do
              SharedResource
              |> Ash.Query.for_read(:read, actor: %{roles: [@admin_string_role]})
              |> Api.read(actor: %{roles: [@admin_string_role]})
+  end
+
+  @tag :unit
+  test "can specify different roles field", _ do
+    assert {:ok,
+            [
+              %{
+                children: 1,
+                admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute}
+              }
+            ]} =
+             RootResource
+             |> Ash.Query.for_read(:read, actor: %{guest_roles: [@guest_role]})
+             |> Ash.Query.load([:children])
+             |> Api.read(actor: %{guest_roles: [@guest_role]})
   end
 end
