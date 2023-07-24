@@ -15,6 +15,13 @@ defmodule AshRbac do
         The role this config is for
         """
       ],
+      roles_field: [
+        type: :atom,
+        required: false,
+        doc: """
+        The actor roles field name
+        """
+      ],
       fields: [
         type: {:list, :atom},
         required: false,
@@ -60,6 +67,11 @@ defmodule AshRbac do
         type: @role_type,
         doc: "Role that is allowed to bypass authorization"
       ],
+      bypass_roles_field: [
+        type: :atom,
+        required: false,
+        doc: "The actor roles field name for the bypass"
+      ],
       public?: [
         type: :boolean,
         doc: "Allow all access",
@@ -79,6 +91,10 @@ defmodule AshRbac do
 
     def bypass(resource) do
       Extension.get_opt(resource, [:rbac], :bypass, nil)
+    end
+
+    def bypass_roles_field(resource) do
+      Extension.get_opt(resource, [:rbac], :bypass_roles_field, :roles)
     end
 
     def public?(resource) do
