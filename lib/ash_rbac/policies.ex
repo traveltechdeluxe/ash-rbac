@@ -13,6 +13,7 @@ defmodule AshRbac.Policies do
     {field_settings, action_settings} = transform_options(dsl_state)
 
     bypass = Info.bypass(dsl_state)
+    bypass_roles_field = Info.bypass_roles_field(dsl_state)
 
     {:ok,
      case Info.public?(dsl_state) do
@@ -20,7 +21,7 @@ defmodule AshRbac.Policies do
          dsl_state
          |> add_field_policies(field_settings)
          |> add_action_policies(action_settings)
-         |> add_bypass(bypass)
+         |> add_bypass(bypass, bypass_roles_field)
 
        true ->
          dsl_state
@@ -107,18 +108,18 @@ defmodule AshRbac.Policies do
     |> Enum.into(%{}, fn {roles, fields} -> {List.flatten(fields), List.flatten(roles)} end)
   end
 
-  defp add_bypass(dsl_state, nil), do: dsl_state
+  defp add_bypass(dsl_state, nil, _), do: dsl_state
 
-  defp add_bypass(dsl_state, role),
-    do: dsl_state |> add_field_bypass(role) |> add_action_bypass(role)
+  defp add_bypass(dsl_state, role, roles_field),
+    do: dsl_state |> add_field_bypass(role, roles_field) |> add_action_bypass(role, roles_field)
 
-  defp add_field_bypass(dsl_state, role) do
+  defp add_field_bypass(dsl_state, role, roles_field) do
     {:ok, check} =
       Transformer.build_entity(
         Ash.Policy.Authorizer,
         [:field_policies, :field_policy_bypass],
         :authorize_if,
-        check: {AshRbac.HasRole, [role: [roles: role]]}
+        check: {AshRbac.HasRole, [role: [{roles_field, role}]]}
       )
 
     {:ok, policy} =
@@ -132,7 +133,7 @@ defmodule AshRbac.Policies do
     |> Transformer.add_entity([:field_policies], policy, type: :prepend)
   end
 
-  defp add_action_bypass(dsl_state, role) do
+  defp add_action_bypass(dsl_state, role, roles_field) do
     {:ok, check} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies, :bypass], :authorize_if,
         check: Builtins.always()
@@ -140,7 +141,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :bypass,
-        condition: [{AshRbac.HasRole, [role: [roles: role]]}],
+        condition: [{AshRbac.HasRole, [role: [{roles_field, role}]]}],
         policies: [check]
       )
 
