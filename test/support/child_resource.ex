@@ -22,6 +22,14 @@ defmodule AshRbacTest.ChildResource do
         {:read, Builtins.accessing_from(RootResource, :child)}
       ]
     end
+
+    role :guest do
+      roles_field :guest_roles
+
+      actions [
+        {:read, Builtins.accessing_from(RootResource, :child)}
+      ]
+    end
   end
 
   actions do

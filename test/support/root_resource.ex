@@ -26,7 +26,8 @@ defmodule AshRbacTest.RootResource do
     end
 
     role :guest do
-      fields [:child]
+      roles_field :guest_roles
+      fields [:children]
       actions [:read]
     end
   end

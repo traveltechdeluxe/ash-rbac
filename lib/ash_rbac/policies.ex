@@ -290,6 +290,11 @@ defmodule AshRbac.Policies do
   def after?(_), do: false
 
   defp group_roles(roles) do
-    roles |> Enum.group_by(fn {_, field} -> field end, fn {role, _} -> role end) |> Enum.to_list()
+    roles
+    |> Enum.group_by(fn {_, field} -> field end, fn {role, _} -> role end)
+    |> Enum.to_list()
+    # check the fields with the most roles first
+    # higher chance of early return
+    |> Enum.sort_by(fn {_, roles} -> Enum.count(roles) end, &>=/2)
   end
 end
