@@ -32,6 +32,7 @@ defmodule AshRbac.HasRole do
 
   defp match(roles, actor, roles_field), do: match([roles], actor, roles_field)
 
+  defp roles(nil, _), do: roles(nil)
   defp roles(actor, roles_field), do: actor |> Map.get(roles_field) |> roles()
 
   defp roles(roles) when is_list(roles), do: roles
