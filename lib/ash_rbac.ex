@@ -3,6 +3,10 @@ defmodule AshRbac do
 
   @role %Spark.Dsl.Entity{
     name: :role,
+    imports: [
+      Ash.Policy.Check.Builtins,
+      Ash.Filter.TemplateHelpers
+    ],
     describe: "If the check is true, the request is forbidden, otherwise run remaining checks.",
     target: AshRbac.Role,
     args: [:role],

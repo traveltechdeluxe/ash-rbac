@@ -4,7 +4,11 @@ All notable changes to this project will be documented here. The format is based
 on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project
 adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## Unreleased
+## 2023-07-26 0.3.0
+
+### Features
+
+- auto import builtin policy checks and template helpers
 
 ### Fixes
 
@@ -14,7 +18,7 @@ adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Fixes
 
-- make sure HasRole describe function can handle as single role as well as a list of roles
+- make sure HasRole describe function can handle a single role as well as a list of roles
 
 ## 2023-07-24 0.2.0
 
