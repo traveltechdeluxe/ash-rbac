@@ -5,7 +5,6 @@ defmodule AshRbacTest.ChildResource do
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshRbac]
 
-  alias Ash.Policy.Check.Builtins
   alias AshRbacTest.RootResource
 
   ets do
@@ -19,7 +18,7 @@ defmodule AshRbacTest.ChildResource do
       fields [:root_id, :created_at, :updated_at]
 
       actions [
-        {:read, Builtins.accessing_from(RootResource, :child)}
+        {:read, accessing_from(RootResource, :child)}
       ]
     end
 
@@ -27,7 +26,7 @@ defmodule AshRbacTest.ChildResource do
       roles_field :guest_roles
 
       actions [
-        {:read, Builtins.accessing_from(RootResource, :child)}
+        {:read, accessing_from(RootResource, :child)}
       ]
     end
   end
