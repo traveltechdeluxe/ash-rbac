@@ -31,6 +31,12 @@ defmodule AshRbacTest.ChildResource do
     end
   end
 
+  field_policies do
+    field_policy :field_with_custom_field_policy do
+      authorize_if always()
+    end
+  end
+
   actions do
     defaults([:create, :read, :update, :destroy])
   end
@@ -39,6 +45,8 @@ defmodule AshRbacTest.ChildResource do
     uuid_primary_key(:id)
 
     attribute(:root_id, :uuid)
+
+    attribute :field_with_custom_field_policy, :string
 
     create_timestamp(:created_at, private?: false)
     update_timestamp(:updated_at, private?: false)
