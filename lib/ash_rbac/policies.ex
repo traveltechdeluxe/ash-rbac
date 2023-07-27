@@ -31,6 +31,7 @@ defmodule AshRbac.Policies do
 
   defp transform_options(dsl_state) do
     all_fields = all_fields(dsl_state)
+    custom_policy_fields = custom_policy_fields(dsl_state)
 
     Info.roles(dsl_state)
     |> List.wrap()
@@ -81,16 +82,16 @@ defmodule AshRbac.Policies do
       }
     end)
     |> then(fn {field_settings, action_settings} ->
-      {group_field_settings(field_settings, all_fields), action_settings}
+      {group_field_settings(field_settings, all_fields, custom_policy_fields), action_settings}
     end)
   end
 
-  defp group_field_settings(field_settings, all_fields) do
+  defp group_field_settings(field_settings, all_fields, custom_policy_fields) do
     policy_fields = Map.keys(field_settings)
 
     grouped_field_settings = group_field_settings(field_settings)
 
-    missing_fields = all_fields -- policy_fields
+    missing_fields = (all_fields -- policy_fields) -- custom_policy_fields
 
     grouped_field_settings
     |> then(fn grouped_field_settings ->
@@ -284,6 +285,12 @@ defmodule AshRbac.Policies do
         false
     end)
     |> Enum.map(& &1.name)
+  end
+
+  defp custom_policy_fields(dsl_state) do
+    dsl_state
+    |> Ash.Policy.Info.field_policies()
+    |> Enum.flat_map(& &1.fields)
   end
 
   def after?(Ash.Policy.Authorizer), do: true
