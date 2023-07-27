@@ -5,7 +5,6 @@ defmodule AshRbac.Policies do
 
   use Spark.Dsl.Transformer
 
-  require Ash.Policy.Authorizer
   alias Ash.Policy.Check.Builtins
   alias AshRbac.Info
   alias Spark.Dsl.Transformer

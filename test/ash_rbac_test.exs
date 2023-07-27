@@ -188,6 +188,7 @@ defmodule AshRbacTest do
                    root_id: root_id,
                    created_at: admin_only_child_created_at,
                    updated_at: admin_only_child_updated_at,
+                   field_with_custom_field_policy: nil,
                    aggregates: %{},
                    calculations: %{},
                    __order__: nil
