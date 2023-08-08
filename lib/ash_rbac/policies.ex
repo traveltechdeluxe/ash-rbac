@@ -9,6 +9,7 @@ defmodule AshRbac.Policies do
   alias AshRbac.Info
   alias Spark.Dsl.Transformer
 
+  @impl true
   def transform(dsl_state) do
     {field_settings, action_settings} = transform_options(dsl_state)
 
@@ -293,7 +294,12 @@ defmodule AshRbac.Policies do
     |> Enum.flat_map(& &1.fields)
   end
 
-  def after?(Ash.Policy.Authorizer), do: true
+  @impl true
+  def before?(Ash.Policy.Authorizer.Transformers.AddMissingFieldPolicies), do: true
+  def before?(_), do: false
+
+  @impl true
+  def after?(Ash.Resource.Transformers.BelongsToAttribute), do: true
   def after?(_), do: false
 
   defp group_roles(roles) do
