@@ -4,6 +4,13 @@ All notable changes to this project will be documented here. The format is based
 on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project
 adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2023-08-08 0.3.2
+
+### Fixes
+
+- make sure transform is run after relationship attributes are set
+- make sure transform is run before the authorizer add-missing-fields transform
+
 ## 2023-07-28 0.3.1
 
 ### Fixes
