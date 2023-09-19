@@ -4,6 +4,16 @@ All notable changes to this project will be documented here. The format is based
 on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project
 adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2023-09-19 0.4.0
+
+### Features
+
+- add support for a list of conditions for actions
+
+### Fixes
+
+- move role check into policy condition to make multiple roles with similar conditions work
+
 ## 2023-08-08 0.3.2
 
 ### Fixes
