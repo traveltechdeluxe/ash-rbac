@@ -7,7 +7,7 @@ Add the ash_rbac dependency to your mix.exs
 ```elixir
 defp deps do
   [
-    {:ash_rbac, "~> 0.3.0"}
+    {:ash_rbac, "~> 0.4.0"}
   ]
 end
 ```
@@ -55,8 +55,8 @@ field_policies do
 end
 
 policies do
-  policy action(:read) do
-    authorize_if {AshRbac.HasRole, [role: [:user]]}
+  policy [action(:read), {AshRbac.HasRole, [role: [:user]]}] do
+    authorize_if always()
   end
 end
 ```

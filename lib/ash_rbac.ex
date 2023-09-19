@@ -38,7 +38,20 @@ defmodule AshRbac do
           {:list,
            {
              :or,
-             [:atom, {:tuple, [:atom, {:custom, __MODULE__, :validate_check, []}]}]
+             [
+               :atom,
+               {:tuple,
+                [
+                  :atom,
+                  {
+                    :or,
+                    [
+                      {:list, {:custom, __MODULE__, :validate_check, []}},
+                      {:custom, __MODULE__, :validate_check, []}
+                    ]
+                  }
+                ]}
+             ]
            }},
         required: false,
         doc: """

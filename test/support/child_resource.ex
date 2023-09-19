@@ -26,7 +26,7 @@ defmodule AshRbacTest.ChildResource do
       roles_field :guest_roles
 
       actions [
-        {:read, accessing_from(RootResource, :child)}
+        {:read, [accessing_from(RootResource, :child), accessing_from(RootResource, :child)]}
       ]
     end
   end
