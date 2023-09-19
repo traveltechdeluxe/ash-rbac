@@ -176,7 +176,7 @@ defmodule AshRbac.Policies do
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:policies], :policy,
-        condition: [Builtins.action(action)] ++ List.wrap(custom_condition),
+        condition: [Builtins.action(action) | List.wrap(custom_condition)],
         policies: [role_check]
       )
 
