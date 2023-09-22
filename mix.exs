@@ -61,7 +61,8 @@ defmodule AshRbac.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, "~> 2.11.8"},
+      {:ash,
+       github: "ash-project/ash", branch: "feat/expose-query-or-changeset-to-field-policies"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:elixir_uuid, "~> 1.2", only: [:test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},

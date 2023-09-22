@@ -15,7 +15,11 @@ defmodule AshRbacTest.ChildResource do
     bypass :super_admin
 
     role :user do
-      fields [:root_id, :created_at, :updated_at]
+      fields [
+        :root_id,
+        :created_at,
+        :updated_at
+      ]
 
       actions [
         {:read, accessing_from(RootResource, :child)}

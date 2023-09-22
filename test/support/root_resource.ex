@@ -55,6 +55,12 @@ defmodule AshRbacTest.RootResource do
       source_attribute(:id)
       destination_attribute(:root_id)
     end
+
+    belongs_to :shared_resource, AshRbacTest.SharedResource do
+      source_attribute :shared_resource_id
+      destination_attribute :id
+      attribute_writable? true
+    end
   end
 
   aggregates do

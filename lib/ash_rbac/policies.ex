@@ -5,6 +5,7 @@ defmodule AshRbac.Policies do
 
   use Spark.Dsl.Transformer
 
+  alias AshRbac.Fields
   alias Ash.Policy.Check.Builtins
   alias AshRbac.Info
   alias Spark.Dsl.Transformer
@@ -12,6 +13,10 @@ defmodule AshRbac.Policies do
   @impl true
   def transform(dsl_state) do
     {field_settings, action_settings} = transform_options(dsl_state)
+
+    if dsl_state[:persist][:module] == AshRbacTest.SharedResource do
+      Fields.transform(dsl_state)
+    end
 
     bypass = Info.bypass(dsl_state)
     bypass_roles_field = Info.bypass_roles_field(dsl_state)

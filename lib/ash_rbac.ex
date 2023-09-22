@@ -27,7 +27,25 @@ defmodule AshRbac do
         """
       ],
       fields: [
-        type: {:list, :atom},
+        type:
+          {:list,
+           {
+             :or,
+             [
+               :atom,
+               {:tuple,
+                [
+                  :atom,
+                  {
+                    :or,
+                    [
+                      {:list, {:custom, __MODULE__, :validate_check, []}},
+                      {:custom, __MODULE__, :validate_check, []}
+                    ]
+                  }
+                ]}
+             ]
+           }},
         required: false,
         doc: """
         The fields the role has access to
@@ -42,7 +60,13 @@ defmodule AshRbac do
                :atom,
                {:tuple,
                 [
-                  :atom,
+                  {
+                    :or,
+                    [
+                      :atom,
+                      {:list, :atom}
+                    ]
+                  },
                   {
                     :or,
                     [
