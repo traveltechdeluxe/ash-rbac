@@ -27,6 +27,12 @@ defmodule AshRbacTest.SharedResource do
 
       actions [:read]
     end
+
+    role :guest do
+      roles_field :guest_roles
+
+      fields [:basic_field]
+    end
   end
 
   actions do
