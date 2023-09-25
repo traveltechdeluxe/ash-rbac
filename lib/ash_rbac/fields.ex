@@ -106,8 +106,7 @@ defmodule AshRbac.Fields do
     roles
     |> prepare_data_for_grouping(all_fields)
     |> Enum.reduce(%{}, fn %{role: role, fields: fields, condition: condition}, acc ->
-      IO.inspect(condition: condition)
-      fields = MapSet.new(fields) |> IO.inspect(label: :fields)
+      fields = MapSet.new(fields)
 
       acc
       |> Map.update(condition, %{(fields |> Enum.to_list()) => List.wrap(role)}, fn existing ->
@@ -116,19 +115,13 @@ defmodule AshRbac.Fields do
           |> Map.keys()
           |> Enum.reduce({%{}, MapSet.new(), fields}, fn existing_fields,
                                                          {acc, already_added_fields, new_fields} ->
-            existing_fields_set =
-              MapSet.new(existing_fields) |> IO.inspect(label: :existing_fields_set)
+            existing_fields_set = MapSet.new(existing_fields)
 
-            shared_fields =
-              MapSet.intersection(new_fields, existing_fields_set)
-              |> IO.inspect(label: :shared_fields)
+            shared_fields = MapSet.intersection(new_fields, existing_fields_set)
 
-            extra_existing_fields =
-              MapSet.difference(existing_fields_set, shared_fields)
-              |> IO.inspect(label: :extra_existing_fields)
+            extra_existing_fields = MapSet.difference(existing_fields_set, shared_fields)
 
-            extra_new_fields =
-              MapSet.difference(new_fields, shared_fields) |> IO.inspect(label: :extra_new_fields)
+            extra_new_fields = MapSet.difference(new_fields, shared_fields)
 
             {acc
              |> maybe_add_fields(
@@ -143,14 +136,12 @@ defmodule AshRbac.Fields do
              |> Enum.reduce(already_added_fields, fn shared_field, already_added_fields ->
                MapSet.put(already_added_fields, shared_field)
              end), extra_new_fields}
-            |> IO.inspect(label: :acc)
           end)
 
         acc
         |> maybe_add_fields(new_fields |> Enum.to_list(), List.wrap(role))
       end)
     end)
-    |> IO.inspect(label: :output)
     |> Enum.flat_map(fn
       {nil, fields} ->
         fields
