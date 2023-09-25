@@ -105,65 +105,9 @@ defmodule AshRbac.Fields do
   defp group_field_settings(roles, all_fields, custom_policy_fields) do
     roles
     |> prepare_data_for_grouping(all_fields)
-    |> Enum.reduce(%{}, fn %{role: role, fields: fields, condition: condition}, acc ->
-      fields = MapSet.new(fields)
-
-      acc
-      |> Map.update(condition, %{(fields |> Enum.to_list()) => List.wrap(role)}, fn existing ->
-        {acc, _, new_fields} =
-          existing
-          |> Map.keys()
-          |> Enum.reduce({%{}, MapSet.new(), fields}, fn existing_fields,
-                                                         {acc, already_added_fields, new_fields} ->
-            existing_fields_set = MapSet.new(existing_fields)
-
-            shared_fields = MapSet.intersection(new_fields, existing_fields_set)
-
-            extra_existing_fields = MapSet.difference(existing_fields_set, shared_fields)
-
-            extra_new_fields = MapSet.difference(new_fields, shared_fields)
-
-            {acc
-             |> maybe_add_fields(
-               shared_fields |> Enum.to_list(),
-               List.wrap(Map.get(existing, existing_fields) ++ List.wrap(role))
-             )
-             |> maybe_add_fields(
-               extra_existing_fields |> Enum.to_list(),
-               List.wrap(Map.get(existing, existing_fields))
-             ),
-             shared_fields
-             |> Enum.reduce(already_added_fields, fn shared_field, already_added_fields ->
-               MapSet.put(already_added_fields, shared_field)
-             end), extra_new_fields}
-          end)
-
-        acc
-        |> maybe_add_fields(new_fields |> Enum.to_list(), List.wrap(role))
-      end)
-    end)
-    |> Enum.flat_map(fn
-      {nil, fields} ->
-        fields
-        |> Enum.map(fn {fields, roles} ->
-          {fields, roles}
-        end)
-
-      {condition, fields} ->
-        fields
-        |> Enum.map(fn {fields, roles} ->
-          {fields, condition, roles}
-        end)
-    end)
-    |> then(fn field_settings ->
-      missing_fields = missing_fields(field_settings, all_fields, custom_policy_fields)
-
-      if Enum.count(missing_fields) > 0 do
-        [{missing_fields, []} | field_settings]
-      else
-        field_settings
-      end
-    end)
+    |> group_by_condition_and_fields()
+    |> create_policy_input_from_groups()
+    |> add_policy_input_for_missing_fields(all_fields, custom_policy_fields)
   end
 
   # Takes in all roles and transforms them into the following format
@@ -233,6 +177,133 @@ defmodule AshRbac.Fields do
         %{field_settings | fields: sanitize_fields(fields, all_fields)}
       end)
     end)
+  end
+
+  # Groups the policy settings by condition -> fields -> user
+  #
+  # input: [
+  #   %{
+  #     condition: nil,
+  #     fields: [
+  #       :basic_field,
+  #       :only_accessible_for_user_if_coming_from_root_resource,
+  #       :created_at,
+  #       :updated_at
+  #     ],
+  #     role: [:admin, "admin"]
+  #   },
+  #   %{condition: nil, fields: [:basic_field], role: :user},
+  #   %{
+  #     condition:
+  #       {Ash.Policy.Check.AccessingFrom,
+  #        [source: AshRbacTest.RootResource, relationship: :shared_resource]},
+  #     fields: [:only_accessible_for_user_if_coming_from_root_resource],
+  #     role: :user
+  #   },
+  #   %{condition: nil, fields: [:basic_field], role: {:guest_roles, :guest}}
+  # ]
+  #
+  # output: %{
+  #   nil => %{
+  #     [:basic_field] => [:admin, "admin", :user, {:guest_roles, :guest}],
+  #     [:created_at, :only_accessible_for_user_if_coming_from_root_resource, :updated_at] => [
+  #       :admin,
+  #       "admin"
+  #     ]
+  #   },
+  #   {Ash.Policy.Check.AccessingFrom,
+  #    [source: AshRbacTest.RootResource, relationship: :shared_resource]} => %{
+  #     [:only_accessible_for_user_if_coming_from_root_resource] => [:user]
+  #   }
+  # }
+  #
+  defp group_by_condition_and_fields(settings) do
+    settings
+    |> Enum.reduce(%{}, fn %{role: role, fields: fields, condition: condition}, acc ->
+      fields = MapSet.new(fields)
+
+      acc
+      |> Map.update(condition, %{(fields |> Enum.to_list()) => List.wrap(role)}, fn existing ->
+        {acc, _, new_fields} =
+          existing
+          |> Map.keys()
+          |> Enum.reduce({%{}, MapSet.new(), fields}, fn existing_fields,
+                                                         {acc, already_added_fields, new_fields} ->
+            existing_fields_set = MapSet.new(existing_fields)
+
+            shared_fields = MapSet.intersection(new_fields, existing_fields_set)
+
+            extra_existing_fields = MapSet.difference(existing_fields_set, shared_fields)
+
+            extra_new_fields = MapSet.difference(new_fields, shared_fields)
+
+            {acc
+             |> maybe_add_fields(
+               shared_fields |> Enum.to_list(),
+               List.wrap(Map.get(existing, existing_fields) ++ List.wrap(role))
+             )
+             |> maybe_add_fields(
+               extra_existing_fields |> Enum.to_list(),
+               List.wrap(Map.get(existing, existing_fields))
+             ),
+             shared_fields
+             |> Enum.reduce(already_added_fields, fn shared_field, already_added_fields ->
+               MapSet.put(already_added_fields, shared_field)
+             end), extra_new_fields}
+          end)
+
+        acc
+        |> maybe_add_fields(new_fields |> Enum.to_list(), List.wrap(role))
+      end)
+    end)
+  end
+
+  #  input: %{
+  #    nil => %{
+  #      [:basic_field] => [:admin, "admin", :user, {:guest_roles, :guest}],
+  #      [:created_at, :only_accessible_for_user_if_coming_from_root_resource, :updated_at] => [
+  #        :admin,
+  #        "admin"
+  #      ]
+  #    },
+  #    {Ash.Policy.Check.AccessingFrom,
+  #     [source: AshRbacTest.RootResource, relationship: :shared_resource]} => %{
+  #      [:only_accessible_for_user_if_coming_from_root_resource] => [:user]
+  #    }
+  #  },
+  #  output: [
+  #    {[:basic_field], [:admin, "admin", :user, {:guest_roles, :guest}]},
+  #    {[:created_at, :only_accessible_for_user_if_coming_from_root_resource, :updated_at],
+  #     [:admin, "admin"]},
+  #    {[:only_accessible_for_user_if_coming_from_root_resource],
+  #     {Ash.Policy.Check.AccessingFrom,
+  #      [source: AshRbacTest.RootResource, relationship: :shared_resource]}, [:user]}
+  #  ]
+  defp create_policy_input_from_groups(groups) do
+    groups
+    |> Enum.flat_map(fn
+      {nil, fields} ->
+        fields
+        |> Enum.map(fn {fields, roles} ->
+          {fields, roles}
+        end)
+
+      {condition, fields} ->
+        fields
+        |> Enum.map(fn {fields, roles} ->
+          {fields, condition, roles}
+        end)
+    end)
+  end
+
+  defp add_policy_input_for_missing_fields(field_settings, all_fields, custom_policy_fields) do
+    missing_fields = missing_fields(field_settings, all_fields, custom_policy_fields)
+
+    if Enum.count(missing_fields) > 0 do
+      [{missing_fields, []} | field_settings]
+    else
+      field_settings
+    end
   end
 
   defp maybe_add_fields(acc, [], _), do: acc
