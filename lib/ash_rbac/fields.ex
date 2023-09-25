@@ -169,8 +169,7 @@ defmodule AshRbac.Fields do
       missing_fields = missing_fields(field_settings, all_fields, custom_policy_fields)
 
       if Enum.count(missing_fields) > 0 do
-        [{missing_fields, []}, field_settings]
-        |> IO.inspect(label: :missing_fields)
+        [{missing_fields, []} | field_settings]
       else
         field_settings
       end

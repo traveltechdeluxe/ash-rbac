@@ -33,7 +33,6 @@ defmodule AshRbac.Policies do
          dsl_state
          |> add_allow_policy()
      end}
-    |> IO.inspect()
   end
 
   defp transform_options(dsl_state) do
