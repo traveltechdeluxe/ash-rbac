@@ -1,6 +1,6 @@
 defmodule AshRbac.Fields do
   @moduledoc """
-  Adds the configured field policies to the resource
+  Adds the policies for fields to the dsl_state
   """
 
   use Spark.Dsl.Transformer

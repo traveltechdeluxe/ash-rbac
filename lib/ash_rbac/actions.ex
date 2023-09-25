@@ -1,4 +1,7 @@
 defmodule AshRbac.Actions do
+  @moduledoc """
+  Adds the policies for actions to the dsl_state
+  """
   use Spark.Dsl.Transformer
 
   alias AshRbac.Info
