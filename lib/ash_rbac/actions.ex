@@ -11,11 +11,9 @@ defmodule AshRbac.Actions do
     action_settings =
       Info.roles(dsl_state)
       |> transform_options()
-      |> dbg()
 
     dsl_state
     |> add_action_policies(action_settings)
-    |> dbg()
   end
 
   defp add_action_policies(dsl_state, action_settings) when action_settings == %{}, do: dsl_state
