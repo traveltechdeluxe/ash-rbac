@@ -4,8 +4,8 @@ defmodule AshRbac.Actions do
   """
   use Spark.Dsl.Transformer
 
-  alias AshRbac.Info
   alias Ash.Policy.Check.Builtins
+  alias AshRbac.Info
   alias AshRbac.Info
   alias Spark.Dsl.Transformer
 

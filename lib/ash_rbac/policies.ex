@@ -5,9 +5,9 @@ defmodule AshRbac.Policies do
 
   use Spark.Dsl.Transformer
 
-  alias AshRbac.Fields
-  alias AshRbac.Actions
   alias Ash.Policy.Check.Builtins
+  alias AshRbac.Actions
+  alias AshRbac.Fields
   alias AshRbac.Info
   alias Spark.Dsl.Transformer
 
