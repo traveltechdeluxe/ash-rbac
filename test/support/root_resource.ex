@@ -41,6 +41,8 @@ defmodule AshRbacTest.RootResource do
 
     attribute(:admin_only, :integer, default: 2)
 
+    attribute :no_field_policy, :integer, default: 1
+
     create_timestamp(:created_at, private?: false)
     update_timestamp(:updated_at, private?: false)
   end

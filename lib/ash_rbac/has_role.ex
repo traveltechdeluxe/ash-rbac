@@ -21,8 +21,12 @@ defmodule AshRbac.HasRole do
 
   @impl true
   def match?(actor, _, options) do
-    Enum.any?(options[:role], fn {roles_field, role} ->
-      match(role, actor, roles_field)
+    Enum.any?(options[:role], fn
+      {roles_field, role} ->
+        match(role, actor, roles_field)
+
+      role ->
+        match(role, actor, :roles)
     end)
   end
 

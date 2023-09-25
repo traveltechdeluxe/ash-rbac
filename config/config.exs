@@ -8,7 +8,7 @@ config :ash, :use_all_identities_in_manage_relationship?, false
 
 config :ash, :policies,
   show_policy_breakdowns?: true,
-  log_policy_breakdowns: :debug,
+  log_policy_breakdowns: :error,
   log_successful_policy_breakdowns: :debug
 
 if Mix.env() == :dev do

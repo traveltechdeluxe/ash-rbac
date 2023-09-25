@@ -354,7 +354,7 @@ defmodule AshRbacTest do
             [
               %{
                 shared_resource: %{
-                  only_accesible_for_user_if_coming_from_root_resoure: nil,
+                  only_accessible_for_user_if_coming_from_root_resource: nil,
                   basic_field: 2
                 }
               }

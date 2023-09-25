@@ -25,7 +25,7 @@ defmodule AshRbac.Policies do
      case Info.public?(dsl_state) do
        false ->
          dsl_state
-         |> add_field_policies(field_settings)
+         |> Fields.transform()
          |> add_action_policies(action_settings)
          |> add_bypass(bypass, bypass_roles_field)
 
@@ -33,6 +33,7 @@ defmodule AshRbac.Policies do
          dsl_state
          |> add_allow_policy()
      end}
+    |> IO.inspect()
   end
 
   defp transform_options(dsl_state) do
@@ -126,13 +127,13 @@ defmodule AshRbac.Policies do
         Ash.Policy.Authorizer,
         [:field_policies, :field_policy_bypass],
         :authorize_if,
-        check: {AshRbac.HasRole, [role: [{roles_field, role}]]}
+        check: [Builtins.always()]
       )
 
     {:ok, policy} =
       Transformer.build_entity(Ash.Policy.Authorizer, [:field_policies], :field_policy_bypass,
         fields: :*,
-        condition: [Builtins.always()],
+        condition: [{AshRbac.HasRole, [role: [{roles_field, role}]]}],
         policies: [check]
       )
 
