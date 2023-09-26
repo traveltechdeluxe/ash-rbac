@@ -350,7 +350,7 @@ defmodule AshRbacTest do
              |> Api.read(actor: %{guest_roles: [@guest_role]})
   end
 
-  @tag :wip
+  @tag :unit
   test "user can only see attribute if accessing field comming from RootResource", _ do
     assert {:ok,
             [
