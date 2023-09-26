@@ -6,7 +6,7 @@ defmodule AshRbac.Fields do
   use Spark.Dsl.Transformer
 
   alias Ash.Policy.Check.Builtins
-  alias AshRbac.Fields.OptionTransformer
+  alias AshRbac.Fields.RoleTransformer
   alias AshRbac.Info
   alias Spark.Dsl.Transformer
 
@@ -14,7 +14,7 @@ defmodule AshRbac.Fields do
   def transform(dsl_state) do
     field_settings =
       Info.roles(dsl_state)
-      |> OptionTransformer.group_field_settings(
+      |> RoleTransformer.transform_roles(
         all_fields(dsl_state),
         custom_policy_fields(dsl_state)
       )

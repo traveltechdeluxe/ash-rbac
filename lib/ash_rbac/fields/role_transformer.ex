@@ -1,7 +1,7 @@
-defmodule AshRbac.Fields.OptionTransformer do
+defmodule AshRbac.Fields.RoleTransformer do
   @moduledoc false
 
-  def group_field_settings(roles, all_fields, custom_policy_fields) do
+  def transform_roles(roles, all_fields, custom_policy_fields) do
     roles
     |> prepare_data_for_grouping(all_fields)
     |> group_by_condition_and_fields()
@@ -12,7 +12,7 @@ defmodule AshRbac.Fields.OptionTransformer do
   @doc ~S"""
   Takes in all roles and transforms them into the following format
 
-      iex> AshRbac.Fields.OptionTransformer.prepare_data_for_grouping([
+      iex> AshRbac.Fields.RoleTransformer.prepare_data_for_grouping([
       ...>   %AshRbac.Role{
       ...>     role: [:admin, "admin"],
       ...>     roles_field: nil,
@@ -81,7 +81,7 @@ defmodule AshRbac.Fields.OptionTransformer do
   @doc ~S"""
   Groups the policy settings by condition -> fields -> user
 
-  iex> AshRbac.Fields.OptionTransformer.group_by_condition_and_fields([
+  iex> AshRbac.Fields.RoleTransformer.group_by_condition_and_fields([
   ...>  %{
   ...>    condition: nil,
   ...>    fields: [
@@ -156,7 +156,7 @@ defmodule AshRbac.Fields.OptionTransformer do
   Creates one tuple per policy that needs to be applied
 
 
-  iex> AshRbac.Fields.OptionTransformer.create_policy_input_from_groups(%{
+  iex> AshRbac.Fields.RoleTransformer.create_policy_input_from_groups(%{
   ...>  nil => %{
   ...>    [:basic_field] => [:admin, "admin", :user, {:guest_roles, :guest}],
   ...>    [:created_at, :only_accessible_for_user_if_coming_from_root_resource, :updated_at] => [

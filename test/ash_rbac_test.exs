@@ -1,7 +1,7 @@
 defmodule AshRbacTest do
   use ExUnit.Case, async: true
 
-  doctest AshRbac.Fields.OptionTransformer
+  doctest AshRbac.Fields.RoleTransformer
 
   alias AshRbacTest.{Api, ChildResource, RootResource, SharedResource}
 
