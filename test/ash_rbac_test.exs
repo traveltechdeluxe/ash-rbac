@@ -1,6 +1,8 @@
 defmodule AshRbacTest do
   use ExUnit.Case, async: true
 
+  doctest AshRbac.Fields.OptionTransformer
+
   alias AshRbacTest.{Api, ChildResource, RootResource, SharedResource}
 
   @bypass_role :super_admin
