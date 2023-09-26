@@ -123,18 +123,17 @@ defmodule AshRbac.Fields.OptionTransformer do
 
       acc
       |> Map.update(condition, %{(fields |> Enum.to_list()) => List.wrap(role)}, fn existing ->
-        {acc, _, new_fields} =
+        {acc, fields_still_without_policy} =
           existing
           |> Map.keys()
-          |> Enum.reduce({%{}, MapSet.new(), fields}, fn existing_fields,
-                                                         {acc, already_added_fields, new_fields} ->
+          |> Enum.reduce({%{}, fields}, fn existing_fields, {acc, new_fields} ->
             existing_fields_set = MapSet.new(existing_fields)
 
             shared_fields = MapSet.intersection(new_fields, existing_fields_set)
 
             extra_existing_fields = MapSet.difference(existing_fields_set, shared_fields)
 
-            extra_new_fields = MapSet.difference(new_fields, shared_fields)
+            fields_still_without_policy = MapSet.difference(new_fields, shared_fields)
 
             {acc
              |> maybe_add_fields(
@@ -144,20 +143,12 @@ defmodule AshRbac.Fields.OptionTransformer do
              |> maybe_add_fields(
                extra_existing_fields |> Enum.to_list(),
                List.wrap(Map.get(existing, existing_fields))
-             ), get_fields_that_still_need_a_policy(shared_fields, already_added_fields),
-             extra_new_fields}
+             ), fields_still_without_policy}
           end)
 
         acc
-        |> maybe_add_fields(new_fields |> Enum.to_list(), List.wrap(role))
+        |> maybe_add_fields(fields_still_without_policy |> Enum.to_list(), List.wrap(role))
       end)
-    end)
-  end
-
-  defp get_fields_that_still_need_a_policy(shared_fields, already_added_fields) do
-    shared_fields
-    |> Enum.reduce(already_added_fields, fn shared_field, already_added_fields ->
-      MapSet.put(already_added_fields, shared_field)
     end)
   end
 
