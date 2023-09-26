@@ -144,16 +144,20 @@ defmodule AshRbac.Fields.OptionTransformer do
              |> maybe_add_fields(
                extra_existing_fields |> Enum.to_list(),
                List.wrap(Map.get(existing, existing_fields))
-             ),
-             shared_fields
-             |> Enum.reduce(already_added_fields, fn shared_field, already_added_fields ->
-               MapSet.put(already_added_fields, shared_field)
-             end), extra_new_fields}
+             ), get_fields_that_still_need_a_policy(shared_fields, already_added_fields),
+             extra_new_fields}
           end)
 
         acc
         |> maybe_add_fields(new_fields |> Enum.to_list(), List.wrap(role))
       end)
+    end)
+  end
+
+  defp get_fields_that_still_need_a_policy(shared_fields, already_added_fields) do
+    shared_fields
+    |> Enum.reduce(already_added_fields, fn shared_field, already_added_fields ->
+      MapSet.put(already_added_fields, shared_field)
     end)
   end
 

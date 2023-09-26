@@ -6,9 +6,9 @@ defmodule AshRbac.Fields do
   use Spark.Dsl.Transformer
 
   alias Ash.Policy.Check.Builtins
+  alias AshRbac.Fields.OptionTransformer
   alias AshRbac.Info
   alias Spark.Dsl.Transformer
-  alias AshRbac.Fields.OptionTransformer
 
   @impl true
   def transform(dsl_state) do
