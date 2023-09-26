@@ -13,7 +13,7 @@ defmodule AshRbac.Actions do
   def transform(dsl_state) do
     action_settings =
       Info.roles(dsl_state)
-      |> transform_roles()
+      |> roles_to_action_settings()
 
     dsl_state
     |> add_action_policies(action_settings)
@@ -75,7 +75,7 @@ defmodule AshRbac.Actions do
   end
 
   # Takes the roles and transforms them into a map of %{{action, conditions} => roles}
-  defp transform_roles(roles) do
+  defp roles_to_action_settings(roles) do
     roles
     |> Enum.reduce(%{}, fn %{actions: actions} = role, acc ->
       actions

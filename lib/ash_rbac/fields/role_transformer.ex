@@ -1,7 +1,7 @@
 defmodule AshRbac.Fields.RoleTransformer do
   @moduledoc false
 
-  def transform_roles(roles, all_fields, custom_policy_fields) do
+  def roles_to_field_settings(roles, all_fields, custom_policy_fields) do
     roles
     |> prepare_data_for_grouping(all_fields)
     |> group_by_condition_and_fields()

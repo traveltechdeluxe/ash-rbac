@@ -14,7 +14,7 @@ defmodule AshRbac.Fields do
   def transform(dsl_state) do
     field_settings =
       Info.roles(dsl_state)
-      |> RoleTransformer.transform_roles(
+      |> RoleTransformer.roles_to_field_settings(
         all_fields(dsl_state),
         custom_policy_fields(dsl_state)
       )
