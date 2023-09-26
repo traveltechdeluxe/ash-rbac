@@ -44,8 +44,8 @@ The previous example will generate the following policies:
 
 ```elixir
 field_policies do
-  field_policy [:name, :email]do
-    authorize_if {AshRbac.HasRole, [role: [:user]]}
+  field_policy [:name, :email], [{AshRbac.HasRole, [role: [:user]]}] do
+    authorize_if always()
   end
 
   # it also adds a policy for all other fields like this
@@ -56,6 +56,42 @@ end
 
 policies do
   policy [action(:read), {AshRbac.HasRole, [role: [:user]]}] do
+    authorize_if always()
+  end
+end
+```
+
+It is possible to add extra conditions to fields and actions:
+
+```elixir
+  rbac do
+    role :user do
+      fields [:name, {:email, actor_attribute_equals(:field, "value")}]
+      actions [{:read, accessing_from(RelatedResource, :path)}]
+    end
+  end
+```
+
+The conditions are added to the generated policies as well.
+
+```elixir
+field_policies do
+  field_policy [:name], [{AshRbac.HasRole, [role: [:user]]}] do
+    authorize_if always()
+  end
+
+  field_policy [:email], [{AshRbac.HasRole, [role: [:user], actor_attribute_equals(:field, "value")]}] do
+    authorize_if always()
+  end
+
+  # it also adds a policy for all other fields like this
+  field_policy [:other_fields, ...] do
+    forbid_if always()
+  end
+end
+
+policies do
+  policy [action(:read), {hAshRbac.HasRole, [role: [:user]]}, accessing_from(RelatedResource, :path)] do
     authorize_if always()
   end
 end

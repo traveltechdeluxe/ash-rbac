@@ -41,6 +41,8 @@ defmodule AshRbacTest.RootResource do
 
     attribute(:admin_only, :integer, default: 2)
 
+    attribute :no_field_policy, :integer, default: 1
+
     create_timestamp(:created_at, private?: false)
     update_timestamp(:updated_at, private?: false)
   end
@@ -54,6 +56,12 @@ defmodule AshRbacTest.RootResource do
     has_one :admin_only_child, ChildResource do
       source_attribute(:id)
       destination_attribute(:root_id)
+    end
+
+    belongs_to :shared_resource, AshRbacTest.SharedResource do
+      source_attribute :shared_resource_id
+      destination_attribute :id
+      attribute_writable? true
     end
   end
 

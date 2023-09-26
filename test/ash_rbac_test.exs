@@ -1,6 +1,8 @@
 defmodule AshRbacTest do
   use ExUnit.Case, async: true
 
+  doctest AshRbac.Fields.RoleTransformer
+
   alias AshRbacTest.{Api, ChildResource, RootResource, SharedResource}
 
   @bypass_role :super_admin
@@ -10,8 +12,12 @@ defmodule AshRbacTest do
   @guest_role :guest
 
   setup do
-    root_resource = Api.create!(Ash.Changeset.for_create(RootResource, :create))
     shared_resource = Api.create!(Ash.Changeset.for_create(SharedResource, :create))
+
+    root_resource =
+      Api.create!(
+        Ash.Changeset.for_create(RootResource, :create, %{shared_resource_id: shared_resource.id})
+      )
 
     child_resource =
       Api.create!(Ash.Changeset.for_create(ChildResource, :create, %{root_id: root_resource.id}))
@@ -342,5 +348,22 @@ defmodule AshRbacTest do
              |> Ash.Query.for_read(:read, actor: %{guest_roles: [@guest_role]})
              |> Ash.Query.load([:children])
              |> Api.read(actor: %{guest_roles: [@guest_role]})
+  end
+
+  @tag :unit
+  test "user can only see attribute if accessing field comming from RootResource", _ do
+    assert {:ok,
+            [
+              %{
+                shared_resource: %{
+                  only_accessible_for_user_if_coming_from_root_resource: nil,
+                  basic_field: 2
+                }
+              }
+            ]} =
+             RootResource
+             |> Ash.Query.for_read(:read, actor: %{roles: [@user_role]})
+             |> Ash.Query.load([:shared_resource])
+             |> Api.read(actor: %{roles: [@user_role]})
   end
 end

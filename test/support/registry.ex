@@ -3,8 +3,9 @@ defmodule AshRbacTest.Registry do
   use Ash.Registry
 
   entries do
-    entry AshRbacTest.RootResource
     entry AshRbacTest.ChildResource
+    entry AshRbacTest.OtherResource
+    entry AshRbacTest.RootResource
     entry AshRbacTest.SharedResource
   end
 end
