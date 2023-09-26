@@ -72,7 +72,7 @@ It is also possible to add extra conditions to fields and actions
   end
 ```
 
-The conditions are added to the policies as well.
+The conditions are added to the generated policies as well.
 
 ```elixir
 field_policies do
