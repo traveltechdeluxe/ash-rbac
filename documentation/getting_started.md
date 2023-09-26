@@ -61,7 +61,7 @@ policies do
 end
 ```
 
-It is also possible to add extra conditions to fields and actions
+It is possible to add extra conditions to fields and actions:
 
 ```elixir
   rbac do
