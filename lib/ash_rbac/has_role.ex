@@ -7,16 +7,25 @@ defmodule AshRbac.HasRole do
   @impl true
   def describe(options) do
     options[:role]
-    |> Enum.map_join(" or ", fn {roles_field, roles} ->
-      roles = roles |> List.wrap()
+    |> List.wrap()
+    |> Enum.map_join(" or ", fn
+      {roles_field, roles} ->
+        create_description(roles_field, roles)
 
-      if Enum.count(roles) > 1 do
-        "any of the roles #{inspect(roles)} for field #{inspect(roles_field)}"
-      else
-        "the role #{inspect(Enum.at(roles, 0))} for field #{inspect(roles_field)}"
-      end
+      roles ->
+        create_description(:roles, roles)
     end)
     |> then(&"Checks if the actor has #{&1}")
+  end
+
+  defp create_description(roles_field, roles) do
+    roles = roles |> List.wrap()
+
+    if Enum.count(roles) > 1 do
+      "any of the roles #{inspect(roles)} for field #{inspect(roles_field)}"
+    else
+      "the role #{inspect(Enum.at(roles, 0))} for field #{inspect(roles_field)}"
+    end
   end
 
   @impl true
