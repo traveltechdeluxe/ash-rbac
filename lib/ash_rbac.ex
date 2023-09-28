@@ -35,7 +35,7 @@ defmodule AshRbac do
                :atom,
                {:tuple,
                 [
-                  :atom,
+                  {:or, [:atom, {:list, :atom}]},
                   {
                     :or,
                     [
