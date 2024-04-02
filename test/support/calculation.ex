@@ -1,6 +1,6 @@
 defmodule AshRbacTest.Calculation do
   @moduledoc false
-  use Ash.Calculation
+  use Ash.Resource.Calculation
 
   @impl true
   def calculate(records, _, _) do

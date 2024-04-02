@@ -5,7 +5,7 @@ defmodule AshRbac do
     name: :role,
     imports: [
       Ash.Policy.Check.Builtins,
-      Ash.Filter.TemplateHelpers
+      Ash.Expr
     ],
     describe: "If the check is true, the request is forbidden, otherwise run remaining checks.",
     target: AshRbac.Role,

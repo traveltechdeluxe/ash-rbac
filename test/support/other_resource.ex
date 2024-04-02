@@ -4,6 +4,7 @@ defmodule AshRbacTest.OtherResource do
   """
 
   use Ash.Resource,
+    domain: AshRbacTest.Domain,
     data_layer: Ash.DataLayer.Ets,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshRbac]
@@ -43,22 +44,23 @@ defmodule AshRbacTest.OtherResource do
   end
 
   actions do
+    default_accept [:*]
     defaults([:create, :read, :update, :destroy])
   end
 
   attributes do
-    uuid_primary_key(:id)
+    uuid_primary_key :id
 
-    attribute(:root_id, :uuid)
+    attribute :root_id, :uuid, public?: true
 
-    attribute :field_with_custom_field_policy, :string
+    attribute :field_with_custom_field_policy, :string, public?: true
     # an attribute that doesn't have a field policy
     # and isn't listed in any rbac role block
     # the extension still needs to add a policy
     # because all fields need to have a policy
-    attribute :field_without_policy, :string
+    attribute :field_without_policy, :string, public?: true
 
-    create_timestamp(:created_at, private?: false)
-    update_timestamp(:updated_at, private?: false)
+    create_timestamp(:created_at, public?: true)
+    update_timestamp(:updated_at, public?: true)
   end
 end
