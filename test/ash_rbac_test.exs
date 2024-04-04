@@ -285,7 +285,9 @@ defmodule AshRbacTest do
   test "admin role can only create and read", _ do
     assert {:ok, %{admin_only: 5} = resource} =
              RootResource
-             |> Ash.Changeset.for_create(:create, %{admin_only: 5}, actor: %{roles: [@admin_role]})
+             |> Ash.Changeset.for_create(:create, %{admin_only: 5},
+               actor: %{roles: [@admin_role]}
+             )
              |> Ash.create(actor: %{roles: [@admin_role]})
 
     assert {:ok, [%{admin_only: 2}, %{admin_only: 5}]} =
