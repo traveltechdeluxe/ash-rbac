@@ -20,13 +20,13 @@ Benchmarking roles_check_atom ...
 Benchmarking roles_check_string ...
 
 Name                         ips        average  deviation         median         99th %
-role_check_atom           4.92 M      203.39 ns ±22537.80%         130 ns         340 ns
-roles_check_atom          4.78 M      209.29 ns ±18695.65%         140 ns         380 ns
-roles_check_string        4.77 M      209.44 ns ±18747.24%         140 ns         370 ns
-role_check_string         4.65 M      215.06 ns ±19429.12%         140 ns         370 ns
+roles_check_atom          5.22 M      191.51 ns ±17299.34%         130 ns         380 ns
+role_check_atom           4.93 M      202.63 ns ±17256.92%         120 ns         390 ns
+role_check_string         4.86 M      205.74 ns ±14920.22%         140 ns         390 ns
+roles_check_string        4.80 M      208.31 ns ±14046.46%         140 ns         400 ns
 
 Comparison: 
-role_check_atom           4.92 M
-roles_check_atom          4.78 M - 1.03x slower +5.90 ns
-roles_check_string        4.77 M - 1.03x slower +6.05 ns
-role_check_string         4.65 M - 1.06x slower +11.67 ns
+roles_check_atom          5.22 M
+role_check_atom           4.93 M - 1.06x slower +11.13 ns
+role_check_string         4.86 M - 1.07x slower +14.23 ns
+roles_check_string        4.80 M - 1.09x slower +16.80 ns
