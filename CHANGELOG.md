@@ -8,6 +8,7 @@ adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
 ### Features
 
+- Ash 3.0 support
 - allow adding custom conditions to fields
 
 ## 2023-09-19 0.4.0
