@@ -105,7 +105,7 @@ defmodule AshRbac.Fields.RoleTransformer do
   %{
     nil => %{
       [:basic_field] => [:admin, "admin", :user, {:guest_roles, :guest}],
-      [:created_at, :only_accessible_for_user_if_coming_from_root_resource, :updated_at] => [
+      [:created_at, :updated_at, :only_accessible_for_user_if_coming_from_root_resource] => [
         :admin,
         "admin"
       ]
