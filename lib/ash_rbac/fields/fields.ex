@@ -113,7 +113,7 @@ defmodule AshRbac.Fields do
       %{primary_key?: true} ->
         true
 
-      %{private?: true} ->
+      %{public?: false} ->
         true
 
       _ ->
