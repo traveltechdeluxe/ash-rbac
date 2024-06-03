@@ -1,6 +1,7 @@
 defmodule AshRbacTest.SharedResource do
   @moduledoc false
   use Ash.Resource,
+    domain: AshRbacTest.Domain,
     data_layer: Ash.DataLayer.Ets,
     authorizers: [Ash.Policy.Authorizer],
     extensions: [AshRbac]
@@ -36,17 +37,18 @@ defmodule AshRbacTest.SharedResource do
   end
 
   actions do
+    default_accept [:*]
     defaults([:create, :read, :update, :destroy])
   end
 
   attributes do
-    uuid_primary_key(:id)
+    uuid_primary_key :id
 
-    attribute(:basic_field, :integer, default: 2)
+    attribute :basic_field, :integer, default: 2, public?: true
 
-    attribute :only_accessible_for_user_if_coming_from_root_resource, :string
+    attribute :only_accessible_for_user_if_coming_from_root_resource, :string, public?: true
 
-    create_timestamp(:created_at, private?: false)
-    update_timestamp(:updated_at, private?: false)
+    create_timestamp :created_at, public?: true
+    update_timestamp :updated_at, public?: true
   end
 end

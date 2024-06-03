@@ -4,7 +4,7 @@ defmodule AshRbac.MixProject do
   def project do
     [
       app: :ash_rbac,
-      version: "0.5.0",
+      version: "0.6.0",
       description: "A small extension for easier application of policies",
       package: [
         maintainers: ["travel tech d.luxe GmbH"],
@@ -61,7 +61,8 @@ defmodule AshRbac.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, "~> 2.0"},
+      {:ash, "~> 3.0"},
+      {:simple_sat, ">= 0.0.0", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:elixir_uuid, "~> 1.2", only: [:test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},

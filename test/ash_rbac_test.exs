@@ -3,7 +3,7 @@ defmodule AshRbacTest do
 
   doctest AshRbac.Fields.RoleTransformer
 
-  alias AshRbacTest.{Api, ChildResource, RootResource, SharedResource}
+  alias AshRbacTest.{ChildResource, RootResource, SharedResource}
 
   @bypass_role :super_admin
   @admin_role :admin
@@ -12,15 +12,19 @@ defmodule AshRbacTest do
   @guest_role :guest
 
   setup do
-    shared_resource = Api.create!(Ash.Changeset.for_create(SharedResource, :create))
+    shared_resource =
+      Ash.create!(Ash.Changeset.for_create(SharedResource, :create), authorize?: false)
 
     root_resource =
-      Api.create!(
-        Ash.Changeset.for_create(RootResource, :create, %{shared_resource_id: shared_resource.id})
+      Ash.create!(
+        Ash.Changeset.for_create(RootResource, :create, %{shared_resource_id: shared_resource.id}),
+        authorize?: false
       )
 
     child_resource =
-      Api.create!(Ash.Changeset.for_create(ChildResource, :create, %{root_id: root_resource.id}))
+      Ash.create!(Ash.Changeset.for_create(ChildResource, :create, %{root_id: root_resource.id}),
+        authorize?: false
+      )
 
     [
       root_resource: root_resource,
@@ -35,16 +39,19 @@ defmodule AshRbacTest do
              :ok,
              [
                %RootResource{
-                 admin_only: nil,
-                 admin_only_child: %Ash.NotLoaded{type: :relationship},
-                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
-                 admin_only_number: %Ash.NotLoaded{type: :calculation},
+                 admin_only: %Ash.NotLoaded{type: :attribute, field: :admin_only},
+                 admin_only_child: %Ash.NotLoaded{type: :relationship, field: :admin_only_child},
+                 admin_only_children: %Ash.NotLoaded{
+                   type: :aggregate,
+                   field: :admin_only_children
+                 },
+                 admin_only_number: %Ash.NotLoaded{type: :calculation, field: :admin_only_number},
                  child: %child{},
                  children: 1,
-                 created_at: nil,
+                 created_at: %Ash.NotLoaded{type: :attribute, field: :created_at},
                  id: _,
                  number: 1,
-                 updated_at: nil,
+                 updated_at: %Ash.NotLoaded{type: :attribute, field: :updated_at},
                  aggregates: %{},
                  calculations: %{}
                }
@@ -53,7 +60,7 @@ defmodule AshRbacTest do
              RootResource
              |> Ash.Query.select([:id])
              |> Ash.Query.load([:child, :number, :children])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
 
     assert child == ChildResource
   end
@@ -79,7 +86,7 @@ defmodule AshRbacTest do
              ]
            } =
              RootResource
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
 
     # selecting a forbidden field
     assert {
@@ -87,54 +94,64 @@ defmodule AshRbacTest do
              [
                %RootResource{
                  admin_only: %Ash.ForbiddenField{field: :admin_only, type: :attribute},
-                 admin_only_child: %Ash.NotLoaded{},
-                 admin_only_children: %Ash.NotLoaded{},
-                 admin_only_number: %Ash.NotLoaded{type: :calculation},
-                 child: %Ash.NotLoaded{},
-                 children: %Ash.NotLoaded{},
-                 created_at: nil,
+                 admin_only_child: %Ash.NotLoaded{type: :relationship, field: :admin_only_child},
+                 admin_only_children: %Ash.NotLoaded{
+                   type: :aggregate,
+                   field: :admin_only_children
+                 },
+                 admin_only_number: %Ash.NotLoaded{type: :calculation, field: :admin_only_number},
+                 child: %Ash.NotLoaded{type: :relationship, field: :child},
+                 children: %Ash.NotLoaded{type: :aggregate, field: :children},
+                 created_at: %Ash.NotLoaded{type: :attribute, field: :created_at},
                  id: _,
                  number: %Ash.NotLoaded{},
-                 updated_at: nil
+                 updated_at: %Ash.NotLoaded{type: :attribute, field: :updated_at},
+                 aggregates: %{},
+                 calculations: %{}
                }
              ]
            } =
              RootResource
              |> Ash.Query.select([:admin_only])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
 
     # selecting a forbidden calculation
     assert {
              :ok,
              [
                %RootResource{
-                 admin_only: nil,
-                 admin_only_child: %Ash.NotLoaded{type: :relationship},
-                 admin_only_children: %Ash.NotLoaded{type: :aggregate},
+                 admin_only: %Ash.NotLoaded{type: :attribute, field: :admin_only},
+                 admin_only_child: %Ash.NotLoaded{type: :relationship, field: :admin_only_child},
+                 admin_only_children: %Ash.NotLoaded{
+                   type: :aggregate,
+                   field: :admin_only_children
+                 },
                  admin_only_number: %Ash.ForbiddenField{
                    field: :admin_only_number,
                    type: :calculation
                  },
-                 child: %Ash.NotLoaded{type: :relationship},
-                 children: %Ash.NotLoaded{type: :aggregate},
-                 created_at: nil,
+                 child: %Ash.NotLoaded{type: :relationship, field: :child},
+                 children: %Ash.NotLoaded{type: :aggregate, field: :children},
+                 created_at: %Ash.NotLoaded{type: :attribute, field: :created_at},
                  id: _,
-                 number: %Ash.NotLoaded{type: :calculation},
-                 updated_at: nil
+                 number: %Ash.NotLoaded{type: :calculation, field: :number},
+                 updated_at: %Ash.NotLoaded{type: :attribute, field: :updated_at},
+                 aggregates: %{},
+                 calculations: %{}
                }
              ]
            } =
              RootResource
              |> Ash.Query.select([:id])
              |> Ash.Query.load([:admin_only_number])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
 
     # selecting a forbidden aggregate
     assert {
              :ok,
              [
                %RootResource{
-                 admin_only: nil,
+                 admin_only: %Ash.NotLoaded{type: :attribute, field: :admin_only},
                  admin_only_child: %Ash.NotLoaded{type: :relationship},
                  admin_only_children: %Ash.ForbiddenField{
                    field: :admin_only_children,
@@ -143,17 +160,19 @@ defmodule AshRbacTest do
                  admin_only_number: %Ash.NotLoaded{type: :calculation},
                  child: %Ash.NotLoaded{type: :relationship},
                  children: %Ash.NotLoaded{type: :aggregate},
-                 created_at: nil,
+                 created_at: %Ash.NotLoaded{type: :attribute, field: :created_at},
                  id: _,
                  number: %Ash.NotLoaded{type: :calculation},
-                 updated_at: nil
+                 updated_at: %Ash.NotLoaded{type: :attribute, field: :updated_at},
+                 aggregates: %{},
+                 calculations: %{}
                }
              ]
            } =
              RootResource
              |> Ash.Query.select([:id])
              |> Ash.Query.load([:admin_only_children])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
 
     # selecting a forbidden relationship
     assert {
@@ -163,7 +182,7 @@ defmodule AshRbacTest do
              RootResource
              |> Ash.Query.select([:id])
              |> Ash.Query.load([:admin_only_child])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
   end
 
   @tag :unit
@@ -218,7 +237,7 @@ defmodule AshRbacTest do
                :number,
                :admin_only_number
              ])
-             |> Api.read(actor: %{roles: [@bypass_role]})
+             |> Ash.read(actor: %{roles: [@bypass_role]})
 
     assert {:ok, _} = UUID.info(root_id)
     assert {:ok, _} = UUID.info(admin_only_child_id)
@@ -237,90 +256,92 @@ defmodule AshRbacTest do
     assert {:ok, resource} =
              RootResource
              |> Ash.Changeset.for_create(:create, %{}, actor: %{roles: [@bypass_role]})
-             |> Api.create(actor: %{roles: [@bypass_role]})
+             |> Ash.create(actor: %{roles: [@bypass_role]})
 
     assert {:ok, [_, _]} =
              RootResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@bypass_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@bypass_role]})
              |> Ash.Query.sort([:created_at])
-             |> Api.read(actor: %{roles: [@bypass_role]})
+             |> Ash.read(actor: %{roles: [@bypass_role]})
 
     assert {:ok, resource} =
              resource
              |> Ash.Changeset.for_update(:update, %{}, actor: %{roles: [@bypass_role]})
-             |> Api.update(actor: %{roles: [@bypass_role]})
+             |> Ash.update(actor: %{roles: [@bypass_role]})
 
     assert :ok ==
              resource
-             |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@bypass_role]})
-             |> Api.destroy(actor: %{roles: [@bypass_role]})
+             |> Ash.Changeset.for_destroy(:destroy, %{}, actor: %{roles: [@bypass_role]})
+             |> Ash.destroy(actor: %{roles: [@bypass_role]})
 
     assert {:ok, [_]} =
              RootResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@bypass_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@bypass_role]})
              |> Ash.Query.sort([:created_at])
-             |> Api.read(actor: %{roles: [@bypass_role]})
+             |> Ash.read(actor: %{roles: [@bypass_role]})
   end
 
   @tag :unit
   test "admin role can only create and read", _ do
     assert {:ok, %{admin_only: 5} = resource} =
              RootResource
-             |> Ash.Changeset.for_create(:create, %{admin_only: 5}, actor: %{roles: [@admin_role]})
-             |> Api.create(actor: %{roles: [@admin_role]})
+             |> Ash.Changeset.for_create(:create, %{admin_only: 5},
+               actor: %{roles: [@admin_role]}
+             )
+             |> Ash.create(actor: %{roles: [@admin_role]})
 
     assert {:ok, [%{admin_only: 2}, %{admin_only: 5}]} =
              RootResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@admin_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@admin_role]})
              |> Ash.Query.sort([:created_at])
-             |> Api.read(actor: %{roles: [@admin_role]})
+             |> Ash.read(actor: %{roles: [@admin_role]})
 
     assert {:error, %Ash.Error.Forbidden{}} =
              resource
              |> Ash.Changeset.for_update(:update, %{}, actor: %{roles: [@admin_role]})
-             |> Api.update(actor: %{roles: [@admin_role]})
+             |> Ash.update(actor: %{roles: [@admin_role]})
 
     assert {:error, %Ash.Error.Forbidden{}} =
              resource
-             |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@admin_role]})
-             |> Api.destroy(actor: %{roles: [@admin_role]})
+             |> Ash.Changeset.for_destroy(:destroy, %{}, actor: %{roles: [@admin_role]})
+             |> Ash.destroy(actor: %{roles: [@admin_role]})
   end
 
   @tag :unit
   test "user role can only read", %{root_resource: resource} do
     assert {:ok, [_]} =
              RootResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@user_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@user_role]})
              |> Ash.Query.sort([:created_at])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
 
     assert {:error, %Ash.Error.Forbidden{}} =
              RootResource
              |> Ash.Changeset.for_create(:create, %{}, actor: %{roles: [@user_role]})
-             |> Api.create(actor: %{roles: [@user_role]})
+             |> Ash.create(actor: %{roles: [@user_role]})
 
     assert {:error, %Ash.Error.Forbidden{}} =
              resource
              |> Ash.Changeset.for_update(:update, %{}, actor: %{roles: [@user_role]})
-             |> Api.update(actor: %{roles: [@user_role]})
+             |> Ash.update(actor: %{roles: [@user_role]})
 
     assert {:error, %Ash.Error.Forbidden{}} =
              resource
-             |> Ash.Changeset.for_destroy(:destroy, actor: %{roles: [@user_role]})
-             |> Api.destroy(actor: %{roles: [@user_role]})
+             |> Ash.Changeset.for_destroy(:destroy, %{}, actor: %{roles: [@user_role]})
+             |> Ash.destroy(actor: %{roles: [@user_role]})
   end
 
   @tag :unit
   test "`:admin` and \"admin\" have read access", _ do
     assert {:ok, [%{basic_field: 2}]} =
              SharedResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@admin_role]})
-             |> Api.read(actor: %{roles: [@admin_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@admin_role]})
+             |> Ash.read(actor: %{roles: [@admin_role]})
 
     assert {:ok, [%{basic_field: 2}]} =
              SharedResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@admin_string_role]})
-             |> Api.read(actor: %{roles: [@admin_string_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@admin_string_role]})
+             |> Ash.read(actor: %{roles: [@admin_string_role]})
   end
 
   @tag :unit
@@ -333,9 +354,9 @@ defmodule AshRbacTest do
               }
             ]} =
              RootResource
-             |> Ash.Query.for_read(:read, actor: %{guest_roles: [@guest_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{guest_roles: [@guest_role]})
              |> Ash.Query.load([:children])
-             |> Api.read(actor: %{guest_roles: [@guest_role]})
+             |> Ash.read(actor: %{guest_roles: [@guest_role]})
   end
 
   @tag :unit
@@ -350,8 +371,8 @@ defmodule AshRbacTest do
               }
             ]} =
              RootResource
-             |> Ash.Query.for_read(:read, actor: %{roles: [@user_role]})
+             |> Ash.Query.for_read(:read, %{}, actor: %{roles: [@user_role]})
              |> Ash.Query.load([:shared_resource])
-             |> Api.read(actor: %{roles: [@user_role]})
+             |> Ash.read(actor: %{roles: [@user_role]})
   end
 end
