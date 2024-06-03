@@ -74,9 +74,7 @@ defmodule AshRbacTest do
                  created_at: %Ash.ForbiddenField{field: :created_at, type: :attribute},
                  id: _,
                  number: %Ash.NotLoaded{type: :calculation},
-                 updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute},
-                 aggregates: %{},
-                 calculations: %{}
+                 updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute}
                }
              ]
            } =
@@ -97,11 +95,7 @@ defmodule AshRbacTest do
                  created_at: nil,
                  id: _,
                  number: %Ash.NotLoaded{},
-                 updated_at: nil,
-                 aggregates: %{},
-                 calculations: %{
-                   {:__ash_fields_are_visible__, [:admin_only]} => false
-                 }
+                 updated_at: nil
                }
              ]
            } =
@@ -126,11 +120,7 @@ defmodule AshRbacTest do
                  created_at: nil,
                  id: _,
                  number: %Ash.NotLoaded{type: :calculation},
-                 updated_at: nil,
-                 aggregates: %{},
-                 calculations: %{
-                   {:__ash_fields_are_visible__, [:admin_only_number]} => false
-                 }
+                 updated_at: nil
                }
              ]
            } =
@@ -156,9 +146,7 @@ defmodule AshRbacTest do
                  created_at: nil,
                  id: _,
                  number: %Ash.NotLoaded{type: :calculation},
-                 updated_at: nil,
-                 aggregates: %{},
-                 calculations: %{}
+                 updated_at: nil
                }
              ]
            } =
