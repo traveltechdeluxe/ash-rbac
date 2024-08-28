@@ -239,9 +239,9 @@ defmodule AshRbacTest do
              ])
              |> Ash.read(actor: %{roles: [@bypass_role]})
 
-    assert {:ok, _} = UUID.info(root_id)
-    assert {:ok, _} = UUID.info(admin_only_child_id)
-    assert {:ok, _} = UUID.info(child_id)
+    assert Ash.Type.UUID.matches_type?(root_id, []) == true
+    assert Ash.Type.UUID.matches_type?(admin_only_child_id, []) == true
+    assert Ash.Type.UUID.matches_type?(child_id, []) == true
 
     assert DateTime.to_string(created_at)
     assert DateTime.to_string(updated_at)
