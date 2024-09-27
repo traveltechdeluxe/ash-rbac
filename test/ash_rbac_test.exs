@@ -82,7 +82,8 @@ defmodule AshRbacTest do
                  created_at: %Ash.ForbiddenField{field: :created_at, type: :attribute},
                  id: _,
                  number: %Ash.NotLoaded{type: :calculation},
-                 updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute}
+                 updated_at: %Ash.ForbiddenField{field: :updated_at, type: :attribute},
+                 inserted_at: %Ash.ForbiddenField{field: :inserted_at, type: :attribute}
                }
              ]
            } =
@@ -200,8 +201,8 @@ defmodule AshRbacTest do
                    __meta__: %Ecto.Schema.Metadata{state: :loaded},
                    id: admin_only_child_id,
                    root_id: root_id,
-                   created_at: admin_only_child_created_at,
-                   updated_at: admin_only_child_updated_at,
+                   created_at: %DateTime{},
+                   updated_at: %DateTime{},
                    field_with_custom_field_policy: nil,
                    aggregates: %{},
                    calculations: %{},
@@ -211,8 +212,8 @@ defmodule AshRbacTest do
                    __meta__: %Ecto.Schema.Metadata{state: :loaded},
                    id: child_id,
                    root_id: root_id,
-                   created_at: child_created_at,
-                   updated_at: child_updated_at,
+                   created_at: %DateTime{},
+                   updated_at: %DateTime{},
                    aggregates: %{},
                    calculations: %{},
                    __order__: nil
@@ -220,8 +221,9 @@ defmodule AshRbacTest do
                  __meta__: %Ecto.Schema.Metadata{state: :loaded},
                  id: root_id,
                  admin_only: 2,
-                 created_at: created_at,
-                 updated_at: updated_at,
+                 created_at: %DateTime{},
+                 updated_at: %DateTime{},
+                 inserted_at: %DateTime{},
                  aggregates: %{},
                  calculations: %{},
                  __order__: nil
@@ -243,13 +245,6 @@ defmodule AshRbacTest do
     assert UUID.matches_type?(root_id, []) == true
     assert UUID.matches_type?(admin_only_child_id, []) == true
     assert UUID.matches_type?(child_id, []) == true
-
-    assert DateTime.to_string(created_at)
-    assert DateTime.to_string(updated_at)
-    assert DateTime.to_string(admin_only_child_created_at)
-    assert DateTime.to_string(admin_only_child_updated_at)
-    assert DateTime.to_string(child_created_at)
-    assert DateTime.to_string(child_updated_at)
   end
 
   @tag :unit
@@ -284,7 +279,13 @@ defmodule AshRbacTest do
 
   @tag :unit
   test "admin role can only create and read", _ do
-    assert {:ok, %{admin_only: 5} = resource} =
+    assert {:ok,
+            %{
+              admin_only: 5,
+              updated_at: %DateTime{},
+              created_at: %DateTime{},
+              inserted_at: %DateTime{}
+            } = resource} =
              RootResource
              |> Ash.Changeset.for_create(:create, %{admin_only: 5},
                actor: %{roles: [@admin_role]}

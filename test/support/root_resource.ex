@@ -46,7 +46,7 @@ defmodule AshRbacTest.RootResource do
     attribute :no_field_policy, :integer, default: 1, public?: true
 
     create_timestamp(:created_at, public?: true)
-    update_timestamp(:updated_at, public?: true)
+    timestamps(public?: true)
   end
 
   relationships do
