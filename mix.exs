@@ -61,7 +61,7 @@ defmodule AshRbac.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:ash, "~> 3.0 and >= 3.0.15"},
+      {:ash, github: "ash-project/ash", branch: "main"},
       {:simple_sat, ">= 0.0.0", only: :test},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:ex_doc, "~> 0.27", only: :dev, runtime: false},
