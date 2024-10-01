@@ -4,7 +4,7 @@ defmodule AshRbac.MixProject do
   def project do
     [
       app: :ash_rbac,
-      version: "0.6.0",
+      version: "0.6.1",
       description: "A small extension for easier application of policies",
       package: [
         maintainers: ["travel tech d.luxe GmbH"],
