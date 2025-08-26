@@ -182,6 +182,38 @@ actor = %{
 # This actor can read and update any document, but cannot delete the sensitive document
 ```
 
+## Introspection
+
+### Getting All Permission Bases
+
+You can retrieve all IAM permission bases from a domain or list of resources for validation purposes:
+
+```elixir
+# Get all permission bases from a domain
+permission_bases = AshRbac.Info.iam_permission_bases(MyApp.Domain)
+# Returns: ["app:user", "app:document", "app:admin"]
+
+# Get permission bases from specific resources
+permission_bases = AshRbac.Info.iam_permission_bases([MyApp.User, MyApp.Document])
+# Returns: ["app:user", "app:document"]
+```
+
+This is useful for:
+- Validating IAM policies against known resources
+- Generating policy templates
+- Building permission management UIs
+- Auditing available resources
+
+You can also get permission bases with the configured app stem prefix applied:
+
+```elixir
+# With app config: config :ash_rbac, iam_stem: "prod"
+final_bases = AshRbac.Info.iam_permission_bases_with_stem(MyApp.Domain)
+# Returns: ["prod:app:user", "prod:app:document"]
+```
+
+This shows the actual permission identifiers used during policy evaluation.
+
 ## Integration with Roles
 
 IAM policies work independently of role-based permissions defined in the same resource. The IAM system only evaluates IAM policies and does not consider role memberships.

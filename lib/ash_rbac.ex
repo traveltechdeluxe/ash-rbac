@@ -158,6 +158,7 @@ defmodule AshRbac do
     @moduledoc """
     Introspection functions for the Rbac Extension
     """
+    alias Ash.Domain.Info, as: DomainInfo
     alias Spark.Dsl.Extension
 
     def bypass(resource) do
@@ -190,6 +191,64 @@ defmodule AshRbac do
 
     def iam_policy_fetcher(resource) do
       Extension.get_opt(resource, [:rbac, :iam], :policy_fetcher, nil)
+    end
+
+    @doc """
+    Gets all IAM permission bases from a domain's resources or a list of resources.
+
+    Returns a list of permission bases for all resources that have IAM configuration.
+
+    ## Examples
+
+        # From a domain
+        iex> AshRbac.Info.iam_permission_bases(MyApp.Domain)
+        ["app:user", "app:document", "app:admin"]
+
+        # From a list of resources
+        iex> AshRbac.Info.iam_permission_bases([MyApp.User, MyApp.Document])
+        ["app:user", "app:document"]
+
+    """
+    def iam_permission_bases(domain) when is_atom(domain) do
+      domain
+      |> DomainInfo.resources()
+      |> Enum.map(&iam_permission_base/1)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.uniq()
+    end
+
+    def iam_permission_bases(resources) when is_list(resources) do
+      resources
+      |> Enum.map(&iam_permission_base/1)
+      |> Enum.reject(&is_nil/1)
+      |> Enum.uniq()
+    end
+
+    @doc """
+    Gets all IAM permission bases with app stem prefix applied.
+
+    Similar to `iam_permission_bases/1` but applies the configured `iam_stem` prefix
+    to each permission base, showing the final permission identifiers that would be
+    used in policy evaluation.
+
+    ## Examples
+
+        # With app config: config :ash_rbac, iam_stem: "prod"
+        iex> AshRbac.Info.iam_permission_bases_with_stem(MyApp.Domain)
+        ["prod:app:user", "prod:app:document"]
+
+    """
+    def iam_permission_bases_with_stem(domain_or_resources) do
+      stem = Application.get_env(:ash_rbac, :iam_stem)
+
+      domain_or_resources
+      |> iam_permission_bases()
+      |> Enum.map(fn base ->
+        case stem do
+          nil -> base
+          stem -> "#{stem}:#{base}"
+        end
+      end)
     end
   end
 
