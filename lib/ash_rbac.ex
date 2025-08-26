@@ -88,6 +88,33 @@ defmodule AshRbac do
     ]
   }
 
+  @rbac_iam %Spark.Dsl.Section{
+    name: :iam,
+    describe: "IAM-style policy integration",
+    schema: [
+      permission_base: [
+        type: :string,
+        required: true,
+        doc: "The ARN-like base identifier for this resource"
+      ],
+      action_to_iam_mapping: [
+        type: :keyword_list,
+        default: [],
+        doc: "Maps Ash actions to IAM verbs (both keys and values must be atoms)"
+      ],
+      policy_key: [
+        type: :atom,
+        default: :iam_policy,
+        doc: "The key in the actor map where the IAM policy document is stored"
+      ],
+      policy_fetcher: [
+        type: {:tuple, [:atom, :atom]},
+        doc:
+          "MFA {module, function} to fetch policy document. Called with (actor, action, resource, record)"
+      ]
+    ]
+  }
+
   @rbac %Spark.Dsl.Section{
     name: :rbac,
     describe: @moduledoc,
@@ -121,6 +148,9 @@ defmodule AshRbac do
     ],
     entities: [
       @role
+    ],
+    sections: [
+      @rbac_iam
     ]
   }
 
@@ -144,6 +174,22 @@ defmodule AshRbac do
 
     def roles(resource) do
       Extension.get_entities(resource, [:rbac])
+    end
+
+    def iam_permission_base(resource) do
+      Extension.get_opt(resource, [:rbac, :iam], :permission_base, nil)
+    end
+
+    def iam_action_to_iam_mapping(resource) do
+      Extension.get_opt(resource, [:rbac, :iam], :action_to_iam_mapping, [])
+    end
+
+    def iam_policy_key(resource) do
+      Extension.get_opt(resource, [:rbac, :iam], :policy_key, :iam_policy)
+    end
+
+    def iam_policy_fetcher(resource) do
+      Extension.get_opt(resource, [:rbac, :iam], :policy_fetcher, nil)
     end
   end
 
